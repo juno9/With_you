@@ -24,7 +24,7 @@
         android:id="@+id/아이템텍스트뷰"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2022년 1월 1일"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

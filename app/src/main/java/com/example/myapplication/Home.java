@@ -9,12 +9,20 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class Home extends AppCompatActivity {
@@ -36,7 +44,7 @@ public class Home extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();
 
         dialog01 = new Dialog(this);
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -119,6 +127,37 @@ public class Home extends AppCompatActivity {
             }
         });//옵션 액티비티 실행하기
 
+        String json = "";
+        try {
+            InputStream is = getAssets().open("jsons/test.json"); // json파일 이름
+            int fileSize = is.available();
+
+            byte[] buffer = new byte[fileSize];
+            is.read(buffer);
+            is.close();
+
+            //json파일명을 가져와서 String 변수에 담음
+            json = new String(buffer, "UTF-8");
+            Log.d("--  json = ", json);
+
+
+            JSONObject jsonObject = new JSONObject(json);
+
+            //배열로된 자료를 가져올때
+            JSONArray Array = jsonObject.getJSONArray("food");//배열의 이름
+            for(int i=0; i<Array.length(); i++)
+            {
+                JSONObject Object = Array.getJSONObject(i);
+                Log.d("--  name is ", Object.getString("name"));
+                Log.d("--  materials are", Object.getString("Material"));
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -134,7 +173,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
+//        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
 
     }
 
@@ -142,7 +181,7 @@ public class Home extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        Toast.makeText(this, "온스탑", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "온스탑", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -150,7 +189,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(this, "온퍼즈", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "온퍼즈", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -158,7 +197,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "온디스트로이", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "온디스트로이", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -167,7 +206,7 @@ public class Home extends AppCompatActivity {
         super.onRestart();
 
 
-        Toast.makeText(this, "온리스타트", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "온리스타트", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -196,7 +235,7 @@ public class Home extends AppCompatActivity {
             });
 
         }
-    }
+    }//w
 }
 
 

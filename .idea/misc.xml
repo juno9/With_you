@@ -9,6 +9,7 @@
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_dialog.xml" value="0.5" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_dialog2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_home.xml" value="0.36302083333333335" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_itemchange.xml" value="0.20625" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.19429347826086957" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_notification.xml" value="0.36302083333333335" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_numberchange.xml" value="0.17983789260385005" />
@@ -16,10 +17,12 @@
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/anniversary.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/anniversayt.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/dialog.xml" value="0.375" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/dialog_itemchange.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_album.xml" value="0.14221014492753623" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_home.xml" value="0.17654508611955422" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_notifications.xml" value="0.17654508611955422" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_options.xml" value="0.17654508611955422" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/itemchange_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/multi_image_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/numberchangeactivity.xml" value="0.36666666666666664" />
