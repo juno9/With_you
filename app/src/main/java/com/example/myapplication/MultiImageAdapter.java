@@ -15,17 +15,18 @@ import android.widget.Button;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.ViewHolder> {
-    private ArrayList<Uri> mData = null;//Uri를 넣은 어레이 리스트를 만듦
+    private ArrayList<MyData> mData = null;//Uri를 넣은 어레이 리스트를 만듦
     private Context mContext = null;//컨텍스트를 생성하고
     private OnLongItemClickListener onLongItemClickListener = null;
     private OnItemClickListener onItemClickListener = null;
-
-
 
 
     public interface OnItemClickListener {
@@ -91,10 +92,9 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
 
 
     // 생성자에서 데이터 리스트 객체, Context를 전달받음.
-    MultiImageAdapter(ArrayList<Uri> list, Context context  ) {
+    MultiImageAdapter(ArrayList<MyData> list, Context context) {
         mData = list;
         mContext = context;
-
 
 
     }//멀티이미지어댑터 생성자. 만들때 리스트와 컨텍스트를 받는다.
@@ -120,21 +120,20 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
 
 
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(MultiImageAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Uri 이미지uri = mData.get(position);
-
+        Uri 이미지uri = mData.get(position).getImageuri();
+        String 날짜값 = mData.get(position).getMessage();
         Glide.with(mContext).load(이미지uri).into(holder.아이템이미지);//아이템이미지 뷰에 이미지를 넣는 역할
-        ViewHolder viewholder = (ViewHolder) holder;
-        viewholder.수정삭제버튼.setTag(position);
+        holder.아이템텍스트뷰.setText(날짜값);
+
 
 
     }
 
 
     // getItemCount() - 전체 데이터 갯수 리턴.
-
-
 
 
 }

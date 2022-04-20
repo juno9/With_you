@@ -4,9 +4,11 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,9 @@ public class Home extends AppCompatActivity {
     ImageButton 알림버튼;
     ImageButton 옵션버튼;
     Intent 전화번호입력인텐트;
+    SharedPreferences 쉐어드프리퍼런스;
+    SharedPreferences.Editor 쉐어드에디터;
+    String 전화번호;
 
 //만약 전화번호 바꾸는 인텐트를 받으면 그 다이얼로그를 띄우는거까지 해줘
 
@@ -44,7 +49,10 @@ public class Home extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();
+
+        쉐어드프리퍼런스 = getSharedPreferences("쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+        쉐어드에디터 = 쉐어드프리퍼런스.edit();
+        전화번호 = 쉐어드프리퍼런스.getString("MyStr", "_");
 
         dialog01 = new Dialog(this);
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -62,7 +70,7 @@ public class Home extends AppCompatActivity {
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
-
+        전화버튼.setText(String.valueOf(전화번호));
 
         Button 번호변경버튼 = (Button) dialog01.findViewById(R.id.numberchangebtn);//다이얼로그1의 번호변경 버튼 객체를 생성하고 다이얼로그의 버튼뷰를 찾은 다음 이 둘을 연결
         번호변경버튼.setOnClickListener(new View.OnClickListener() {//연결한 버튼의 동작을 정의
@@ -145,8 +153,7 @@ public class Home extends AppCompatActivity {
 
             //배열로된 자료를 가져올때
             JSONArray Array = jsonObject.getJSONArray("food");//배열의 이름
-            for(int i=0; i<Array.length(); i++)
-            {
+            for (int i = 0; i < Array.length(); i++) {
                 JSONObject Object = Array.getJSONObject(i);
                 Log.d("--  name is ", Object.getString("name"));
                 Log.d("--  materials are", Object.getString("Material"));
@@ -166,8 +173,8 @@ public class Home extends AppCompatActivity {
         dialog01.show(); // 다이얼로그 띄우는 메소드 호출
     }
 
-    public void showDialog02(){
-            dialog02.show(); // 다이얼로그 띄우는 메소드 호출
+    public void showDialog02() {
+        dialog02.show(); // 다이얼로그 띄우는 메소드 호출
     }
 
     @Override
@@ -215,7 +222,9 @@ public class Home extends AppCompatActivity {
         if (requestCode == 1 && resultCode == 1) {
             String 결과 = 받은인텐트.getStringExtra("보낼번호");//인텐트에 담았던 값은 putextra 할 때 정한 이름(키값)을 넣어야 그 내용물(밸류)을 얻을 수 있다.
             전화버튼.setText(결과);
-            Toast.makeText(this, 결과, Toast.LENGTH_SHORT).show();
+            전화번호=결과;
+            쉐어드에디터.putString("MyStr",결과);
+            쉐어드에디터.apply();
             전화버튼.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -226,7 +235,7 @@ public class Home extends AppCompatActivity {
 
             String 결과 = 받은인텐트.getStringExtra("보낼번호");//putextra 할 때 정한 이름(키값)을 넣어야 내용물(밸류)을 얻을 수 있다.
             전화버튼2.setText(결과);
-            Toast.makeText(this, 결과, Toast.LENGTH_SHORT).show();
+
             전화버튼2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

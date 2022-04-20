@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -29,7 +28,7 @@ public class Album extends AppCompatActivity {
 
 
     private static final String TAG = "MultiImageActivity";
-    ArrayList<Uri> mData = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
+    ArrayList<MyData> mData = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
     private final int GET_GALLERY_IMAGE = 200;
@@ -67,6 +66,7 @@ public class Album extends AppCompatActivity {
             @Override
             public void onItemClick(int pos) {
                 다이얼로그.show();
+                EditText 날짜입력=(EditText) 다이얼로그.findViewById(R.id.날짜입력에딧텍스트);
                 Button 삭제버튼 = (Button) 다이얼로그.findViewById(R.id.삭제버튼);
                 삭제버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -91,19 +91,23 @@ public class Album extends AppCompatActivity {
                         다이얼로그.dismiss();
                     }
                 });
+                Button 날짜수정버튼=(Button) 다이얼로그.findViewById(R.id.날짜수정버튼);
+                날짜수정버튼.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String 입력날짜=날짜입력.getText().toString();
+                        MyData 날짜넣은데이터=new MyData(mData.get(pos).imageuri,입력날짜);
+                        mData.set(pos,날짜넣은데이터);
+                        adapter.notifyItemChanged(pos);
+                        다이얼로그.dismiss();
+
+                    }
+                });
 
 
             }
         });
-        adapter.setOnLongItemClickListener(new MultiImageAdapter.OnLongItemClickListener() {
-            @Override
-            public void onLongItemClick(int pos) {
-                Toast.makeText(getApplicationContext(), (pos + 1) + "번째 사진 삭제", Toast.LENGTH_SHORT).show();
-                mData.remove(pos);
-                adapter.notifyItemRemoved(pos);
-                adapter.notifyItemRangeChanged(pos, mData.size());
-            }
-        });
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
@@ -114,15 +118,17 @@ public class Album extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);//
         if (requestCode == 2222) {
-            Log.e(TAG, "onActivityResult:tkw사진불러오 " + data);
+            Log.e(TAG, "onActivityResult:사진불러오기 " + data);
             Toast.makeText(getApplicationContext(), "2222", Toast.LENGTH_SHORT).show();
             Uri imageUri = data.getData();
-            mData.add(imageUri);
+            MyData mydata=new MyData(imageUri,null);
+            mData.add(mydata);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         } else if (requestCode == 3333) {
             Uri uri = data.getData();
-            mData.set(포지션값, uri);
+            MyData mydata=new MyData(uri,null);
+            mData.set(포지션값, mydata);
             adapter.notifyItemRemoved(포지션값);
             adapter.notifyItemRangeChanged(포지션값, mData.size());
             recyclerView.setAdapter(adapter);
