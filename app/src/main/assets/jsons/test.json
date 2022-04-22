@@ -1,0 +1,20 @@
+{
+  "food": [
+    {
+      "name": "salad",
+      "재료": [
+        "lettuce",
+        "dressing",
+        "Nuts and Seeds"
+      ]
+    },
+    {
+      "name": "toast",
+      "재료": [
+        "bread",
+        "egg",
+        "suger"
+      ]
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,11 +36,20 @@ public class Album extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 200;
     int 포지션값 = 0;
     Dialog 다이얼로그;
+    SharedPreferences 앨범쉐어드프리퍼런스;
+    SharedPreferences.Editor 앨범쉐어드에디터;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
+
+        앨범쉐어드프리퍼런스 = getSharedPreferences("쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+        앨범쉐어드에디터 = 앨범쉐어드프리퍼런스.edit();
+
+
+        //쉐어드에 들어가 있는
+
 
         recyclerView = findViewById(R.id.recyclerView);//리사이클러뷰 레이아웃과 클래스의 리사이클러뷰를 연결
 
@@ -52,6 +63,7 @@ public class Album extends AppCompatActivity {
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);//인텐트의 타입을 정의
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);//인텐트에 값을 집어넣음
                 intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//인텐트의 데이터를 설정
+
                 startActivityForResult(intent, 2222);
             }
         });
@@ -98,7 +110,7 @@ public class Album extends AppCompatActivity {
                         String 입력날짜=날짜입력.getText().toString();
                         MyData 날짜넣은데이터=new MyData(mData.get(pos).imageuri,입력날짜);
                         mData.set(pos,날짜넣은데이터);
-                        adapter.notifyItemChanged(pos);
+                        adapter.notifyItemChanged(pos);//아이템 내부 값 바뀐거 알려주기
                         다이얼로그.dismiss();
 
                     }
@@ -128,6 +140,9 @@ public class Album extends AppCompatActivity {
         } else if (requestCode == 3333) {
             Uri uri = data.getData();
             MyData mydata=new MyData(uri,null);
+            String uriStr=uri.toString();
+            앨범쉐어드에디터.putString(포지션값+" 번째 사진",uriStr);
+            앨범쉐어드에디터.apply();
             mData.set(포지션값, mydata);
             adapter.notifyItemRemoved(포지션값);
             adapter.notifyItemRangeChanged(포지션값, mData.size());
