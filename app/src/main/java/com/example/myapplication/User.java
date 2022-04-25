@@ -13,13 +13,14 @@ public class User {
     ArrayList<MyData> 이미지배열;
 
 
-    User(String 이름,String ID,String PW, String 전화번호,String 시작날짜,ArrayList<MyData> 이미지배열){
+    User(String 이름,String ID,String PW, String 전화번호,String 시작날짜,String 이메일,ArrayList<MyData> 이미지배열){
         this.ID=ID;
         this.PW=PW;
         this.이름=이름;
         this.전화번호=전화번호;
         this.시작날짜=시작날짜;
         this.이미지배열=이미지배열;
+        this.이메일=이메일;
     }
 
     public void setID(String ID) {

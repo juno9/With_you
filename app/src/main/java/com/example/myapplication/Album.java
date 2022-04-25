@@ -44,7 +44,7 @@ public class Album extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
 
-        앨범쉐어드프리퍼런스 = getSharedPreferences("쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+        앨범쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
         앨범쉐어드에디터 = 앨범쉐어드프리퍼런스.edit();
 
 
@@ -134,6 +134,9 @@ public class Album extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "2222", Toast.LENGTH_SHORT).show();
             Uri imageUri = data.getData();
             MyData mydata=new MyData(imageUri,null);
+            String uriStr=imageUri.toString();
+            앨범쉐어드에디터.putString(포지션값+" 번째 사진",uriStr);//쉐어드에 사진 uri넣어줌
+            앨범쉐어드에디터.apply();
             mData.add(mydata);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -141,7 +144,8 @@ public class Album extends AppCompatActivity {
             Uri uri = data.getData();
             MyData mydata=new MyData(uri,null);
             String uriStr=uri.toString();
-            앨범쉐어드에디터.putString(포지션값+" 번째 사진",uriStr);
+            앨범쉐어드에디터.putString(포지션값+" 번째 사진",uriStr);//쉐어드에 사진 uri넣어줌
+            앨범쉐어드에디터.putInt("포지션값",포지션값);//쉐어드에 포지션값 넣음
             앨범쉐어드에디터.apply();
             mData.set(포지션값, mydata);
             adapter.notifyItemRemoved(포지션값);

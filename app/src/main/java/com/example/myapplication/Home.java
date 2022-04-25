@@ -40,6 +40,7 @@ public class Home extends AppCompatActivity {
     SharedPreferences 쉐어드프리퍼런스;
     SharedPreferences.Editor 쉐어드에디터;
     String 전화번호;
+    User user;
 
 //만약 전화번호 바꾸는 인텐트를 받으면 그 다이얼로그를 띄우는거까지 해줘
 
@@ -49,10 +50,14 @@ public class Home extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        쉐어드프리퍼런스 = getSharedPreferences("쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+        Intent intent = getIntent();
+        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
+        쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
-        전화번호 = 쉐어드프리퍼런스.getString("MyStr", "_");
+        전화번호 = intent.getStringExtra("전화번호");
+        String 이름 = intent.getStringExtra("이름");
+        String 이메일 = intent.getStringExtra("이메일");
+
 
         dialog01 = new Dialog(this);
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -66,7 +71,7 @@ public class Home extends AppCompatActivity {
         });
 
         TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-        프로필텍스트뷰.setText("배준호\n1993년 7월 9일\nppow1123@naver.com");//프로필 있는 텍스트박스1
+        프로필텍스트뷰.setText(이름 + "\n1993년 7월 9일\n"+이메일);//프로필 있는 텍스트박스1
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
@@ -135,36 +140,6 @@ public class Home extends AppCompatActivity {
             }
         });//옵션 액티비티 실행하기
 
-        String json = "";
-        try {
-            InputStream is = getAssets().open("jsons/test.json"); // json파일 이름
-            int fileSize = is.available();
-
-            byte[] buffer = new byte[fileSize];
-            is.read(buffer);
-            is.close();
-
-            //json파일명을 가져와서 String 변수에 담음
-            json = new String(buffer, "UTF-8");
-            Log.d("--  json = ", json);
-
-
-            JSONObject jsonObject = new JSONObject(json);
-
-            //배열로된 자료를 가져올때
-            JSONArray Array = jsonObject.getJSONArray("food");//배열의 이름
-            for (int i = 0; i < Array.length(); i++) {
-                JSONObject Object = Array.getJSONObject(i);
-                Log.d("--  name is ", Object.getString("name"));
-                Log.d("--  materials are", Object.getString("Material"));
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
 
     }
 
@@ -180,7 +155,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
+//        Toast.makeText(this, "온리줌", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
 
     }
 
@@ -222,8 +197,8 @@ public class Home extends AppCompatActivity {
         if (requestCode == 1 && resultCode == 1) {
             String 결과 = 받은인텐트.getStringExtra("보낼번호");//인텐트에 담았던 값은 putextra 할 때 정한 이름(키값)을 넣어야 그 내용물(밸류)을 얻을 수 있다.
             전화버튼.setText(결과);
-            전화번호=결과;
-            쉐어드에디터.putString("MyStr",결과);
+            전화번호 = 결과;
+            쉐어드에디터.putString("MyStr", 결과);
             쉐어드에디터.apply();
             전화버튼.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -244,7 +219,7 @@ public class Home extends AppCompatActivity {
             });
 
         }
-    }//w
+    }
 }
 
 
