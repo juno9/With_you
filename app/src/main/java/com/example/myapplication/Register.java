@@ -34,7 +34,6 @@ public class Register extends AppCompatActivity {
     Button 회원가입버튼;
     Button 취소버튼;
     String ID, PW, 이름, 이메일, 전화번호, 처음사귄날;
-    User 유저;
     SharedPreferences 회원가입쉐어드프리퍼런스;
     SharedPreferences.Editor 회원가입쉐어드에디터;
 
@@ -73,6 +72,7 @@ public class Register extends AppCompatActivity {
                     jsonObject.put("전화번호",전화번호);
                     jsonObject.put("이메일",이메일);
                     jsonObject.put("처음사귄날",처음사귄날);
+                    jsonObject.put("MyData배열","aaa");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,11 +82,11 @@ public class Register extends AppCompatActivity {
 
                 회원가입쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
                 회원가입쉐어드에디터 = 회원가입쉐어드프리퍼런스.edit();
-                회원가입쉐어드에디터.putString(ID,yourString);//가입시의 ID를 키값으로, 제이슨데이터를 스트링으로 바꾸고 이를 밸류값으로 넣음
-                //가입한 ID가 키값, 제이슨데이터를 변환한 스트링이 밸류값.
+                회원가입쉐어드에디터.putString(ID,yourString);//(가입시의 ID)를 키값으로, 제이슨데이터를 스트링으로 바꾸고 이를 밸류값으로 넣음
+                //(가입한 ID)가 키값, 제이슨데이터를 변환한 스트링이 밸류값.
                 회원가입쉐어드에디터.apply();//에디터에 적용
-                Toast.makeText(getApplicationContext(),"가입완료",Toast.LENGTH_SHORT).show();
                 finish();
+                Toast.makeText(getApplicationContext(),"가입완료",Toast.LENGTH_SHORT).show();
             }
         });//각 에딧텍스트의 값을 제이슨 형식으로 묶어주고
         취소버튼 = findViewById(R.id.취소버튼);

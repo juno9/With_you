@@ -4,12 +4,12 @@ import android.net.Uri;
 
 public class MyData {
 
-    Uri imageuri;
+    String imageString;
     String message;
 
 
-    MyData(Uri imageuri,String message){
-        this.imageuri=imageuri;
+    MyData(String imageString,String message){
+        this.imageString=imageString;
         this.message=message;
     }
 
@@ -17,12 +17,12 @@ public class MyData {
         return message;
     }
 
-    public Uri getImageuri() {
-        return imageuri;
+    public String getImageString() {
+        return imageString;
     }
 
-    public void setImageuri(Uri imageuri) {
-        this.imageuri = imageuri;
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
     }
 
     public void setMessage(String message) {

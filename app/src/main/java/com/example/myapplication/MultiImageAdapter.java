@@ -123,7 +123,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(MultiImageAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Uri 이미지uri = mData.get(position).getImageuri();
+        Uri 이미지uri = Uri.parse(mData.get(position).getImageString());
         String 날짜값 = mData.get(position).getMessage();
         Glide.with(mContext).load(이미지uri).into(holder.아이템이미지);//아이템이미지 뷰에 이미지를 넣는 역할
         holder.아이템텍스트뷰.setText(날짜값);

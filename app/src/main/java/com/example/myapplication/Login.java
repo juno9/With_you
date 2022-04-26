@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
 public class Login extends AppCompatActivity {
 
     EditText ID입력;
@@ -43,11 +42,12 @@ public class Login extends AppCompatActivity {
                 String InputID = ID입력.getText().toString();//입력받은 ID값 스트링으로 변환
                 String InputPW = PW입력.getText().toString();
                 로그인쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
-                로그인쉐어드에디터=로그인쉐어드프리퍼런스.edit();
-                로그인쉐어드에디터.clear();
-                로그인쉐어드에디터.apply();
-                String strJson = 로그인쉐어드프리퍼런스.getString(InputID, null);
+                로그인쉐어드에디터 = 로그인쉐어드프리퍼런스.edit();
 
+
+                String strJson = 로그인쉐어드프리퍼런스.getString(InputID, null);
+                   //스트링으로 변환하여 쉐어드에 저장한 제이슨 데이터를 다시 제이슨형태로 바꾸기 위해 스트링 형태로 재호출,
+                   // 가입할 때의 ID가 키값으로 쓰이도록 설정해 뒀으니 스트링 데이터를 쉐어드에서 가져옴
                 if (strJson != null) {
                     try {
 
@@ -58,22 +58,27 @@ public class Login extends AppCompatActivity {
                         String 저장된전화번호 = response.get("전화번호").toString();
                         String 저장된이메일 = response.get("이메일").toString();
                         String 저장된처음사귄날 = response.get("처음사귄날").toString();
+                        if (InputID.equals(저장된ID) && InputPW.equals(저장된PW)) {
+                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                            intent.putExtra("ID", 저장된ID);
+                            intent.putExtra("이름", 저장된이름);
+                            intent.putExtra("전화번호", 저장된전화번호);
+                            intent.putExtra("이메일", 저장된이메일);
+                            intent.putExtra("처음사귄날", 저장된처음사귄날);
 
-                        Intent intent = new Intent(getApplicationContext(), Home.class);
-                        intent.putExtra("이름",저장된이름);
-                        intent.putExtra("전화번호",저장된전화번호);
-                        intent.putExtra("이메일",저장된이메일);
+                            startActivity(intent);
+                            finish();
+                            Toast.makeText(getApplicationContext(), "정보 존재", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "로그인 정보가 다릅니다.", Toast.LENGTH_SHORT).show();
 
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(getApplicationContext(),"정보 존재",Toast.LENGTH_SHORT).show();
-
+                        }
                     } catch (JSONException e) {
 
                     }
 
-                } else{
-                    Toast.makeText(getApplicationContext(),"정보없음",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "정보없음", Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -36,11 +36,14 @@ public class Home extends AppCompatActivity {
     ImageButton 앨범버튼;
     ImageButton 알림버튼;
     ImageButton 옵션버튼;
+    TextView 만난날짜텍스트뷰;
     Intent 전화번호입력인텐트;
     SharedPreferences 쉐어드프리퍼런스;
     SharedPreferences.Editor 쉐어드에디터;
     String 전화번호;
-    User user;
+    JSONObject jsonObject;
+    String ID;
+
 
 //만약 전화번호 바꾸는 인텐트를 받으면 그 다이얼로그를 띄우는거까지 해줘
 
@@ -51,13 +54,25 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Intent intent = getIntent();
-        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
-        쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+        쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
+        Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
+
+
+        ID = intent.getStringExtra("ID");
         전화번호 = intent.getStringExtra("전화번호");
         String 이름 = intent.getStringExtra("이름");
         String 이메일 = intent.getStringExtra("이메일");
+        String 처음만난날 = intent.getStringExtra("처음사귄날");
 
+        String jsnstr = 쉐어드프리퍼런스.getString(ID,null);//스트링으로 쉐어드에 스트링 형태로 저장된 제이슨 객체를 활용하기 위해 스트링 선언
+        //쉐어드 내에 ID를 키값으로 가진 데이터의 밸류값을 얻음
+
+        try {
+            jsonObject=new JSONObject(jsnstr);//68열에서 얻은 스트링값을 참조하여 제이슨 객체 불러옴
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         dialog01 = new Dialog(this);
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -70,8 +85,11 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        만난날짜텍스트뷰 = (TextView) findViewById(R.id.textView);
+        만난날짜텍스트뷰.setText(처음만난날);
+
         TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-        프로필텍스트뷰.setText(이름 + "\n1993년 7월 9일\n"+이메일);//프로필 있는 텍스트박스1
+        프로필텍스트뷰.setText(이름 + "\n1993년 7월 9일\n" + 이메일);//프로필 있는 텍스트박스1
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
@@ -118,6 +136,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Album.class);
+                intent.putExtra("ID", ID);
                 startActivity(intent);
             }
         });//앨범 액티비티 실행하기
@@ -198,8 +217,14 @@ public class Home extends AppCompatActivity {
             String 결과 = 받은인텐트.getStringExtra("보낼번호");//인텐트에 담았던 값은 putextra 할 때 정한 이름(키값)을 넣어야 그 내용물(밸류)을 얻을 수 있다.
             전화버튼.setText(결과);
             전화번호 = 결과;
-            쉐어드에디터.putString("MyStr", 결과);
-            쉐어드에디터.apply();
+            try {
+                jsonObject.put("전화번호",결과);//72열에서 불러온 제이슨 객체의 전화번호키값에 새로운 밸류값을 넣어줌
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String jsnstr2=jsonObject.toString();//새로운 전화번호를 넣은 제이슨 데이터를 스트링으로 변환.
+            쉐어드에디터.putString(ID,jsnstr2);//쉐어드 내에 ID를 키값으로가지고 225열의 스트링을 밸류값으로 저장
+            쉐어드에디터.apply();//에디터에 변경사항 적용
             전화버튼.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
