@@ -41,8 +41,6 @@ public class Album extends AppCompatActivity {
     Dialog 다이얼로그;
     SharedPreferences 앨범쉐어드프리퍼런스;
     SharedPreferences.Editor 앨범쉐어드에디터;
-    String 이미지URI;
-    String 뿌릴uri;
     String ID;
     JSONObject jsonObject;
 
@@ -58,9 +56,15 @@ public class Album extends AppCompatActivity {
 
         try {
             jsonObject = new JSONObject(jsnstr);//제이슨 객체 불러옴->포장지 깜
-            String 이미지스트링= (String) jsonObject.get("MyData배열");
-            MyData data=new MyData(이미지스트링,null);
-            mData.add(data);
+            int 배열사이즈 = (int) jsonObject.get("mData.size");
+            //반복문으로 내용물 다 까서 m데이터에 넣어줘야한다.
+            for (int i = 0; i<배열사이즈; i++) {
+                String 이미지스트링 = (String) jsonObject.get("MyData배열"+(i+1));
+                MyData data= new MyData(이미지스트링, null);
+                mData.add(i,data);
+            }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -141,28 +145,28 @@ public class Album extends AppCompatActivity {
             MyData mydata = new MyData(uri.toString(), null);//MyData객체 생성하면서 134열에서 가져온 URI값을 스트링으로 변환하여 넣어줌.
             mData.add(mydata);//생성한 데이터를 배열에 추가
             try {
-                jsonObject.put("MyData배열", uri.toString());
+                jsonObject.put("MyData배열" + mData.size(), uri.toString());
+                jsonObject.put("mData.size", mData.size());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String jsnstr2=jsonObject.toString();//이미지 넣은 제이슨오브젝트를 다시 스트링으로
-            앨범쉐어드에디터.putString(ID,jsnstr2);//스트링으로 바꾼 제이슨 오브젝트를 ID키값에 밸류로 넣어줌
+            String jsnstr2 = jsonObject.toString();//이미지 넣은 제이슨오브젝트를 다시 스트링으로
+            앨범쉐어드에디터.putString(ID, jsnstr2);//스트링으로 바꾼 제이슨 오브젝트를 ID키값에 밸류로 넣어줌
             앨범쉐어드에디터.apply();
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         } else if (requestCode == 3333) {
             Uri uri = data.getData();
             MyData mydata = new MyData(uri.toString(), null);
-
+            mData.set(포지션값, mydata);
             try {
-                jsonObject.put("MyData배열", uri.toString());
+                jsonObject.put("MyData배열" + (포지션값 + 1), uri.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String jsnstr2=jsonObject.toString();//이미지 넣은 제이슨오브젝트를 다시 스트링으로
-            앨범쉐어드에디터.putString(ID,jsnstr2);//스트링으로 바꾼 제이슨 오브젝트를 ID키값에 밸류로 넣어줌
+            String jsnstr2 = jsonObject.toString();//이미지 넣은 제이슨오브젝트를 다시 스트링으로
+            앨범쉐어드에디터.putString(ID, jsnstr2);//스트링으로 바꾼 제이슨 오브젝트를 ID키값에 밸류로 넣어줌
             앨범쉐어드에디터.apply();
-            mData.set(포지션값, mydata);
             adapter.notifyItemRemoved(포지션값);
             adapter.notifyItemRangeChanged(포지션값, mData.size());
             recyclerView.setAdapter(adapter);

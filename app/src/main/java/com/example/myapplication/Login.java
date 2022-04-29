@@ -41,7 +41,7 @@ public class Login extends AppCompatActivity {
                 //가입한 ID가 키값, 제이슨데이터를 변환한 스트링이 밸류값.
                 String InputID = ID입력.getText().toString();//입력받은 ID값 스트링으로 변환
                 String InputPW = PW입력.getText().toString();
-                로그인쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+                로그인쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", Activity.MODE_PRIVATE);
                 로그인쉐어드에디터 = 로그인쉐어드프리퍼런스.edit();
 
 
@@ -58,17 +58,23 @@ public class Login extends AppCompatActivity {
                         String 저장된전화번호 = response.get("전화번호").toString();
                         String 저장된이메일 = response.get("이메일").toString();
                         String 저장된처음사귄날 = response.get("처음사귄날").toString();
+                        String 연결여부=response.get("연결여부").toString();
                         if (InputID.equals(저장된ID) && InputPW.equals(저장된PW)) {
-                            Intent intent = new Intent(getApplicationContext(), Home.class);
-                            intent.putExtra("ID", 저장된ID);
-                            intent.putExtra("이름", 저장된이름);
-                            intent.putExtra("전화번호", 저장된전화번호);
-                            intent.putExtra("이메일", 저장된이메일);
-                            intent.putExtra("처음사귄날", 저장된처음사귄날);
-
-                            startActivity(intent);
-                            finish();
-                            Toast.makeText(getApplicationContext(), "정보 존재", Toast.LENGTH_SHORT).show();
+                            if(연결여부.equals("false")) {
+                                Intent intent = new Intent(getApplicationContext(), Connect.class);
+                                intent.putExtra("나의ID",저장된ID);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(), Home.class);
+                                intent.putExtra("ID", 저장된ID);
+                                intent.putExtra("이름", 저장된이름);
+                                intent.putExtra("전화번호", 저장된전화번호);
+                                intent.putExtra("이메일", 저장된이메일);
+                                intent.putExtra("처음사귄날", 저장된처음사귄날);
+                                startActivity(intent);
+                                finish();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "로그인 정보가 다릅니다.", Toast.LENGTH_SHORT).show();
 

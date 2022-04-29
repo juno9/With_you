@@ -53,26 +53,15 @@ public class Home extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Intent intent = getIntent();
-        쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", MODE_PRIVATE);
+
+        쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
         Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
 
 
-        ID = intent.getStringExtra("ID");
-        전화번호 = intent.getStringExtra("전화번호");
-        String 이름 = intent.getStringExtra("이름");
-        String 이메일 = intent.getStringExtra("이메일");
-        String 처음만난날 = intent.getStringExtra("처음사귄날");
 
-        String jsnstr = 쉐어드프리퍼런스.getString(ID,null);//스트링으로 쉐어드에 스트링 형태로 저장된 제이슨 객체를 활용하기 위해 스트링 선언
-        //쉐어드 내에 ID를 키값으로 가진 데이터의 밸류값을 얻음
 
-        try {
-            jsonObject=new JSONObject(jsnstr);//68열에서 얻은 스트링값을 참조하여 제이슨 객체 불러옴
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
 
         dialog01 = new Dialog(this);
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -86,10 +75,10 @@ public class Home extends AppCompatActivity {
         });
 
         만난날짜텍스트뷰 = (TextView) findViewById(R.id.textView);
-        만난날짜텍스트뷰.setText(처음만난날);
+
 
         TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-        프로필텍스트뷰.setText(이름 + "\n1993년 7월 9일\n" + 이메일);//프로필 있는 텍스트박스1
+        //프로필 있는 텍스트박스1
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결

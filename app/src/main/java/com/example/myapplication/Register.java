@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 public class Register extends AppCompatActivity {
 
@@ -36,6 +37,8 @@ public class Register extends AppCompatActivity {
     String ID, PW, 이름, 이메일, 전화번호, 처음사귄날;
     SharedPreferences 회원가입쉐어드프리퍼런스;
     SharedPreferences.Editor 회원가입쉐어드에디터;
+    Random random=new Random();
+
 
 
     @Override
@@ -72,7 +75,11 @@ public class Register extends AppCompatActivity {
                     jsonObject.put("전화번호",전화번호);
                     jsonObject.put("이메일",이메일);
                     jsonObject.put("처음사귄날",처음사귄날);
-                    jsonObject.put("MyData배열","aaa");
+                    jsonObject.put("MyData배열","x");
+                    jsonObject.put("연결여부",false);
+                    jsonObject.put("연결상대","x");
+                    jsonObject.put("앨범코드상대","x");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -80,10 +87,9 @@ public class Register extends AppCompatActivity {
                 String yourString =  jsonObject.toString();//위의 값들을 가진 제이슨 데이터를 스트링으로 변환
 
 
-                회원가입쉐어드프리퍼런스 = getSharedPreferences("회원가입쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+                회원가입쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", Activity.MODE_PRIVATE);//ID를 키값으로 가지는 쉐어드를 만든다.
                 회원가입쉐어드에디터 = 회원가입쉐어드프리퍼런스.edit();
-                회원가입쉐어드에디터.putString(ID,yourString);//(가입시의 ID)를 키값으로, 제이슨데이터를 스트링으로 바꾸고 이를 밸류값으로 넣음
-                //(가입한 ID)가 키값, 제이슨데이터를 변환한 스트링이 밸류값.
+                회원가입쉐어드에디터.putString(ID,yourString);//인트로 생성한 난수를 스트링으로 변환하여 쉐어드에 저장된 회원정보의 키값으로 활용
                 회원가입쉐어드에디터.apply();//에디터에 적용
                 finish();
                 Toast.makeText(getApplicationContext(),"가입완료",Toast.LENGTH_SHORT).show();
