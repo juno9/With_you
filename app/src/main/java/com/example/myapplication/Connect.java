@@ -62,12 +62,18 @@ public class Connect extends AppCompatActivity {
                 if (쉐어드.getString(상대방ID, null) != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(jsnstr);//상대방 ID로 만든 제이슨 객체
-                        JSONObject jsonObject2 = new JSONObject(jsnstr2);
+                        JSONObject jsonObject2 = new JSONObject(jsnstr2);//연결 시도하는 본인의 정보가 들어있는 제이슨 객체
                         Toast.makeText(getApplicationContext(), jsonObject.get("이름").toString(), Toast.LENGTH_SHORT).show();
                         jsonObject.put("앨범코드", I);
-                        jsonObject.put("연결상대",내ID);
+                        jsonObject.put("연결상대",내ID);//상대방의 연결 상대를 나로 설정
                         jsonObject2.put("앨범코드", I);
-                        jsonObject.put("연결상대",상대방ID);
+                        jsonObject2.put("연결상대",상대방ID);//나의 연결상대를 입력한 ID로 설정
+                        jsonObject2.put("연결여부","true");
+                        String yourString =  jsonObject.toString();
+                        String yourString2 =  jsonObject2.toString();
+                        쉐어드에디터.putString(상대방ID,yourString);
+                        쉐어드에디터.putString(내ID,yourString2);
+                        쉐어드에디터.apply();
                         intent2 = new Intent(getApplicationContext(), Home.class);
 
                     } catch (JSONException e) {
@@ -78,6 +84,7 @@ public class Connect extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "없다", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
 

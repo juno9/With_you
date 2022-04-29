@@ -75,7 +75,6 @@ public class Register extends AppCompatActivity {
                     jsonObject.put("전화번호",전화번호);
                     jsonObject.put("이메일",이메일);
                     jsonObject.put("처음사귄날",처음사귄날);
-                    jsonObject.put("MyData배열","x");
                     jsonObject.put("연결여부",false);
                     jsonObject.put("연결상대","x");
                     jsonObject.put("앨범코드상대","x");

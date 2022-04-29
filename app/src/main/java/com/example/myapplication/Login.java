@@ -45,6 +45,8 @@ public class Login extends AppCompatActivity {
                 로그인쉐어드에디터 = 로그인쉐어드프리퍼런스.edit();
 
 
+
+
                 String strJson = 로그인쉐어드프리퍼런스.getString(InputID, null);
                    //스트링으로 변환하여 쉐어드에 저장한 제이슨 데이터를 다시 제이슨형태로 바꾸기 위해 스트링 형태로 재호출,
                    // 가입할 때의 ID가 키값으로 쓰이도록 설정해 뒀으니 스트링 데이터를 쉐어드에서 가져옴
@@ -65,7 +67,7 @@ public class Login extends AppCompatActivity {
                                 intent.putExtra("나의ID",저장된ID);
                                 startActivity(intent);
                                 finish();
-                            } else {
+                            } else if(연결여부.equals("true")) {
                                 Intent intent = new Intent(getApplicationContext(), Home.class);
                                 intent.putExtra("ID", 저장된ID);
                                 intent.putExtra("이름", 저장된이름);
