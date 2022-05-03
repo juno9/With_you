@@ -4,6 +4,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 
@@ -43,24 +44,35 @@ public class Home extends AppCompatActivity {
     String 전화번호;
     JSONObject jsonObject;
     String ID;
+    String 상대이름;
+    String 상대이메일;
+    String 상대ID;
 
 
 //만약 전화번호 바꾸는 인텐트를 받으면 그 다이얼로그를 띄우는거까지 해줘
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {//최초 빌드때 실행
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Intent intent = getIntent();
+        ID = intent.getStringExtra("ID");
+        상대ID = intent.getStringExtra("연결상대");
         쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
         Toast.makeText(this, "온크리에이트", Toast.LENGTH_SHORT).show();//상태 확인용 토스트
 
+        String userjsnstr = 쉐어드프리퍼런스.getString(ID, "_");
+        try {
+            jsonObject = new JSONObject(userjsnstr);
 
-
-
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         dialog01 = new Dialog(this);
@@ -75,14 +87,14 @@ public class Home extends AppCompatActivity {
         });
 
         만난날짜텍스트뷰 = (TextView) findViewById(R.id.textView);
-
+        만난날짜텍스트뷰.setText(intent.getStringExtra("처음사귄날"));
 
         TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-        //프로필 있는 텍스트박스1
+        프로필텍스트뷰.setText(intent.getStringExtra("이름") + "\n" + intent.getStringExtra("이메일"));//프로필 있는 텍스트박스1
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
-        전화버튼.setText(String.valueOf(전화번호));
+        전화버튼.setText(intent.getStringExtra("전화번호"));
 
         Button 번호변경버튼 = (Button) dialog01.findViewById(R.id.numberchangebtn);//다이얼로그1의 번호변경 버튼 객체를 생성하고 다이얼로그의 버튼뷰를 찾은 다음 이 둘을 연결
         번호변경버튼.setOnClickListener(new View.OnClickListener() {//연결한 버튼의 동작을 정의
@@ -103,10 +115,16 @@ public class Home extends AppCompatActivity {
                 showDialog02(); // 아래 showDialog02() 함수 호출
             }
         });
-
-
+        String jsnstr = 쉐어드프리퍼런스.getString(intent.getStringExtra(상대ID), "_");
+        try {
+            JSONObject jsonObject2 = new JSONObject(jsnstr);
+            상대이름 = jsonObject2.get("이름").toString();
+            상대이메일 = jsonObject2.get("이메일").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         TextView 프로필텍스트뷰2 = (TextView) dialog02.findViewById(R.id.textView2);//다이얼로그 레이아웃의 텍스트뷰 연결
-        프로필텍스트뷰2.setText("배요한\n1994년 2월 9일\naa4444x@naver.com");//프로필 있는 텍스트박스2
+        프로필텍스트뷰2.setText(상대이름 + "\n" + 상대이메일);//프로필 있는 텍스트박스2
 
         전화버튼2 = (Button) dialog02.findViewById(R.id.callbtn2);
 
@@ -126,6 +144,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Album.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("상대ID", 상대ID);
                 startActivity(intent);
             }
         });//앨범 액티비티 실행하기
@@ -207,12 +226,12 @@ public class Home extends AppCompatActivity {
             전화버튼.setText(결과);
             전화번호 = 결과;
             try {
-                jsonObject.put("전화번호",결과);//72열에서 불러온 제이슨 객체의 전화번호키값에 새로운 밸류값을 넣어줌
+                jsonObject.put("전화번호", 결과);//72열에서 불러온 제이슨 객체의 전화번호키값에 새로운 밸류값을 넣어줌
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String jsnstr2=jsonObject.toString();//새로운 전화번호를 넣은 제이슨 데이터를 스트링으로 변환.
-            쉐어드에디터.putString(ID,jsnstr2);//쉐어드 내에 ID를 키값으로가지고 225열의 스트링을 밸류값으로 저장
+            String jsnstr2 = jsonObject.toString();//새로운 전화번호를 넣은 제이슨 데이터를 스트링으로 변환.
+            쉐어드에디터.putString(ID, jsnstr2);//쉐어드 내에 ID를 키값으로가지고 225열의 스트링을 밸류값으로 저장
             쉐어드에디터.apply();//에디터에 변경사항 적용
             전화버튼.setOnClickListener(new View.OnClickListener() {
                 @Override
