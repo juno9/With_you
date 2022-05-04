@@ -77,8 +77,6 @@ public class Register extends AppCompatActivity {
                     jsonObject.put("처음사귄날",처음사귄날);
                     jsonObject.put("연결여부",false);
                     jsonObject.put("연결상대","x");
-                    jsonObject.put("연결요청", "O");//나의 연결상대를 입력한 ID로 설정
-                    jsonObject.put("연결요청상대", "X");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
