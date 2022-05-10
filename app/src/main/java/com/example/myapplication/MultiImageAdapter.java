@@ -86,9 +86,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
             });
 
         }
-
-//내부 클래스로 커스텀 뷰홀더를 만듦
-    }
+    }//내부클래스로 커스텀뷰홀더 만듦
 
 
     // 생성자에서 데이터 리스트 객체, Context를 전달받음.
@@ -127,13 +125,5 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
         String 날짜값 = mData.get(position).getMessage();
         Glide.with(mContext).load(이미지uri).into(holder.아이템이미지);//아이템이미지 뷰에 이미지를 넣는 역할
         holder.아이템텍스트뷰.setText(날짜값);
-
-
-
     }
-
-
-    // getItemCount() - 전체 데이터 갯수 리턴.
-
-
 }

@@ -38,6 +38,8 @@ public class Album extends AppCompatActivity {
     Dialog 다이얼로그;
     SharedPreferences 앨범쉐어드;
     SharedPreferences.Editor 앨범쉐어드에디터;
+    SharedPreferences 광고쉐어드;
+    SharedPreferences.Editor 광고쉐어드에디터;
     String 내ID;
     String 상대ID;
     JSONObject 나의제이슨객체;
@@ -51,28 +53,35 @@ public class Album extends AppCompatActivity {
         setContentView(R.layout.activity_album);
         Intent intent = getIntent();
         내ID = intent.getStringExtra("ID");
-        상대ID = intent.getStringExtra("상대ID");
+        상대ID = intent.getStringExtra("상대ID");//인텐트에 담아보낸 ID들을 먼저 받음
 
         앨범쉐어드 = getSharedPreferences("앨범쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         앨범쉐어드에디터 = 앨범쉐어드.edit();//선언한 쉐어드의 에디터 선언
+        광고쉐어드 = getSharedPreferences(" 광고쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
+        광고쉐어드에디터 = 광고쉐어드.edit();//선언한 쉐어드의 에디터 선언
 
 
         String 유저제이슨스트링 = 앨범쉐어드.getString(내ID, "");//앨범쉐어드 내에 내ID를 키값으로 가지는 데이터를 스트링으로 불러옴
         String 상대방제이슨스트링 = 앨범쉐어드.getString(상대ID, "");//앨범쉐어드 내에 상대ID를 키값으로 가지는 데이터를 스트링으로 불러옴
         try {
             나의제이슨객체 = new JSONObject(유저제이슨스트링);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
+            JSONObject 광고제이슨객체 = new JSONObject();
             int 사진갯수 = 나의제이슨객체.getInt("사진갯수");
 
             for (int i = 1; i < 사진갯수 + 1; i++) {
                 String uristring = (String) 나의제이슨객체.getString(i + "번째사진");
                 MyData mydata = new MyData(uristring, null);
                 mData.add(mydata);
+                광고제이슨객체.put(i + "번째사진", uristring);
             }
-
+            String 광고제이슨스트링 = 광고제이슨객체.toString();
+            광고쉐어드에디터.putString(내ID, 광고제이슨스트링);
+            광고쉐어드에디터.apply();
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        광고쉐어드에디터.apply();
 
         //저장되어 있는 사진 뿌려줘야한다./사진을 어떻게 저장할지 정하고 저장되는지까지 보자
 
@@ -89,11 +98,7 @@ public class Album extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 2222);
-                // Intent intent = new Intent(Intent.ACTION_PICK);//인텐트를 생성-행동을 정의
-                // intent.setType(MediaStore.Images.Media.CONTENT_TYPE);//인텐트의 타입을 정의
-                // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);//인텐트에 값을 집어넣음
-                //intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//인텐트의 데이터를 설정
-                //startActivityForResult(intent, 2222);
+
             }
         });
         adapter = new MultiImageAdapter(mData, getApplicationContext());//어댑터 생성
@@ -120,10 +125,9 @@ public class Album extends AppCompatActivity {
                             상대꺼제이슨.put(pos + 1 + "번째사진", "");//일단 해당 포지션에 있던 사진을 없앰
                             내꺼제이슨.put("사진갯수", mData.size());//변경된 갯수를 반영하여 사진갯수도 재정의
                             상대꺼제이슨.put("사진갯수", mData.size());//변경된 갯수를 반영하여 사진갯수도 재정의
-                            for (int i = 0; i < mData.size(); i++)
-                            {
-                                String 사진uri=mData.get(i).imageString;//0번부터 사진uri를 뽑음
-                                내꺼제이슨.put(i+1+"번째사진",사진uri);//뽑은 uri를 제이슨에 다시 넣음, 순서반영-순서가 바뀐 사진이 있으면 반영될것
+                            for (int i = 0; i < mData.size(); i++) {
+                                String 사진uri = mData.get(i).imageString;//0번부터 사진uri를 뽑음
+                                내꺼제이슨.put(i + 1 + "번째사진", 사진uri);//뽑은 uri를 제이슨에 다시 넣음, 순서반영-순서가 바뀐 사진이 있으면 반영될것
                             }
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();

@@ -34,8 +34,7 @@ public class Connect extends AppCompatActivity {
     SharedPreferences.Editor 앨범쉐어드에디터;
 
 
-    Random random = new Random();
-    int I;
+
     Intent intent2;
 
     @SuppressLint("SetTextI18n")
