@@ -32,12 +32,17 @@
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_connectconfirm.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_dialog2.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_eventadddialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_longin.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_notification.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_numberchange.xml" value="0.21467391304347827" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_options.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_register.xml" value="0.375" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/itemchange_dialog.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/multi_image_item.xml" value="0.20516304347826086" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/notification_item.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_album.xml" value="0.2884963768115942" />
         <entry key="app/src/main/res/layout/activity_connect.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/activity_connectconfirm.xml" value="0.22135416666666666" />

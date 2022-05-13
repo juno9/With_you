@@ -1,28 +1,27 @@
 package com.example.myapplication;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+
 import android.app.Dialog;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 
@@ -43,19 +42,15 @@ public class Home extends AppCompatActivity {
     ImageButton 알림버튼;
     ImageButton 옵션버튼;
     TextView 만난날짜텍스트뷰;
+    ImageView 광고이미지뷰;
     Intent 전화번호입력인텐트;
     SharedPreferences 쉐어드프리퍼런스;
     SharedPreferences.Editor 쉐어드에디터;
-    SharedPreferences 광고쉐어드프리퍼런스;
-    SharedPreferences.Editor 광고쉐어드에디터;
     String 전화번호;
-    ImageView 광고이미지뷰;
     String ID;
     String 상대ID;
     JSONObject jsonObject;
     JSONObject partnerjsonObject;
-    JSONObject adjsonObject;
-    Uri uri;
 
 
 //만약 전화번호 바꾸는 인텐트를 받으면 그 다이얼로그를 띄우는거까지 해줘
@@ -66,26 +61,24 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {//최초 빌드때 실행
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        ActionBar ac = getSupportActionBar();
+        ac.setTitle("홈");
 
         Intent intent = getIntent();
         ID = intent.getStringExtra("ID");//쉐어드에 저장된 내 ID
         상대ID = intent.getStringExtra("연결상대");//연결된 상대의 ID
         쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
-        광고쉐어드프리퍼런스 = getSharedPreferences(" 광고쉐어드프리퍼런스", MODE_PRIVATE);
-        광고쉐어드에디터 = 광고쉐어드프리퍼런스.edit();
-//광고쉐어드는 똑바로 가져옴
+
 
         String userjsnstr = 쉐어드프리퍼런스.getString(ID, "_");//회원정보 쉐어드 내에 ID를 키값으로 가진 데이터를 스트링으로 불러옴
         String partnerjsnstr = 쉐어드프리퍼런스.getString(상대ID, "_");//회원정보 쉐어드 내에 상대방ID를 키값으로 가진 데이터를 스트링으로 불러옴
-        String adsjsnstr=광고쉐어드프리퍼런스.getString(ID,"_");
+
 
         try {
             jsonObject = new JSONObject(userjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             partnerjsonObject = new JSONObject(partnerjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
-            adjsonObject=new JSONObject(adsjsnstr);
-            uri= Uri.parse(adjsonObject.get("1번째사진").toString());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -104,8 +97,7 @@ public class Home extends AppCompatActivity {
                     Glide.with(getApplicationContext()).load(R.drawable.image4).centerCrop().into(광고이미지뷰);
                 }
             }
-        };
-
+        };//핸들러는 스레드에서 받은 메시지에 따라 뷰에 이미지를 그려줌
 
         Thread thread = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
             public void run() {
@@ -125,7 +117,32 @@ public class Home extends AppCompatActivity {
                 }
             }
         };
-        thread.start();//스레드는 돌고있고
+        thread.start();//스레드스타트
+
+
+
+
+
+        Handler alarmhandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+
+            }
+        };
+
+        //home액티비티 oncreate시에 스레드 돌기 시작
+        Thread alarmthread = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
+            public void run() {
+                try {
+
+
+                }//백그라운드 스레드(앱과 별개로 따로 돌아가고 있다.)
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
 
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
 
@@ -204,13 +221,12 @@ public class Home extends AppCompatActivity {
             }
         });//앨범 액티비티 실행하기
 
-        알림버튼 = (ImageButton)
-
-                findViewById(R.id.imageButton4);
+        알림버튼 = (ImageButton) findViewById(R.id.알림버튼);
         알림버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Notification.class);
+                intent.putExtra("ID",ID);
                 startActivity(intent);
             }
         });//알림 액티비티 실행하기
@@ -225,6 +241,7 @@ public class Home extends AppCompatActivity {
             }
         });//옵션 액티비티 실행하기
     }
+
     public void showDialog01() {
         dialog01.show(); // 다이얼로그 띄우는 메소드 호출
     }

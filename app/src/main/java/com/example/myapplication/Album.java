@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +34,6 @@ public class Album extends AppCompatActivity {
     ArrayList<MyData> mData = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
-    private final int GET_GALLERY_IMAGE = 200;
     int 포지션값 = 0;
     Dialog 다이얼로그;
     SharedPreferences 앨범쉐어드;
@@ -43,7 +43,7 @@ public class Album extends AppCompatActivity {
     String 내ID;
     String 상대ID;
     JSONObject 나의제이슨객체;
-    JSONObject 상대방제이슨객체;
+
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
 
@@ -51,6 +51,8 @@ public class Album extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
+        ActionBar ac = getSupportActionBar();
+        ac.setTitle("앨범");
         Intent intent = getIntent();
         내ID = intent.getStringExtra("ID");
         상대ID = intent.getStringExtra("상대ID");//인텐트에 담아보낸 ID들을 먼저 받음
