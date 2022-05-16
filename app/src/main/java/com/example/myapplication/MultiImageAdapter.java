@@ -61,21 +61,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
                     }
                 }
             });
-
-            수정삭제버튼.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        if (onLongItemClickListener != null) {
-                            onLongItemClickListener.onLongItemClick(position);
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            });
-
         }
     }//내부클래스로 커스텀뷰홀더 만듦
 
