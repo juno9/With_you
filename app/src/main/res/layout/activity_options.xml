@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.options.OptionsFragment"
+
 
     >
 
@@ -13,105 +13,25 @@
         android:id="@+id/imageButton7"
         android:layout_width="99dp"
         android:layout_height="91dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/albumicon"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-        app:layout_constraintEnd_toStartOf="@+id/chip4" />
 
-    <ImageButton
-        android:id="@+id/imageButton8"
-        android:layout_width="99dp"
-        android:layout_height="91dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-        app:layout_constraintStart_toEndOf="@+id/chip4"
-        tools:src="@tools:sample/backgrounds/scenic" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip4"
-        android:layout_width="102dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints" />
-
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.233">
+        app:layout_constraintVertical_bias="0.039" />
 
-        <TableRow>
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-        </TableRow>
-
-        <TableRow>
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_foreground" />
-
-        </TableRow>
-    </TableLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="306dp"
-        android:layout_height="80dp"
-        android:text="TextView"
+    <Switch
+        android:id="@+id/자동로그인스위치"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자동로그인"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.78"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.079" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

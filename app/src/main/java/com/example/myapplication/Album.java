@@ -43,7 +43,6 @@ public class Album extends AppCompatActivity {
     String 내ID;
     String 상대ID;
     JSONObject 나의제이슨객체;
-
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
 
@@ -59,7 +58,7 @@ public class Album extends AppCompatActivity {
 
         앨범쉐어드 = getSharedPreferences("앨범쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         앨범쉐어드에디터 = 앨범쉐어드.edit();//선언한 쉐어드의 에디터 선언
-        광고쉐어드 = getSharedPreferences(" 광고쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
+        광고쉐어드 = getSharedPreferences("광고쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         광고쉐어드에디터 = 광고쉐어드.edit();//선언한 쉐어드의 에디터 선언
 
 

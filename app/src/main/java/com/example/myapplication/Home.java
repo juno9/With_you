@@ -23,7 +23,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,9 +35,12 @@ public class Home extends AppCompatActivity {
     private Dialog dialog01;//좌상단 버튼 누를 때
     private Dialog dialog02;//우상단 버튼 누를 때
     private Button 전화버튼;
+    private Button 프로필편집버튼;
     private ImageButton 앨범버튼;
     private ImageButton 알림버튼;
     private ImageButton 옵션버튼;
+    private ImageButton 상대프로필;
+    private ImageButton 나의프로필;
     private TextView 만난날짜텍스트뷰;
     private ImageView 광고이미지뷰;
     private Intent 전화번호입력인텐트;
@@ -50,6 +55,8 @@ public class Home extends AppCompatActivity {
     JSONObject partnerjsonObject;
     private JSONObject eventjsonObject;
     Event 이벤트;
+    ImageButton 나의프로필내사진;
+    ImageButton 상대프로필내사진;
 
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     // Channel을 생성 및 전달해 줄 수 있는 Manager 생성
@@ -90,9 +97,9 @@ public class Home extends AppCompatActivity {
             jsonObject = new JSONObject(userjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             partnerjsonObject = new JSONObject(partnerjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             eventjsonObject = new JSONObject(eventjsnstr);
-            String 날짜=eventjsonObject.getString("날짜1");
-            String 내용=eventjsonObject.getString("내용1");
-            이벤트=new Event(날짜,내용);
+            String 날짜 = eventjsonObject.getString("날짜1");
+            String 내용 = eventjsonObject.getString("내용1");
+            이벤트 = new Event(날짜, 내용);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -102,13 +109,13 @@ public class Home extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {
-                    Glide.with(getApplicationContext()).load(R.drawable.image1).centerCrop().into(광고이미지뷰);
+                    Glide.with(getApplicationContext()).load(R.drawable.couple).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 2) {
-                    Glide.with(getApplicationContext()).load(R.drawable.image2).centerCrop().into(광고이미지뷰);
+                    Glide.with(getApplicationContext()).load(R.drawable.couple3).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 3) {
-                    Glide.with(getApplicationContext()).load(R.drawable.image3).centerCrop().into(광고이미지뷰);
+                    Glide.with(getApplicationContext()).load(R.drawable.couple_4).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 4) {
-                    Glide.with(getApplicationContext()).load(R.drawable.image4).centerCrop().into(광고이미지뷰);
+                    Glide.with(getApplicationContext()).load(R.drawable.couple3).fitCenter().into(광고이미지뷰);
                 }
             }
         };//핸들러는 스레드에서 받은 메시지에 따라 뷰에 이미지를 그려줌
@@ -138,8 +145,8 @@ public class Home extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {
-                   sendNotification();
-                    }
+                    sendNotification();
+                }
 //여기서 알림 띄우는 코드를 짜면 되고, 넣어 줄 내용은 쉐어드에서 가져오면 된다.
 //알림을 띄우는 역할이 메인
             }
@@ -150,7 +157,7 @@ public class Home extends AppCompatActivity {
             public void run() {
                 while (true) {
                     try {
-                        sleep(8000);
+                        sleep(80000);
                         Message msg = alarmhandler.obtainMessage();
                         msg.what = 1;
                         alarmhandler.sendMessage(msg);
@@ -168,7 +175,8 @@ public class Home extends AppCompatActivity {
 
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
 
-
+        상대프로필 = (ImageButton) findViewById(R.id.imageButton);
+        Glide.with(getApplicationContext()).load(R.drawable.smileicon).fitCenter().into(상대프로필);
         dialog01 = new Dialog(this);//다이얼로그1에는 상대의 정보가 있어야 한다.
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog01.setContentView(R.layout.activity_dialog);
@@ -180,10 +188,16 @@ public class Home extends AppCompatActivity {
                     }
                 });
 
+        상대프로필내사진 = (ImageButton) dialog01.findViewById(R.id.상대프로필이미지);
+        try {
+            Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
+            Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         만난날짜텍스트뷰 = (TextView) findViewById(R.id.textView);
         만난날짜텍스트뷰.setText(intent.getStringExtra("처음사귄날"));
-
-
         TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
         try {
             프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
@@ -194,12 +208,19 @@ public class Home extends AppCompatActivity {
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
+
         try {
             전화버튼.setText(partnerjsonObject.getString("전화번호"));//밸류값은 상대방의 전화번호
-        } catch (
-                JSONException e) {
+            전화버튼.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + 전화버튼.getText())));
+                }
+            });
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         Button 번호변경버튼 = (Button) dialog01.findViewById(R.id.numberchangebtn);//다이얼로그1의 번호변경 버튼 객체를 생성하고 다이얼로그의 버튼뷰를 찾은 다음 이 둘을 연결
         번호변경버튼.setOnClickListener(new View.OnClickListener() {//연결한 버튼의 동작을 정의
@@ -212,16 +233,23 @@ public class Home extends AppCompatActivity {
         });//전화번호 바꾸는 액티비티 불러오는 버튼
 
         dialog02 = new Dialog(this);
+
         dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog02.setContentView(R.layout.activity_dialog2);
-
-        findViewById(R.id.imageButton2).
-                setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showDialog02(); // 아래 showDialog02() 함수 호출
-                    }
-                });
+        findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog02(); // 아래 showDialog02() 함수 호출
+            }
+        });
+        나의프로필 = (ImageButton) findViewById(R.id.imageButton2);
+        나의프로필내사진 = (ImageButton) dialog02.findViewById(R.id.사용자프로필);
+        try {
+            Glide.with(getApplicationContext()).load(Uri.parse(jsonObject.get("프로필이미지").toString())).fitCenter().into(나의프로필);
+            Glide.with(getApplicationContext()).load(Uri.parse(jsonObject.get("프로필이미지").toString())).fitCenter().into(나의프로필내사진);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         TextView 프로필텍스트뷰2 = (TextView) dialog02.findViewById(R.id.textView2);//다이얼로그 레이아웃의 텍스트뷰 연결
         try {
@@ -230,9 +258,19 @@ public class Home extends AppCompatActivity {
                 JSONException e) {
             e.printStackTrace();
         }
-
+        프로필편집버튼 = (Button) dialog02.findViewById(R.id.프로필사진편집버튼);
+        프로필편집버튼.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 2);
+            }
+        });
 
         앨범버튼 = (ImageButton) findViewById(R.id.imageButton3);
+        Glide.with(getApplicationContext()).load(R.drawable.album2).fitCenter().into(앨범버튼);
         앨범버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -244,6 +282,7 @@ public class Home extends AppCompatActivity {
         });//앨범 액티비티 실행하기
 
         알림버튼 = (ImageButton) findViewById(R.id.알림버튼);
+        Glide.with(getApplicationContext()).load(R.drawable.calender5).fitCenter().into(알림버튼);
         알림버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -256,6 +295,7 @@ public class Home extends AppCompatActivity {
 
         옵션버튼 = (ImageButton)
                 findViewById(R.id.imageButton5);
+        Glide.with(getApplicationContext()).load(R.drawable.setting4).centerCrop().into(옵션버튼);
         옵션버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -299,7 +339,7 @@ public class Home extends AppCompatActivity {
     private NotificationCompat.Builder getNotificationBuilder() {
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("이벤트 알림")
-                .setContentText(이벤트.get날짜()+"에 예정된 "+이벤트.get내용()+"일정이 있습니다" )
+                .setContentText(이벤트.get날짜() + "에 예정된 " + 이벤트.get내용() + "일정이 있습니다")
                 .setSmallIcon(R.drawable.ic_android);
         return notifyBuilder;
     }
@@ -333,6 +373,21 @@ public class Home extends AppCompatActivity {
                     startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + 결과)));
                 }
             });
+        } else if (requestCode == 2) {
+            Uri uri = Uri.parse(받은인텐트.getData().toString());
+            나의프로필 = (ImageButton) findViewById(R.id.imageButton2);
+            나의프로필내사진 = (ImageButton) dialog02.findViewById(R.id.사용자프로필);
+            Glide.with(getApplicationContext()).load(uri).fitCenter().into(나의프로필);
+            Glide.with(getApplicationContext()).load(uri).fitCenter().into(나의프로필내사진);
+
+            try {
+                jsonObject.put("프로필이미지", uri);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String 저장할제이슨스트링 = jsonObject.toString();
+            쉐어드에디터.putString(ID,저장할제이슨스트링);
+            쉐어드에디터.apply();
         }
     }
 }
