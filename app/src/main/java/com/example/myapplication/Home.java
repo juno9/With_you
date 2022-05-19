@@ -58,6 +58,7 @@ public class Home extends AppCompatActivity {
     ImageButton 나의프로필내사진;
     ImageButton 상대프로필내사진;
 
+
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     // Channel을 생성 및 전달해 줄 수 있는 Manager 생성
     private NotificationManager mNotificationManager;
@@ -97,9 +98,11 @@ public class Home extends AppCompatActivity {
             jsonObject = new JSONObject(userjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             partnerjsonObject = new JSONObject(partnerjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             eventjsonObject = new JSONObject(eventjsnstr);
-            String 날짜 = eventjsonObject.getString("날짜1");
-            String 내용 = eventjsonObject.getString("내용1");
-            이벤트 = new Event(날짜, 내용);
+            if (!eventjsonObject.get("이벤트수").toString().equals("0")) {
+                String 날짜 = eventjsonObject.getString("날짜1");
+                String 내용 = eventjsonObject.getString("내용1");
+                이벤트 = new Event(날짜, 내용);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -109,7 +112,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {
-                    Glide.with(getApplicationContext()).load(R.drawable.couple).fitCenter().into(광고이미지뷰);
+                    Glide.with(getApplicationContext()).load(R.drawable.couple2).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 2) {
                     Glide.with(getApplicationContext()).load(R.drawable.couple3).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 3) {
@@ -140,39 +143,43 @@ public class Home extends AppCompatActivity {
         };
         thread.start();//스레드스타트
 
+        if (eventjsnstr != null) {
+            Handler alarmhandler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == 1) {
+                        sendNotification();
 
-        Handler alarmhandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 1) {
-                    sendNotification();
-                }
-//여기서 알림 띄우는 코드를 짜면 되고, 넣어 줄 내용은 쉐어드에서 가져오면 된다.
-//알림을 띄우는 역할이 메인
-            }
-        };//액티비티에 보여줄 행동
-
-
-        Thread alarmthread = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
-            public void run() {
-                while (true) {
-                    try {
-                        sleep(80000);
-                        Message msg = alarmhandler.obtainMessage();
-                        msg.what = 1;
-                        alarmhandler.sendMessage(msg);
-
-//일정 시간이 지나면 쉐어드의 어떤 이벤트를 알림으로 띄울 수 있게 전달함
-//타이머 역할이 메인
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
-            }
-        };//백그라운드 스레드(앱과 별개로 따로 돌아가고 있다.)
-        alarmthread.start();
+            };//액티비티에 보여줄 행동
 
+            try {
+                if (!eventjsonObject.get("이벤트수").toString().equals("0")) {
+                    Thread alarmthread = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
+                        public void run() {
+                            while (true) {
+                                try {
+                                    sleep(3000);
+                                    Message msg = alarmhandler.obtainMessage();
+                                    msg.what = 1;
+                                    alarmhandler.sendMessage(msg);
+
+                                    //일정 시간이 지나면 쉐어드의 어떤 이벤트를 알림으로 띄울 수 있게 전달함
+                                    //타이머 역할이 메인
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    };//백그라운드 스레드(앱과 별개로 따로 돌아가고 있다.)
+                    alarmthread.start();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
 
         상대프로필 = (ImageButton) findViewById(R.id.imageButton);
@@ -337,16 +344,20 @@ public class Home extends AppCompatActivity {
     }
 
     private NotificationCompat.Builder getNotificationBuilder() {
+
+
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("이벤트 알림")
-                .setContentText(이벤트.get날짜() + "에 예정된 " + 이벤트.get내용() + "일정이 있습니다")
-                .setSmallIcon(R.drawable.ic_android);
+                .setContentText(이벤트.get날짜() + "에 예정된 " + 이벤트.get내용() + "일정이 있습니다");
         return notifyBuilder;
+
+
     }
 
     public void sendNotification() {
         // Builder 생성
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
+
         // Manager를 통해 notification 디바이스로 전달
         mNotificationManager.notify(NOTIFICATION_ID, notifyBuilder.build());
     }
@@ -386,7 +397,7 @@ public class Home extends AppCompatActivity {
                 e.printStackTrace();
             }
             String 저장할제이슨스트링 = jsonObject.toString();
-            쉐어드에디터.putString(ID,저장할제이슨스트링);
+            쉐어드에디터.putString(ID, 저장할제이슨스트링);
             쉐어드에디터.apply();
         }
     }

@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Notification extends AppCompatActivity {
 
@@ -48,12 +49,14 @@ public class Notification extends AppCompatActivity {
     String 내용;
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
+    TextView 날짜입력에딧;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
 
         ActionBar ac = getSupportActionBar();
         ac.setTitle("기념일");
@@ -83,7 +86,7 @@ public class Notification extends AppCompatActivity {
                 for (int i = 0; i < 이벤트수; i++) {
                     String 내용 = 이벤트제이슨.get("내용" + (i + 1)).toString();
                     String 날짜 = 이벤트제이슨.get("날짜" + (i + 1)).toString();
-                    Event 이벤트 = new Event(내용, 날짜);
+                    Event 이벤트 = new Event(날짜, 내용);
                     넣어줄이벤트묶음.add(이벤트);
                 }
                 myAdapter.notifyDataSetChanged();
@@ -139,9 +142,20 @@ public class Notification extends AppCompatActivity {
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_eventadddialog);
-        EditText 날짜입력에딧, 내용입력에딧;
+        EditText 내용입력에딧;
+
         Button 추가버튼, 취소버튼;
-        날짜입력에딧 = (EditText) dialog.findViewById(R.id.날짜표시텍스트뷰);
+        날짜입력에딧 = (TextView) dialog.findViewById(R.id.날짜표시텍스트뷰);
+        Calendar cal = Calendar.getInstance();
+        날짜입력에딧.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
+        DatePickerDialog 날짜선택다이얼로그=new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+
+        날짜입력에딧.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                날짜선택다이얼로그.show();
+            }
+        });
         내용입력에딧 = (EditText) dialog.findViewById(R.id.내용표시텍스트뷰);
         추가버튼 = (Button) dialog.findViewById(R.id.추가버튼);
         추가버튼.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +174,8 @@ public class Notification extends AppCompatActivity {
                         try {
                             JSONObject 이벤트제이슨 = new JSONObject();
                             JSONObject 상대이벤트제이슨 = new JSONObject();
-                            이벤트제이슨.put("내용" + 넣어줄이벤트묶음.size(), 내용);
+                            이벤트제이슨.put("내용" + 넣어줄이벤트묶음.size(), 내용);//1개가 있고 거기서 1개 더 추가 한다면 사로 들어가는거는 2가 됨
+                            //(사이즈가 2니까) , 2를 업애려면 포지션값(1)에서 1을 더한 2를 없애야 한다
                             이벤트제이슨.put("날짜" + 넣어줄이벤트묶음.size(), 날짜);
                             이벤트제이슨.put("이벤트수", 넣어줄이벤트묶음.size());
                             상대이벤트제이슨.put("내용" + 넣어줄이벤트묶음.size(), 내용);
@@ -219,7 +234,31 @@ public class Notification extends AppCompatActivity {
             }
         });//내용과 날짜를 추가하는 버튼
         myAdapter.notifyDataSetChanged();
+
+
     }
+
+    DatePickerDialog.OnDateSetListener mDateSetListener =
+
+            new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+                    날짜입력에딧.setText(String.format("%d-%d-%d", yy, mm + 1, dd));
+                }
+            };
+
+
+    public void mOnClick_DatePick(View view) {
+
+        // DATE Picker가 처음 떴을 때, 오늘 날짜가 보이도록 설정.
+
+        Calendar cal = Calendar.getInstance();
+
+        new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+
+    }
+
+
 }
 
 

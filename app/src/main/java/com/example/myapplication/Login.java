@@ -83,25 +83,6 @@ public class Login extends AppCompatActivity {
                         String 연결여부 = response.get("연결여부").toString();
                         String 저장된연결상대 = response.get("연결상대").toString();
                         if (InputID.equals(저장된ID) && InputPW.equals(저장된PW)) {//id,비밀번호를 똑바로 넣었으면
-                            if(자동로그인체크박스.isChecked()) {
-                                if (연결여부.equals("false")) {//연결되어있다면
-                                    Intent intent = new Intent(getApplicationContext(), Connect.class);
-                                    intent.putExtra("나의ID", 저장된ID);
-                                    startActivity(intent);
-                                    finish();
-                                }//연결되어있다면
-                                else if (연결여부.equals("true")) {//연결이 안되어있으면
-                                    Intent intent = new Intent(getApplicationContext(), Home.class);
-                                    intent.putExtra("ID", 저장된ID);
-                                    intent.putExtra("이름", 저장된이름);
-                                    intent.putExtra("전화번호", 저장된전화번호);
-                                    intent.putExtra("이메일", 저장된이메일);
-                                    intent.putExtra("처음사귄날", 저장된처음사귄날);
-                                    intent.putExtra("연결상대", 저장된연결상대);
-                                    startActivity(intent);
-                                    finish();
-                                }//연결이 안되어있으면
-                            }
                             if (연결여부.equals("false")) {//연결되어있다면
                                 Intent intent = new Intent(getApplicationContext(), Connect.class);
                                 intent.putExtra("나의ID", 저장된ID);
@@ -116,11 +97,10 @@ public class Login extends AppCompatActivity {
                                 intent.putExtra("이메일", 저장된이메일);
                                 intent.putExtra("처음사귄날", 저장된처음사귄날);
                                 intent.putExtra("연결상대", 저장된연결상대);
+                                Toast.makeText(getApplicationContext(),저장된이름+"님 반갑습니다.",Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                                 finish();
                             }//연결이 안되어있으면
-
-
                         } //id,비밀번호를 똑바로 넣었으면
                         else {//id,비밀번호 잘못 넣으면
                             Toast.makeText(getApplicationContext(), "로그인 정보가 다릅니다.", Toast.LENGTH_SHORT).show();
@@ -135,7 +115,9 @@ public class Login extends AppCompatActivity {
             }
 
         });
-        회원가입버튼 = (Button) findViewById(R.id.회원가입버튼);//누르면 회원가입 액티비티를 띄워야 한다.
+        회원가입버튼 = (Button)
+
+                findViewById(R.id.회원가입버튼);//누르면 회원가입 액티비티를 띄워야 한다.
         회원가입버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
