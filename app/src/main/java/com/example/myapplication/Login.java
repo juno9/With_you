@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
@@ -37,7 +38,8 @@ public class Login extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        ActionBar ac = getSupportActionBar();
+        ac.setTitle("With you");
         로그인쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", Activity.MODE_PRIVATE);
         로그인쉐어드에디터 = 로그인쉐어드프리퍼런스.edit();
         SharedPreferences 앨범쉐어드프리퍼런스 = getSharedPreferences("앨범쉐어드프리퍼런스", Activity.MODE_PRIVATE);
@@ -55,7 +57,7 @@ public class Login extends AppCompatActivity {
 //        로그인쉐어드에디터.apply();
 //만일 자동로그인이 활성화되어 있다면? 입력이 따로 필요없이 바로 로그인 할 수 있어야 한다.
 
-        자동로그인체크박스 = (CheckBox) findViewById(R.id.자동로그인체크박스);
+
 
 
         로그인버튼 = (Button) findViewById(R.id.로그인버튼);//누르면 기존 정보들을 가지고 홈액티비티로 가야한다.

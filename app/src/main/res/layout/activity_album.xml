@@ -9,7 +9,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/앨범리사이클러뷰"
         android:layout_width="409dp"
         android:layout_height="602dp"
         app:layout_constraintBottom_toBottomOf="parent"

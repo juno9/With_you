@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -143,43 +144,10 @@ public class Home extends AppCompatActivity {
         };
         thread.start();//스레드스타트
 
-        if (eventjsnstr != null) {
-            Handler alarmhandler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    if (msg.what == 1) {
-                        sendNotification();
 
-                    }
-                }
-            };//액티비티에 보여줄 행동
 
-            try {
-                if (!eventjsonObject.get("이벤트수").toString().equals("0")) {
-                    Thread alarmthread = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
-                        public void run() {
-                            while (true) {
-                                try {
-                                    sleep(3000);
-                                    Message msg = alarmhandler.obtainMessage();
-                                    msg.what = 1;
-                                    alarmhandler.sendMessage(msg);
 
-                                    //일정 시간이 지나면 쉐어드의 어떤 이벤트를 알림으로 띄울 수 있게 전달함
-                                    //타이머 역할이 메인
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    };//백그라운드 스레드(앱과 별개로 따로 돌아가고 있다.)
-                    alarmthread.start();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
 
         상대프로필 = (ImageButton) findViewById(R.id.imageButton);
@@ -322,8 +290,7 @@ public class Home extends AppCompatActivity {
         dialog02.show(); // 다이얼로그 띄우는 메소드 호출
     }
 
-    public void createNotificationChannel() {
-        //notification manager 생성
+    public void createNotificationChannel() {//notification manager 생성
         mNotificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
         // 기기(device)의 SDK 버전 확인 ( SDK 26 버전 이상인지 - VERSION_CODES.O = 26)
@@ -336,8 +303,7 @@ public class Home extends AppCompatActivity {
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Notification from Mascot");
-            // Manager을 이용하여 Channel 생성
+            notificationChannel.setDescription("Notification from Mascot");// Manager을 이용하여 Channel 생성
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
 
@@ -359,7 +325,7 @@ public class Home extends AppCompatActivity {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
 
         // Manager를 통해 notification 디바이스로 전달
-        mNotificationManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+        // mNotificationManager.notify(NOTIFICATION_ID, notifyBuilder.build());
     }
 
 

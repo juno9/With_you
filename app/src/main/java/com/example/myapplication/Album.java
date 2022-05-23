@@ -60,11 +60,11 @@ public class Album extends AppCompatActivity {
         앨범쉐어드에디터 = 앨범쉐어드.edit();//선언한 쉐어드의 에디터 선언
         광고쉐어드 = getSharedPreferences("광고쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         광고쉐어드에디터 = 광고쉐어드.edit();//선언한 쉐어드의 에디터 선언
-
+//        앨범쉐어드에디터.clear();
+//        앨범쉐어드에디터.apply();
 
         String 유저제이슨스트링 = 앨범쉐어드.getString(내ID, "");//앨범쉐어드 내에 내ID를 키값으로 가지는 데이터를 스트링으로 불러옴
-        String 상대방제이슨스트링 = 앨범쉐어드.getString(상대ID, "");//앨범쉐어드 내에 상대ID를 키값으로 가지는 데이터를 스트링으로 불러옴
-        try {
+       try {
             나의제이슨객체 = new JSONObject(유저제이슨스트링);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
             JSONObject 광고제이슨객체 = new JSONObject();
             int 사진갯수 = 나의제이슨객체.getInt("사진갯수");
@@ -87,7 +87,7 @@ public class Album extends AppCompatActivity {
         //저장되어 있는 사진 뿌려줘야한다./사진을 어떻게 저장할지 정하고 저장되는지까지 보자
 
 
-        recyclerView = findViewById(R.id.recyclerView);//리사이클러뷰 레이아웃과 클래스의 리사이클러뷰를 연결
+        recyclerView = findViewById(R.id.앨범리사이클러뷰);//리사이클러뷰 레이아웃과 클래스의 리사이클러뷰를 연결
         FloatingActionButton btn_getImage = findViewById(R.id.floatAingActionButton);//앨범에 사진을 추가하는 버튼을 만들고 연결
         btn_getImage.setOnClickListener(new View.OnClickListener() {//이 버튼을 누르면 어떤 행동을 하게 될지 정의
 
@@ -112,23 +112,21 @@ public class Album extends AppCompatActivity {
             public void onItemClick(int pos) {
                 다이얼로그.show();
                 EditText 날짜입력 = (EditText) 다이얼로그.findViewById(R.id.날짜입력에딧텍스트);
-                Button 삭제버튼 = (Button) 다이얼로그.findViewById(R.id.삭제버튼);
-                삭제버튼.setOnClickListener(new View.OnClickListener() {
+                Button 사진삭제버튼 = (Button) 다이얼로그.findViewById(R.id.삭제버튼);
+                사진삭제버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mData.remove(pos);
-                        String 제이슨스트링값 = 앨범쉐어드.getString(내ID, "");
-                        String 상대제이슨스트링값 = 앨범쉐어드.getString(상대ID, "");
                         try {
-                            내꺼제이슨 = new JSONObject(제이슨스트링값);
-                            상대꺼제이슨 = new JSONObject(상대제이슨스트링값);
-                            내꺼제이슨.put(pos + 1 + "번째사진", "");//일단 해당 포지션에 있던 사진을 없앰
-                            상대꺼제이슨.put(pos + 1 + "번째사진", "");//일단 해당 포지션에 있던 사진을 없앰
+                            앨범쉐어드에디터.clear();
+                            내꺼제이슨 = new JSONObject();
+                            상대꺼제이슨 = new JSONObject();
                             내꺼제이슨.put("사진갯수", mData.size());//변경된 갯수를 반영하여 사진갯수도 재정의
                             상대꺼제이슨.put("사진갯수", mData.size());//변경된 갯수를 반영하여 사진갯수도 재정의
                             for (int i = 0; i < mData.size(); i++) {
                                 String 사진uri = mData.get(i).imageString;//0번부터 사진uri를 뽑음
                                 내꺼제이슨.put(i + 1 + "번째사진", 사진uri);//뽑은 uri를 제이슨에 다시 넣음, 순서반영-순서가 바뀐 사진이 있으면 반영될것
+                                상대꺼제이슨.put(i + 1 + "번째사진", 사진uri);
                             }
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
@@ -138,8 +136,6 @@ public class Album extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }//
-
-
                         adapter.notifyItemRemoved(pos);
                         adapter.notifyItemRangeChanged(pos, mData.size());
                         다이얼로그.dismiss();

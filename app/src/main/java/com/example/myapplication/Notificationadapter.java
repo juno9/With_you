@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,24 +17,26 @@ public class Notificationadapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     private Context mContext;
     ArrayList<Event> 이벤트배열;
-    private OnItemClickListener onItemClickListener = null;
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.onItemClickListener = listener;
-    }
+    private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int pos);
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+
+
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         TextView 내용텍스트뷰;
         TextView 날짜텍스트뷰;
-        TextView 삭제버튼;
+        Button 삭제버튼;
 
-        public myViewHolder(@NonNull View itemView) {
-            super(Objects.requireNonNull(itemView));
+        myViewHolder(@NonNull View itemView) {
+            super(itemView);
             내용텍스트뷰 = itemView.findViewById(R.id.내용표시텍스트뷰);
             날짜텍스트뷰 = itemView.findViewById(R.id.날짜표시텍스트뷰);
             삭제버튼 = itemView.findViewById(R.id.이벤트삭제버튼);
@@ -54,14 +57,18 @@ public class Notificationadapter extends RecyclerView.Adapter<RecyclerView.ViewH
     Notificationadapter(@NonNull ArrayList<Event> 생성시받아올배열, Context context) {
         // 출력할 객체들을 담고있는 ArrayList를 parameter로 받음
         이벤트배열 = 생성시받아올배열;
+        mContext=context;
     }
 
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_item, parent, false);
-        return new myViewHolder(v);
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);    // context에서 LayoutInflater 객체를 얻는다.
+        View v = inflater.from(parent.getContext()).inflate(R.layout.notification_item, parent, false);
+        Notificationadapter.myViewHolder vh = new Notificationadapter.myViewHolder(v);//뷰홀더 선언-인스턴스화
+        return vh;
     }
 
     @Override
