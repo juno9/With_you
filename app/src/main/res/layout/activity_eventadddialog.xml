@@ -7,17 +7,18 @@
 
 
     <EditText
-        android:id="@+id/내용표시텍스트뷰"
+        android:id="@+id/내용입력에딧텍스트"
         android:layout_width="148dp"
         android:layout_height="43dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="28dp"
         android:textSize="15dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toEndOf="@+id/이벤트내용"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.135" />
 
     <TextView
         android:id="@+id/날짜"
@@ -61,25 +62,28 @@
         android:layout_height="44dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
+        android:layout_marginBottom="56dp"
         android:text="취소"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.121"
+        app:layout_constraintHorizontal_bias="0.094"
         app:layout_constraintStart_toEndOf="@+id/추가버튼"
-        app:layout_constraintTop_toBottomOf="@+id/내용표시텍스트뷰"
+
         app:layout_constraintVertical_bias="0.457" />
 
     <TextView
         android:id="@+id/날짜표시텍스트뷰"
         android:layout_width="144dp"
         android:layout_height="37dp"
+        android:layout_marginBottom="88dp"
         android:ems="10"
         android:hint="날짜를 선택하세요"
-        app:layout_constraintBottom_toTopOf="@+id/취소버튼"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.413"
+        app:layout_constraintHorizontal_bias="0.565"
+
         app:layout_constraintStart_toEndOf="@+id/날짜"
-        app:layout_constraintTop_toBottomOf="@+id/내용표시텍스트뷰"
-        app:layout_constraintVertical_bias="0.175" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.624" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

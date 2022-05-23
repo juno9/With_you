@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -35,7 +37,6 @@ public class Notification extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager myLayoutManager;
-    private DatePickerDialog.OnDateSetListener callbackMethod;
     Dialog 다이얼로그;
     Dialog 수정다이얼로그;
     TextView 날짜텍스트뷰;
@@ -44,14 +45,15 @@ public class Notification extends AppCompatActivity {
     String 상대ID;
     SharedPreferences 이벤트쉐어드;
     SharedPreferences.Editor 이벤트쉐어드에디터;
-    ArrayList<Event> 넣어줄이벤트묶음= new ArrayList<>();
+    ArrayList<Event> 넣어줄이벤트묶음 = new ArrayList<>();
     String 이벤트제이슨스트링;
     String 상대이벤트제이슨스트링;
     String 날짜;
     String 내용;
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
-    TextView 날짜입력에딧;
+    TextView 날짜입력텍스트뷰;
+    TextView 이벤트날짜텍스트뷰;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -66,6 +68,11 @@ public class Notification extends AppCompatActivity {
         ID = intent.getStringExtra("ID");
         상대ID = intent.getStringExtra("상대ID");
         넣어줄이벤트묶음 = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        DatePickerDialog 날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+        DatePickerDialog 날짜선택다이얼로그2 = new DatePickerDialog(this, mDateSetListener2, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+
 
         이벤트쉐어드 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         이벤트쉐어드에디터 = 이벤트쉐어드.edit();
@@ -83,7 +90,7 @@ public class Notification extends AppCompatActivity {
         try {
             JSONObject 이벤트제이슨 = new JSONObject(이벤트제이슨스트링);
             int 이벤트수 = 이벤트제이슨.getInt("이벤트수");
-            for (int i = 1; i < 이벤트수+1; i++) {
+            for (int i = 1; i < 이벤트수 + 1; i++) {
                 String 내용 = 이벤트제이슨.get("내용" + i).toString();
                 String 날짜 = 이벤트제이슨.get("날짜" + i).toString();
                 Event 이벤트 = new Event(날짜, 내용);
@@ -92,7 +99,7 @@ public class Notification extends AppCompatActivity {
             myAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }//이벤트 내용들 뿌려주는 코드들
 
         수정다이얼로그 = new Dialog(this);
         수정다이얼로그.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -102,12 +109,47 @@ public class Notification extends AppCompatActivity {
             public void onItemClick(int pos) {
                 수정다이얼로그.show();
                 Button 이벤트삭제버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트삭제버튼);
-                TextView 이벤트날짜텍스트뷰=(TextView) 수정다이얼로그.findViewById(R.id.이벤트날짜텍스트뷰);
+                Button 내용수정버튼 = (Button) 수정다이얼로그.findViewById(R.id.내용수정버튼);
+                EditText 내용표시에딧텍스트 = (EditText) 수정다이얼로그.findViewById(R.id.내용표시에딧텍스트);
+                내용수정버튼.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String 수정할내용 = String.valueOf(내용표시에딧텍스트.getText());//이걸 누른 포지션에 넣어야 한다.
+                        try {
+                            내꺼제이슨 = new JSONObject(이벤트제이슨스트링);
+                            상대꺼제이슨 = new JSONObject(상대이벤트제이슨스트링);
+                            내꺼제이슨.put("내용" + (pos + 1), 수정할내용);
+                            상대꺼제이슨.put("내용" + (pos + 1), 수정할내용);
+                            String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
+                            String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
+                            이벤트쉐어드에디터.putString(ID, 나의제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(상대ID, 상대방제이슨객체스트링값);
+                            이벤트쉐어드에디터.apply();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        myAdapter.notifyItemChanged(pos);
+                        수정다이얼로그.dismiss();
+                        finish();//인텐트 종료
+                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+                        Intent intent = getIntent(); //인텐트
+                        startActivity(intent); //액티비티 열기
+                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+                    }
+                });
+                이벤트날짜텍스트뷰 = (TextView) 수정다이얼로그.findViewById(R.id.이벤트날짜텍스트뷰);
                 이벤트날짜텍스트뷰.setText(넣어줄이벤트묶음.get(pos).날짜);
+                내용표시에딧텍스트.setText(넣어줄이벤트묶음.get(pos).내용);
+                Button 날짜수정버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트날짜수정버튼);
+                날짜수정버튼.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        날짜선택다이얼로그2.show();//캘린더 띄우는거 까지는 완료.
+                    }
+                });
                 이벤트삭제버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         넣어줄이벤트묶음.remove(pos);
                         try {
                             이벤트쉐어드에디터.clear();
@@ -135,8 +177,36 @@ public class Notification extends AppCompatActivity {
                         myAdapter.notifyItemRangeChanged(pos, 넣어줄이벤트묶음.size());
                         수정다이얼로그.dismiss();
                     }
+                });//이벤트삭제
+                Button 닫기버튼=(Button) 수정다이얼로그.findViewById(R.id.이벤트수정닫기);
+                닫기버튼.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String 수정할날짜 = String.valueOf(이벤트날짜텍스트뷰.getText());//이걸 누른 포지션에 넣어야 한다.
+                        try {
+                            내꺼제이슨 = new JSONObject(이벤트제이슨스트링);
+                            상대꺼제이슨 = new JSONObject(상대이벤트제이슨스트링);
+                            내꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);
+                            상대꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);
+                            String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
+                            String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
+                            이벤트쉐어드에디터.putString(ID, 나의제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(상대ID, 상대방제이슨객체스트링값);
+                            이벤트쉐어드에디터.apply();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        myAdapter.notifyItemChanged(pos);
+                        수정다이얼로그.dismiss();
+                        finish();//인텐트 종료
+                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+                        Intent intent = getIntent(); //인텐트
+                        startActivity(intent); //액티비티 열기
+                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+
+                    }
                 });
-            }//이벤트 삭제
+            }//수정 다이얼로그 닫으면서 날짜 저장내용 바꿈
         });
 
 
@@ -145,12 +215,9 @@ public class Notification extends AppCompatActivity {
         EditText 내용입력에딧;
 
         Button 추가버튼, 취소버튼;
-        날짜입력에딧 = (TextView) 다이얼로그.findViewById(R.id.날짜표시텍스트뷰);
-        Calendar cal = Calendar.getInstance();
-        날짜입력에딧.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
-        DatePickerDialog 날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
-
-        날짜입력에딧.setOnClickListener(new View.OnClickListener() {
+        날짜입력텍스트뷰 = (TextView) 다이얼로그.findViewById(R.id.날짜표시텍스트뷰);
+        날짜입력텍스트뷰.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
+        날짜입력텍스트뷰.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 날짜선택다이얼로그.show();
@@ -158,19 +225,19 @@ public class Notification extends AppCompatActivity {
         });
 
 
-        내용입력에딧 = (EditText) 다이얼로그.findViewById(R.id.내용표시텍스트뷰);
+        내용입력에딧 = (EditText) 다이얼로그.findViewById(R.id.내용입력에딧텍스트);
         추가버튼 = (Button) 다이얼로그.findViewById(R.id.추가버튼);
         추가버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                날짜 = 날짜입력에딧.getText().toString();
+                날짜 = 날짜입력텍스트뷰.getText().toString();
                 내용 = 내용입력에딧.getText().toString();
                 Event 새이벤트 = new Event(날짜, 내용);
                 넣어줄이벤트묶음.add(새이벤트);//리사이클러뷰에서 표시할 스트링 어레이에 이벤트 추가
 
 
-                if (날짜 == null || 내용 == null) {
-                    Toast.makeText(getApplicationContext(), "입력된 내용입 없습니다", Toast.LENGTH_SHORT).show();
+                if (날짜 == null || 내용.equals("")) {
+                    Toast.makeText(getApplicationContext(), "입력된 내용이 없습니다", Toast.LENGTH_SHORT).show();
                 } else {
                     if (이벤트제이슨스트링.equals("_")) {
                         try {
@@ -209,8 +276,6 @@ public class Notification extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }//제이슨에 추가
-
-
                         myAdapter.notifyDataSetChanged();
                         다이얼로그.dismiss();
                     }
@@ -240,14 +305,35 @@ public class Notification extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+
     DatePickerDialog.OnDateSetListener mDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
+                @SuppressLint("DefaultLocale")
                 @Override
                 public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
-                    날짜입력에딧.setText(String.format("%d-%d-%d", yy, mm + 1, dd));
-
+                    날짜입력텍스트뷰.setText(String.format("%d-%d-%d", yy,mm+1,dd));
                 }
             };
+
+    DatePickerDialog.OnDateSetListener mDateSetListener2 =
+            new DatePickerDialog.OnDateSetListener() {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+                    이벤트날짜텍스트뷰.setText(String.format("%d-%d-%d", yy,mm+1,dd));
+                }
+            };
+
 
 
     public void mOnClick_DatePick(View view) {
