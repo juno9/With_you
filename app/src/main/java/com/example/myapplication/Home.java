@@ -115,7 +115,7 @@ public class Home extends AppCompatActivity {
                 if (msg.what == 1) {
                     Glide.with(getApplicationContext()).load(R.drawable.couple2).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 2) {
-                    Glide.with(getApplicationContext()).load(R.drawable.couple3).fitCenter().into(광고이미지뷰);
+                    Glide.with(getApplicationContext()).load(R.drawable.couple).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 3) {
                     Glide.with(getApplicationContext()).load(R.drawable.couple_4).fitCenter().into(광고이미지뷰);
                 } else if (msg.what == 4) {
@@ -143,6 +143,10 @@ public class Home extends AppCompatActivity {
             }
         };
         thread.start();//스레드스타트
+
+
+
+
 
 
 
@@ -226,8 +230,9 @@ public class Home extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        TextView 프로필텍스트뷰2 = (TextView) dialog02.findViewById(R.id.textView2);//다이얼로그 레이아웃의 텍스트뷰 연결
+
         try {
+            TextView 프로필텍스트뷰2 = (TextView) dialog02.findViewById(R.id.textView2);//다이얼로그 레이아웃의 텍스트뷰 연결
             프로필텍스트뷰2.setText(jsonObject.getString("이름") + "\n" + jsonObject.getString("이메일"));//프로필 있는 텍스트박스1
         } catch (
                 JSONException e) {

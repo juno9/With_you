@@ -183,11 +183,12 @@ public class Notification extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String 수정할날짜 = String.valueOf(이벤트날짜텍스트뷰.getText());//이걸 누른 포지션에 넣어야 한다.
+
                         try {
                             내꺼제이슨 = new JSONObject(이벤트제이슨스트링);
-                            상대꺼제이슨 = new JSONObject(상대이벤트제이슨스트링);
-                            내꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);
-                            상대꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);
+                            상대꺼제이슨 = new JSONObject(상대이벤트제이슨스트링);//제이슨 객체 만들기
+                            내꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);//수정할 날짜 넣어주기
+                            상대꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);//수정할 날짜 넣어주기기
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
                             이벤트쉐어드에디터.putString(ID, 나의제이슨객체스트링값);
@@ -203,7 +204,6 @@ public class Notification extends AppCompatActivity {
                         Intent intent = getIntent(); //인텐트
                         startActivity(intent); //액티비티 열기
                         overridePendingTransition(0, 0);//인텐트 효과 없애기
-
                     }
                 });
             }//수정 다이얼로그 닫으면서 날짜 저장내용 바꿈
