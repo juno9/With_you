@@ -1,13 +1,17 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +24,7 @@ import org.json.JSONStringer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Random;
 
@@ -31,13 +36,13 @@ public class Register extends AppCompatActivity {
     EditText 이름입력;
     EditText 이메일입력;
     EditText 전화번호입력;
-    EditText 처음사귄날입력;
+    TextView 처음사귄날텍스트뷰;
     Button 회원가입버튼;
     Button 취소버튼;
     String ID, PW, 이름, 이메일, 전화번호, 처음사귄날;
     SharedPreferences 회원가입쉐어드프리퍼런스;
     SharedPreferences.Editor 회원가입쉐어드에디터;
-    Random random=new Random();
+
 
 
 
@@ -53,8 +58,19 @@ public class Register extends AppCompatActivity {
         이름입력 = findViewById(R.id.가입이름에딧텍스트);
         이메일입력 = findViewById(R.id.가입이메일에딧텍스트);
         전화번호입력 = findViewById(R.id.가입전화번호에딧텍스트);
-        처음사귄날입력 = findViewById(R.id.가입처음사귄날에딧텍스트);
+
+       // 처음사귄날텍스트뷰 = findViewById(R.id.가입처음사귄날텍스트뷰);
         //가입할 때 입력란에 정보를 입력하면
+//        Calendar cal = Calendar.getInstance();
+//        DatePickerDialog 날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+//        처음사귄날텍스트뷰.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                날짜선택다이얼로그.show();
+//            }
+//        });
+
+
 
         회원가입버튼 = findViewById(R.id.회원가입완료버튼);
         회원가입버튼.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +81,7 @@ public class Register extends AppCompatActivity {
                 이름 = 이름입력.getText().toString();
                 전화번호 = 전화번호입력.getText().toString();
                 이메일 = 이메일입력.getText().toString();
-                처음사귄날 = 처음사귄날입력.getText().toString();
+
 
                 JSONObject jsonObject=new JSONObject();
                 try {
@@ -101,6 +117,15 @@ public class Register extends AppCompatActivity {
             }
         });
     }
+
+//    DatePickerDialog.OnDateSetListener mDateSetListener =
+//            new DatePickerDialog.OnDateSetListener() {
+//                @SuppressLint("DefaultLocale")
+//                @Override
+//                public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+//                   처음사귄날텍스트뷰.setText(String.format("%d-%d-%d", yy,mm+1,dd));
+//                }
+//            };
 
 
 }

@@ -81,7 +81,6 @@ public class Login extends AppCompatActivity {
                         String 저장된이름 = response.get("이름").toString();
                         String 저장된전화번호 = response.get("전화번호").toString();
                         String 저장된이메일 = response.get("이메일").toString();
-                        String 저장된처음사귄날 = response.get("처음사귄날").toString();
                         String 연결여부 = response.get("연결여부").toString();
                         String 저장된연결상대 = response.get("연결상대").toString();
                         if (InputID.equals(저장된ID) && InputPW.equals(저장된PW)) {//id,비밀번호를 똑바로 넣었으면
@@ -97,7 +96,6 @@ public class Login extends AppCompatActivity {
                                 intent.putExtra("이름", 저장된이름);
                                 intent.putExtra("전화번호", 저장된전화번호);
                                 intent.putExtra("이메일", 저장된이메일);
-                                intent.putExtra("처음사귄날", 저장된처음사귄날);
                                 intent.putExtra("연결상대", 저장된연결상대);
                                 Toast.makeText(getApplicationContext(),저장된이름+"님 반갑습니다.",Toast.LENGTH_SHORT).show();
                                 startActivity(intent);

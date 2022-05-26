@@ -302,6 +302,7 @@ public class Notification extends AppCompatActivity {
         });//내용과 날짜를 추가하는 버튼
         myAdapter.notifyDataSetChanged();
 
+        //Button 정렬버튼=(Button) findViewById(R.id.정렬버튼);
 
     }
 

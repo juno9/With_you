@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -29,6 +30,9 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Home extends AppCompatActivity {
@@ -58,17 +62,14 @@ public class Home extends AppCompatActivity {
     Event 이벤트;
     ImageButton 나의프로필내사진;
     ImageButton 상대프로필내사진;
+    Thread thread2;
 
-
+    // Channel에 대한 id 생성
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     // Channel을 생성 및 전달해 줄 수 있는 Manager 생성
     private NotificationManager mNotificationManager;
-
     // Notification에 대한 ID 생성
     private static final int NOTIFICATION_ID = 0;
-
-    // Notification을 호출할 button 변수
-    private Button button_notify;
 
 
 //만약 전화번호 바꾸는 인텐트를 받으면 그 다이얼로그를 띄우는거까지 해줘
@@ -88,8 +89,7 @@ public class Home extends AppCompatActivity {
         쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
         이벤트쉐어드프리퍼런스 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);
-        이벤트쉐어드에디터 = 쉐어드프리퍼런스.edit();
-        createNotificationChannel();
+        이벤트쉐어드에디터 = 이벤트쉐어드프리퍼런스.edit();
 
         String userjsnstr = 쉐어드프리퍼런스.getString(ID, "_");//회원정보 쉐어드 내에 ID를 키값으로 가진 데이터를 스트링으로 불러옴
         String partnerjsnstr = 쉐어드프리퍼런스.getString(상대ID, "_");//회원정보 쉐어드 내에 상대방ID를 키값으로 가진 데이터를 스트링으로 불러옴
@@ -99,7 +99,7 @@ public class Home extends AppCompatActivity {
             jsonObject = new JSONObject(userjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             partnerjsonObject = new JSONObject(partnerjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
             eventjsonObject = new JSONObject(eventjsnstr);
-            if (!eventjsonObject.get("이벤트수").toString().equals("0")) {
+            if (!eventjsonObject.get("이벤트수").toString().equals("0")) {//이벤트가 있으면
                 String 날짜 = eventjsonObject.getString("날짜1");
                 String 내용 = eventjsonObject.getString("내용1");
                 이벤트 = new Event(날짜, 내용);
@@ -107,7 +107,6 @@ public class Home extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         Handler handler = new Handler() {
             @Override
@@ -144,13 +143,40 @@ public class Home extends AppCompatActivity {
         };
         thread.start();//스레드스타트
 
+        Handler handler2 = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 1) {
+                    sendNotification();
+                }
+            }
+        };//핸들러는 스레드에서 받은 메시지에 따라 뷰에 이미지를 그려줌
+
+        createNotificationChannel();
 
 
+        thread2 = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
+            public void run() {
+                try {
 
+                    Date nowDate=new Date();
+                    String from = 이벤트.날짜;
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date to = transFormat.parse(from);
 
-
-
-
+                    if(nowDate.before(to)){
+                        sleep(4000);
+                        Message msg2 = handler.obtainMessage();
+                        msg2.what = 1;
+                        handler2.sendMessage(msg2);
+                    }
+                }//백그라운드 스레드(앱과 별개로 따로 돌아가고 있다.)
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread2.start();//스레드스타트
 
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
 
@@ -175,8 +201,7 @@ public class Home extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        만난날짜텍스트뷰 = (TextView) findViewById(R.id.textView);
-        만난날짜텍스트뷰.setText(intent.getStringExtra("처음사귄날"));
+
         TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
         try {
             프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
@@ -266,7 +291,7 @@ public class Home extends AppCompatActivity {
         알림버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Notification.class);
+                Intent intent = new Intent(getApplicationContext(), Loading.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("상대ID", 상대ID);
                 startActivity(intent);
@@ -284,7 +309,7 @@ public class Home extends AppCompatActivity {
             }
         });//옵션 액티비티 실행하기
 
-    }
+    }//온크리에이트
 
 
     public void showDialog01() {
@@ -295,7 +320,9 @@ public class Home extends AppCompatActivity {
         dialog02.show(); // 다이얼로그 띄우는 메소드 호출
     }
 
-    public void createNotificationChannel() {//notification manager 생성
+
+    public void createNotificationChannel() {
+        //notification manager 생성
         mNotificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
         // 기기(device)의 SDK 버전 확인 ( SDK 26 버전 이상인지 - VERSION_CODES.O = 26)
@@ -308,29 +335,35 @@ public class Home extends AppCompatActivity {
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Notification from Mascot");// Manager을 이용하여 Channel 생성
+            notificationChannel.setDescription("Notification from Mascot");
+            // Manager을 이용하여 Channel 생성
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
-
     }
 
+    // Notification Builder를 만드는 메소드
     private NotificationCompat.Builder getNotificationBuilder() {
-
-
+        Intent notificationIntent = new Intent(this, Notification.class);
+        notificationIntent.putExtra("ID", ID);
+        notificationIntent.putExtra("상대ID", 상대ID);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
-                .setContentTitle("이벤트 알림")
-                .setContentText(이벤트.get날짜() + "에 예정된 " + 이벤트.get내용() + "일정이 있습니다");
+                .setContentTitle("일정 알림")
+                .setContentText(이벤트.날짜 + "에 예정된 " + 이벤트.내용 + "일정이 있습니다.")
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentIntent(notificationPendingIntent)
+                .setAutoCancel(true);
+
+
         return notifyBuilder;
-
-
     }
 
+    // Notification을 보내는 메소드
     public void sendNotification() {
         // Builder 생성
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-
         // Manager를 통해 notification 디바이스로 전달
-        // mNotificationManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+        mNotificationManager.notify(NOTIFICATION_ID, notifyBuilder.build());
     }
 
 
@@ -371,6 +404,12 @@ public class Home extends AppCompatActivity {
             쉐어드에디터.putString(ID, 저장할제이슨스트링);
             쉐어드에디터.apply();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        thread2.interrupt();
     }
 }
 

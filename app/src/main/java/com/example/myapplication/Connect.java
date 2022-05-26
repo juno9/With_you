@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ public class Connect extends AppCompatActivity {
     SharedPreferences.Editor 앨범쉐어드에디터;
 
 
-
     Intent intent2;
 
     @SuppressLint("SetTextI18n")
@@ -48,7 +48,8 @@ public class Connect extends AppCompatActivity {
         쉐어드에디터 = 쉐어드.edit();
         앨범쉐어드 = getSharedPreferences("앨범쉐어드프리퍼런스", MODE_PRIVATE);
         앨범쉐어드에디터 = 앨범쉐어드.edit();
-
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(1);
 
         안내문구 = (TextView) findViewById(R.id.안내텍스트뷰);
         내ID표시 = (TextView) findViewById(R.id.나의ID);
@@ -82,7 +83,6 @@ public class Connect extends AppCompatActivity {
                             String 저장된이름 = 나의제이슨객체.get("이름").toString();
                             String 저장된전화번호 = 나의제이슨객체.get("전화번호").toString();
                             String 저장된이메일 = 나의제이슨객체.get("이메일").toString();
-                            String 저장된처음사귄날 = 나의제이슨객체.get("처음사귄날").toString();
                             String 저장된연결상대 = 나의제이슨객체.get("연결상대").toString();
 
                             String yourString = 상대방제이슨객체.toString();
@@ -108,7 +108,6 @@ public class Connect extends AppCompatActivity {
                             intent2.putExtra("이름", 저장된이름);
                             intent2.putExtra("전화번호", 저장된전화번호);
                             intent2.putExtra("이메일", 저장된이메일);
-                            intent2.putExtra("처음사귄날", 저장된처음사귄날);
                             intent2.putExtra("연결상대", 저장된연결상대);
 
                             startActivity(intent2);
