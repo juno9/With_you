@@ -159,12 +159,12 @@ public class Home extends AppCompatActivity {
             public void run() {
                 try {
 
-                    Date nowDate=new Date();
+                    Date nowDate = new Date();
                     String from = 이벤트.날짜;
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date to = transFormat.parse(from);
 
-                    if(nowDate.before(to)){
+                    if (nowDate.before(to)) {
                         sleep(4000);
                         Message msg2 = handler.obtainMessage();
                         msg2.what = 1;
@@ -194,21 +194,23 @@ public class Home extends AppCompatActivity {
                 });
 
         상대프로필내사진 = (ImageButton) dialog01.findViewById(R.id.상대프로필이미지);
-//        try {
-//           Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
-//            Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            if (partnerjsonObject.get("프로필이미지")!=null) {
+                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
+                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
-//        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-//        try {
-//         프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
-//        } catch (
-//                JSONException e) {
-//            e.printStackTrace();
-//        }
+        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
+        try {
+            프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
+        } catch (
+                JSONException e) {
+            e.printStackTrace();
+        }
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결

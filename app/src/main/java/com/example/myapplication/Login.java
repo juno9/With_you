@@ -186,10 +186,17 @@ public class Login extends AppCompatActivity {
                                 String 쉐어드스트링=로그인쉐어드프리퍼런스.getString(이메일,"");
 
                                 try {
-                                    JSONObject 제이슨객체=new JSONObject(쉐어드스트링);
-                                    String 연결여부=제이슨객체.get("연결여부").toString();
-                                    String 저장된연결상대 = 제이슨객체.get("연결상대").toString();
-                                    if(제이슨객체!=null){//가입되어 있다면
+                                    if(쉐어드스트링.equals("")){//가입이 안되어 있으면
+                                        Intent intent=new Intent(getApplicationContext(),Register.class);
+                                        intent.putExtra("이름",이름);
+                                        intent.putExtra("전화번호",전화번호);
+                                        intent.putExtra("이메일",이메일);
+                                        intent.putExtra("로그인방식","네이버로그인");
+                                        startActivity(intent);
+                                    } else{//가입되어 있다면
+                                        JSONObject 제이슨객체=new JSONObject(쉐어드스트링);
+                                        String 연결여부=제이슨객체.get("연결여부").toString();
+                                        String 저장된연결상대 = 제이슨객체.get("연결상대").toString();
                                         if (연결여부.equals("false")) {//연결되어있지 않다면
                                             String 연결대기 = 제이슨객체.get("연결대기").toString();
                                             String 연결요청 = 제이슨객체.get("받은연결요청").toString();
@@ -231,13 +238,6 @@ public class Login extends AppCompatActivity {
                                             startActivity(intent);
                                             finish();
                                         }//연결이 안되어있으면
-                                    } else{//가입되어 있지 않다면
-                                        Intent intent=new Intent(getApplicationContext(),Register.class);
-                                        intent.putExtra("이름",이름);
-                                        intent.putExtra("전화번호",전화번호);
-                                        intent.putExtra("이메일",이메일);
-                                        intent.putExtra("로그인방식","네이버로그인");
-                                        startActivity(intent);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
