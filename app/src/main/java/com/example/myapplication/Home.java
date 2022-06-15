@@ -54,8 +54,8 @@ public class Home extends AppCompatActivity {
     private SharedPreferences 이벤트쉐어드프리퍼런스;
     private SharedPreferences.Editor 이벤트쉐어드에디터;
     private String 전화번호;
-    private String ID;
-    private String 상대ID;
+    private String 이메일;
+    private String 상대이메일;
     JSONObject jsonObject;
     JSONObject partnerjsonObject;
     private JSONObject eventjsonObject;
@@ -81,19 +81,19 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ActionBar ac = getSupportActionBar();
-        ac.setTitle("홈");
+        ac.setTitle("HOME");
 
         Intent intent = getIntent();
-        ID = intent.getStringExtra("ID");//쉐어드에 저장된 내 ID
-        상대ID = intent.getStringExtra("연결상대");//연결된 상대의 ID
+        이메일 = intent.getStringExtra("나의이메일");//쉐어드에 저장된 내 ID
+        상대이메일 = intent.getStringExtra("연결상대");//연결된 상대의 ID
         쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
         이벤트쉐어드프리퍼런스 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);
         이벤트쉐어드에디터 = 이벤트쉐어드프리퍼런스.edit();
 
-        String userjsnstr = 쉐어드프리퍼런스.getString(ID, "_");//회원정보 쉐어드 내에 ID를 키값으로 가진 데이터를 스트링으로 불러옴
-        String partnerjsnstr = 쉐어드프리퍼런스.getString(상대ID, "_");//회원정보 쉐어드 내에 상대방ID를 키값으로 가진 데이터를 스트링으로 불러옴
-        String eventjsnstr = 이벤트쉐어드프리퍼런스.getString(ID, "_");
+        String userjsnstr = 쉐어드프리퍼런스.getString(이메일, "_");//회원정보 쉐어드 내에 ID를 키값으로 가진 데이터를 스트링으로 불러옴
+        String partnerjsnstr = 쉐어드프리퍼런스.getString(상대이메일, "_");//회원정보 쉐어드 내에 상대방ID를 키값으로 가진 데이터를 스트링으로 불러옴
+        String eventjsnstr = 이벤트쉐어드프리퍼런스.getString(이메일, "_");
 
         try {
             jsonObject = new JSONObject(userjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
@@ -194,21 +194,21 @@ public class Home extends AppCompatActivity {
                 });
 
         상대프로필내사진 = (ImageButton) dialog01.findViewById(R.id.상대프로필이미지);
-        try {
-            Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
-            Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//           Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
+//            Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
 
-        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-        try {
-            프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
-        } catch (
-                JSONException e) {
-            e.printStackTrace();
-        }
+//        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
+//        try {
+//         프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
+//        } catch (
+//                JSONException e) {
+//            e.printStackTrace();
+//        }
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
@@ -280,9 +280,10 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Album.class);
-                intent.putExtra("ID", ID);
-                intent.putExtra("상대ID", 상대ID);
+                intent.putExtra("이메일", 이메일);
+                intent.putExtra("상대이메일", 상대이메일);
                 startActivity(intent);
+
             }
         });//앨범 액티비티 실행하기
 
@@ -292,9 +293,10 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Loading.class);
-                intent.putExtra("ID", ID);
-                intent.putExtra("상대ID", 상대ID);
+                intent.putExtra("이메일", 이메일);
+                intent.putExtra("상대이메일", 상대이메일);
                 startActivity(intent);
+
             }
         });//알림 액티비티 실행하기
 
@@ -344,8 +346,8 @@ public class Home extends AppCompatActivity {
     // Notification Builder를 만드는 메소드
     private NotificationCompat.Builder getNotificationBuilder() {
         Intent notificationIntent = new Intent(this, Notification.class);
-        notificationIntent.putExtra("ID", ID);
-        notificationIntent.putExtra("상대ID", 상대ID);
+        notificationIntent.putExtra("이메일", 이메일);
+        notificationIntent.putExtra("상대이메일", 상대이메일);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("일정 알림")
@@ -353,8 +355,6 @@ public class Home extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(notificationPendingIntent)
                 .setAutoCancel(true);
-
-
         return notifyBuilder;
     }
 
@@ -380,7 +380,7 @@ public class Home extends AppCompatActivity {
                 e.printStackTrace();
             }
             String jsnstr2 = jsonObject.toString();//새로운 전화번호를 넣은 제이슨 데이터를 스트링으로 변환.
-            쉐어드에디터.putString(ID, jsnstr2);//쉐어드 내에 ID를 키값으로가지고 225열의 스트링을 밸류값으로 저장
+            쉐어드에디터.putString(이메일, jsnstr2);//쉐어드 내에 ID를 키값으로가지고 225열의 스트링을 밸류값으로 저장
             쉐어드에디터.apply();//에디터에 변경사항 적용
             전화버튼.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -401,7 +401,7 @@ public class Home extends AppCompatActivity {
                 e.printStackTrace();
             }
             String 저장할제이슨스트링 = jsonObject.toString();
-            쉐어드에디터.putString(ID, 저장할제이슨스트링);
+            쉐어드에디터.putString(이메일, 저장할제이슨스트링);
             쉐어드에디터.apply();
         }
     }

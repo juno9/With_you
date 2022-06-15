@@ -3,44 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="200dp">
+    android:layout_height="250dp">
 
-    <TextView
-        android:id="@+id/안내텍스트뷰"
-        android:layout_width="190dp"
-        android:layout_height="68dp"
+
+    <DatePicker
+        android:id="@+id/처음만난날"
+        android:layout_width="289dp"
+        android:layout_height="113dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:gravity="center"
+        android:hint="처음만난날"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.327"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
+        app:layout_constraintVertical_bias="0.204" />
 
     <Button
-        android:id="@+id/수락버튼"
-        android:layout_width="67dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="100dp"
-        android:text="승낙"
+        android:id="@+id/날짜입력완료버튼"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintHorizontal_bias="0.212"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.836" />
 
     <Button
-        android:id="@+id/거절버튼"
-        android:layout_width="67dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="100dp"
-        android:text="거절"
+        android:id="@+id/날짜입력닫기버튼"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닫기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.849"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.836" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -27,6 +27,8 @@
         </activity>
         <activity android:name="Album" />
         <activity android:name=".Numberchange"/>
+        <activity android:name=".ConnectWaiting"/>
+        <activity android:name=".ConnectRegister"/>
         <activity android:name=".Loading"/>
         <activity android:name=".Notification"/>
         <activity android:name=".Options"/>

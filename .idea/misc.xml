@@ -34,7 +34,9 @@
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_album.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_connect.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_connectconfirm.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_connectwaitng.xml" value="0.20625" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_connectregister.xml" value="0.45" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_connectwaitng.xml" value="0.375" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_datepickerdialog.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_dialog2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_eventadddialog.xml" value="0.36666666666666664" />
@@ -46,6 +48,7 @@
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_numberchange.xml" value="0.21467391304347827" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_options.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_register.xml" value="0.375" />
+        <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/activity_registerdialog.xml" value="0.365625" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/adctivity_profileregister.xml" value="0.20625" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/itemchange_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/junohyem/AndroidStudioProjects/androidRecycler/app/src/main/res/layout/multi_image_item.xml" value="0.20516304347826086" />

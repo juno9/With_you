@@ -58,31 +58,48 @@ public class Album extends AppCompatActivity {
 
         앨범쉐어드 = getSharedPreferences("앨범쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         앨범쉐어드에디터 = 앨범쉐어드.edit();//선언한 쉐어드의 에디터 선언
-        광고쉐어드 = getSharedPreferences("광고쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
-        광고쉐어드에디터 = 광고쉐어드.edit();//선언한 쉐어드의 에디터 선언
 //        앨범쉐어드에디터.clear();
 //        앨범쉐어드에디터.apply();
 
-        String 유저제이슨스트링 = 앨범쉐어드.getString(내ID, "");//앨범쉐어드 내에 내ID를 키값으로 가지는 데이터를 스트링으로 불러옴
-       try {
-            나의제이슨객체 = new JSONObject(유저제이슨스트링);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
-            JSONObject 광고제이슨객체 = new JSONObject();
-            int 사진갯수 = 나의제이슨객체.getInt("사진갯수");
+        String 유저제이슨스트링 = 앨범쉐어드.getString(내ID, "_");//앨범쉐어드 내에 내ID를 키값으로 가지는 데이터를 스트링으로 불러옴
 
-            for (int i = 1; i < 사진갯수 + 1; i++) {
-                String uristring = (String) 나의제이슨객체.getString(i + "번째사진");
-                MyData mydata = new MyData(uristring, null);
-                mData.add(mydata);
-                광고제이슨객체.put(i + "번째사진", uristring);
+        if (유저제이슨스트링.equals("_")) {
+            Toast.makeText(getApplicationContext(), "저장된 사진이 없습니다.", Toast.LENGTH_SHORT).show();
+            내꺼제이슨 = new JSONObject();
+            상대꺼제이슨 = new JSONObject();
+            try {
+                내꺼제이슨.put("사진갯수", "0");
+                상대꺼제이슨.put("사진갯수", "0");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            String 광고제이슨스트링 = 광고제이슨객체.toString();
-            광고쉐어드에디터.putString(내ID, 광고제이슨스트링);
-            광고쉐어드에디터.apply();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            String 생성할제이슨스트링 = 내꺼제이슨.toString();
+            String 생성할상대제이슨스트링 = 내꺼제이슨.toString();
 
-        광고쉐어드에디터.apply();
+            앨범쉐어드에디터.putString(내ID, 생성할제이슨스트링);
+            앨범쉐어드에디터.putString(상대ID, 생성할상대제이슨스트링);
+            앨범쉐어드에디터.apply();
+
+        } else {
+            try {
+                나의제이슨객체 = new JSONObject(유저제이슨스트링);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
+                JSONObject 광고제이슨객체 = new JSONObject();
+                int 사진갯수 = 나의제이슨객체.getInt("사진갯수");
+                if (사진갯수 == 0) {
+                    Toast.makeText(getApplicationContext(), "저장된 사진이 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i < 사진갯수; i++) {
+                        String uristring = (String) 나의제이슨객체.getString(i+1 + "번째사진");
+                        MyData mydata = new MyData(uristring, null);
+                        mData.add(mydata);
+                    }
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         //저장되어 있는 사진 뿌려줘야한다./사진을 어떻게 저장할지 정하고 저장되는지까지 보자
 
@@ -186,8 +203,7 @@ public class Album extends AppCompatActivity {
 
             try {
                 내꺼제이슨 = new JSONObject(제이슨스트링값);
-                상대꺼제이슨 = new JSONObject(상대제이슨스트링값);
-                //불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
+                상대꺼제이슨 = new JSONObject(상대제이슨스트링값);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
                 내꺼제이슨.put(mData.size() + "번째사진", uritostring);
                 내꺼제이슨.put("사진갯수", mData.size());
                 상대꺼제이슨.put(mData.size() + "번째사진", uritostring);
@@ -199,7 +215,7 @@ public class Album extends AppCompatActivity {
                 앨범쉐어드에디터.apply();
             } catch (JSONException e) {
                 e.printStackTrace();
-            }//
+            }
             //상대방 제이슨을 스트링으로 변환
 
 

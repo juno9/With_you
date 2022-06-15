@@ -20,22 +20,22 @@
 
     <Button
         android:id="@+id/로그인버튼"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
         android:text="로그인"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.592" />
 
     <EditText
-        android:id="@+id/ID에딧텍스트"
+        android:id="@+id/이메일에딧텍스트"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="ID"
+        android:hint="Email"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,27 +46,39 @@
 
     <Button
         android:id="@+id/회원가입버튼"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
         android:text="회원가입"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.773" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="228dp"
+        android:layout_height="207dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065"
+        app:layout_constraintVertical_bias="0.145"
         app:srcCompat="@drawable/images" />
+
+    <com.navercorp.nid.oauth.view.NidOAuthLoginButton
+        android:id="@+id/네이버로그인버튼"
+
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.681" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
