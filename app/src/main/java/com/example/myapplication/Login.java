@@ -92,8 +92,6 @@ public class Login extends AppCompatActivity {
                 //가입한 ID가 키값, 제이슨데이터를 변환한 스트링이 밸류값.
                 String 이메일입력값 = 이메일입력.getText().toString();//입력받은 ID값 스트링으로 변환
                 String PW입력값 = PW입력.getText().toString();
-
-//
                 String strJson = 로그인쉐어드프리퍼런스.getString(이메일입력값, null);
                 //스트링으로 변환하여 쉐어드에 저장한 제이슨 데이터를 다시 제이슨형태로 바꾸기 위해 스트링 형태로 재호출,
                 // 가입할 때의 ID가 키값으로 쓰이도록 설정해 뒀으니 스트링 데이터를 쉐어드에서 가져옴
