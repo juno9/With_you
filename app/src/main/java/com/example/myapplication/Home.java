@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -63,7 +64,7 @@ public class Home extends AppCompatActivity {
     ImageButton 나의프로필내사진;
     ImageButton 상대프로필내사진;
     Thread thread2;
-
+    String 처음만난날;
     // Channel에 대한 id 생성
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     // Channel을 생성 및 전달해 줄 수 있는 Manager 생성
@@ -84,7 +85,7 @@ public class Home extends AppCompatActivity {
         ac.setTitle("HOME");
 
         Intent intent = getIntent();
-        이메일 = intent.getStringExtra("이메일");//쉐어드에 저장된 내 ID
+        이메일 = intent.getStringExtra("나의이메일");//쉐어드에 저장된 내 ID
         상대이메일 = intent.getStringExtra("연결상대");//연결된 상대의 ID
         쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
@@ -158,13 +159,11 @@ public class Home extends AppCompatActivity {
         thread2 = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
             public void run() {
                 try {
-
                     Date nowDate = new Date();
                     String from = 이벤트.날짜;
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date to = transFormat.parse(from);
-
-                    if (nowDate.before(to)) {
+                    if (nowDate.before(to)) {//오늘 날짜보다 이전이면
                         sleep(4000);
                         Message msg2 = handler.obtainMessage();
                         msg2.what = 1;
@@ -177,6 +176,14 @@ public class Home extends AppCompatActivity {
             }
         };
         thread2.start();//스레드스타트
+        만난날짜텍스트뷰 = findViewById(R.id.날짜텍스트뷰);
+        try {
+           처음만난날=jsonObject.get("처음만난날").toString();
+           만난날짜텍스트뷰.setText("처음만난날\n"+"  "+처음만난날);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
 
@@ -194,23 +201,23 @@ public class Home extends AppCompatActivity {
                 });
 
         상대프로필내사진 = (ImageButton) dialog01.findViewById(R.id.상대프로필이미지);
-//        try {
-//            if (partnerjsonObject.get("프로필이미지")=="") {
-//                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
-//                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-//        try {
-//            프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
-//        } catch (
-//                JSONException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            if (partnerjsonObject.get("프로필이미지") != "") {
+                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
+                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
+        try {
+            프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
+        } catch (
+                JSONException e) {
+            e.printStackTrace();
+        }
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결
@@ -289,14 +296,15 @@ public class Home extends AppCompatActivity {
             }
         });//앨범 액티비티 실행하기
 
-        알림버튼 = (ImageButton) findViewById(R.id.알림버튼);
+        알림버튼 = (ImageButton) findViewById(R.id.기념일버튼);
         Glide.with(getApplicationContext()).load(R.drawable.calender5).fitCenter().into(알림버튼);
         알림버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Loading.class);
-                intent.putExtra("이메일", 이메일);
+                intent.putExtra("나의이메일", 이메일);
                 intent.putExtra("상대이메일", 상대이메일);
+                intent.putExtra("처음만난날",처음만난날);
                 startActivity(intent);
 
             }
@@ -347,7 +355,7 @@ public class Home extends AppCompatActivity {
 
     // Notification Builder를 만드는 메소드
     private NotificationCompat.Builder getNotificationBuilder() {
-        Intent notificationIntent = new Intent(this, Notification.class);
+        Intent notificationIntent = new Intent(this, Anniversary.class);
         notificationIntent.putExtra("이메일", 이메일);
         notificationIntent.putExtra("상대이메일", 상대이메일);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

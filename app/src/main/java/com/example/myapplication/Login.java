@@ -64,11 +64,7 @@ public class Login extends AppCompatActivity {
 
         이메일입력 = (EditText) findViewById(R.id.이메일에딧텍스트);
         PW입력 = (EditText) findViewById(R.id.PW에딧텍스트);
-//
-//        앨범쉐어드에디터.clear();
-//        로그인쉐어드에디터.clear();
-//        앨범쉐어드에디터.apply();
-//        로그인쉐어드에디터.apply();
+//2
 
 
         연결확인다이얼로그 = new Dialog(this);

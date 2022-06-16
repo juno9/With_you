@@ -30,7 +30,7 @@
         <activity android:name=".ConnectWaiting"/>
         <activity android:name=".ConnectRegister"/>
         <activity android:name=".Loading"/>
-        <activity android:name=".Notification"/>
+        <activity android:name=".Anniversary"/>
         <activity android:name=".Options"/>
         <activity android:name=".Home"/>
         <activity android:name=".Connect"/>

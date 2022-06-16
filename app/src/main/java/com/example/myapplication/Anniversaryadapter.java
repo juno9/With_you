@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class Notificationadapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class Anniversaryadapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     private Context mContext;
     ArrayList<Event> 이벤트배열;
@@ -54,7 +53,7 @@ public class Notificationadapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    Notificationadapter(@NonNull ArrayList<Event> 생성시받아올배열, Context context) {
+    Anniversaryadapter(@NonNull ArrayList<Event> 생성시받아올배열, Context context) {
         // 출력할 객체들을 담고있는 ArrayList를 parameter로 받음
         이벤트배열 = 생성시받아올배열;
         mContext=context;
@@ -67,13 +66,13 @@ public class Notificationadapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);    // context에서 LayoutInflater 객체를 얻는다.
         View v = inflater.from(parent.getContext()).inflate(R.layout.notification_item, parent, false);
-        Notificationadapter.myViewHolder vh = new Notificationadapter.myViewHolder(v);//뷰홀더 선언-인스턴스화
+        Anniversaryadapter.myViewHolder vh = new Anniversaryadapter.myViewHolder(v);//뷰홀더 선언-인스턴스화
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        myViewHolder myViewHolder = (Notificationadapter.myViewHolder) holder;
+        myViewHolder myViewHolder = (Anniversaryadapter.myViewHolder) holder;
         myViewHolder.내용텍스트뷰.setText(이벤트배열.get(position).get내용());
         myViewHolder.날짜텍스트뷰.setText(이벤트배열.get(position).get날짜());
     }

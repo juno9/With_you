@@ -1,13 +1,12 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,9 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,20 +26,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
-public class Notification extends AppCompatActivity {
+public class Anniversary extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager myLayoutManager;
     Dialog 다이얼로그;
     Dialog 수정다이얼로그;
-    TextView 날짜텍스트뷰;
-    Notificationadapter myAdapter;
-    String ID;
-    String 상대ID;
+
+    Anniversaryadapter myAdapter;
+    String 나의이메일;
+    String 상대이메일;
     SharedPreferences 이벤트쉐어드;
     SharedPreferences.Editor 이벤트쉐어드에디터;
     ArrayList<Event> 넣어줄이벤트묶음 = new ArrayList<>();
@@ -50,6 +52,7 @@ public class Notification extends AppCompatActivity {
     String 상대이벤트제이슨스트링;
     String 날짜;
     String 내용;
+    String 처음만난날;
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
     TextView 날짜입력텍스트뷰;
@@ -65,29 +68,37 @@ public class Notification extends AppCompatActivity {
         ActionBar ac = getSupportActionBar();
         ac.setTitle("기념일");
         Intent intent = getIntent();
-        ID = intent.getStringExtra("ID");
-        상대ID = intent.getStringExtra("상대ID");
+        나의이메일 = intent.getStringExtra("나의이메일");
+        상대이메일 = intent.getStringExtra("상대이메일");
+        처음만난날 = intent.getStringExtra("처음만난날");
         넣어줄이벤트묶음 = new ArrayList<>();
-
         Calendar cal = Calendar.getInstance();
         DatePickerDialog 날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
         DatePickerDialog 날짜선택다이얼로그2 = new DatePickerDialog(this, mDateSetListener2, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 
+       try {
+           String from = 처음만난날;
+           SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+           Date to = transFormat.parse(from);
+       }catch (Exception e){
+               e.printStackTrace();
+       }
 
-        이벤트쉐어드 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
-        이벤트쉐어드에디터 = 이벤트쉐어드.edit();
-//        이벤트쉐어드에디터.clear();
-//        이벤트쉐어드에디터.apply();
 
         recyclerView = findViewById(R.id.알림리사이클러뷰);//리사이클러뷰 객체와 뷰를 연결
         myLayoutManager = new LinearLayoutManager(this); // 레이아웃 매니져를 LinearLayoutManager로 생성
-        myAdapter = new Notificationadapter(넣어줄이벤트묶음, getApplicationContext());//어댑터 생성
+        myAdapter = new Anniversaryadapter(넣어줄이벤트묶음, getApplicationContext());//어댑터 생성
         recyclerView.setLayoutManager(myLayoutManager);//리사이클러뷰의 레이아웃매니저 설정
         recyclerView.setAdapter(myAdapter);//리사이클러뷰의 어댑터 설정
-        이벤트제이슨스트링 = 이벤트쉐어드.getString(ID, "_");
-        상대이벤트제이슨스트링 = 이벤트쉐어드.getString(상대ID, "_");
+        이벤트쉐어드 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
+        이벤트쉐어드에디터 = 이벤트쉐어드.edit();
+        이벤트제이슨스트링 = 이벤트쉐어드.getString(나의이메일, "_");
+        상대이벤트제이슨스트링 = 이벤트쉐어드.getString(상대이메일, "_");
+
+
 
         try {
+
             JSONObject 이벤트제이슨 = new JSONObject(이벤트제이슨스트링);
             int 이벤트수 = 이벤트제이슨.getInt("이벤트수");
             for (int i = 1; i < 이벤트수 + 1; i++) {
@@ -104,7 +115,7 @@ public class Notification extends AppCompatActivity {
         수정다이얼로그 = new Dialog(this);
         수정다이얼로그.requestWindowFeature(Window.FEATURE_NO_TITLE);
         수정다이얼로그.setContentView(R.layout.eventitemchange_dialog);
-        myAdapter.setOnItemClickListener(new Notificationadapter.OnItemClickListener() {
+        myAdapter.setOnItemClickListener(new Anniversaryadapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
                 수정다이얼로그.show();
@@ -122,8 +133,8 @@ public class Notification extends AppCompatActivity {
                             상대꺼제이슨.put("내용" + (pos + 1), 수정할내용);
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                            이벤트쉐어드에디터.putString(ID, 나의제이슨객체스트링값);
-                            이벤트쉐어드에디터.putString(상대ID, 상대방제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
                             이벤트쉐어드에디터.apply();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -167,8 +178,8 @@ public class Notification extends AppCompatActivity {
                             }
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                            이벤트쉐어드에디터.putString(ID, 나의제이슨객체스트링값);
-                            이벤트쉐어드에디터.putString(상대ID, 상대방제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
                             이벤트쉐어드에디터.apply();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -178,7 +189,7 @@ public class Notification extends AppCompatActivity {
                         수정다이얼로그.dismiss();
                     }
                 });//이벤트삭제
-                Button 닫기버튼=(Button) 수정다이얼로그.findViewById(R.id.이벤트수정닫기);
+                Button 닫기버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트수정닫기);
                 닫기버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -191,8 +202,8 @@ public class Notification extends AppCompatActivity {
                             상대꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);//수정할 날짜 넣어주기기
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                            이벤트쉐어드에디터.putString(ID, 나의제이슨객체스트링값);
-                            이벤트쉐어드에디터.putString(상대ID, 상대방제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
+                            이벤트쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
                             이벤트쉐어드에디터.apply();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -252,9 +263,10 @@ public class Notification extends AppCompatActivity {
                             상대이벤트제이슨.put("이벤트수", 넣어줄이벤트묶음.size());
                             String 이벤트제이슨스트링2 = 이벤트제이슨.toString();//제이슨 데이터를 다시 스트링으로 바꿔줌ㅇ
                             String 이벤트제이슨스트링3 = 상대이벤트제이슨.toString();
-                            이벤트쉐어드에디터.putString(ID, 이벤트제이슨스트링2);
-                            이벤트쉐어드에디터.putString(상대ID, 이벤트제이슨스트링3);
+                            이벤트쉐어드에디터.putString(나의이메일, 이벤트제이슨스트링2);
+                            이벤트쉐어드에디터.putString(상대이메일, 이벤트제이슨스트링3);
                             이벤트쉐어드에디터.apply();
+                            다이얼로그.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }//제이슨에 추가
@@ -270,9 +282,10 @@ public class Notification extends AppCompatActivity {
                             상대이벤트제이슨.put("이벤트수", 넣어줄이벤트묶음.size());
                             String 이벤트제이슨스트링2 = 이벤트제이슨.toString();//제이슨 데이터를 다시 스트링으로 바꿔줌ㅇ
                             String 이벤트제이슨스트링3 = 상대이벤트제이슨.toString();
-                            이벤트쉐어드에디터.putString(ID, 이벤트제이슨스트링2);
-                            이벤트쉐어드에디터.putString(상대ID, 이벤트제이슨스트링3);
+                            이벤트쉐어드에디터.putString(나의이메일, 이벤트제이슨스트링2);
+                            이벤트쉐어드에디터.putString(상대이메일, 이벤트제이슨스트링3);
                             이벤트쉐어드에디터.apply();
+                            다이얼로그.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }//제이슨에 추가
@@ -322,7 +335,7 @@ public class Notification extends AppCompatActivity {
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
-                    날짜입력텍스트뷰.setText(String.format("%d-%d-%d", yy,mm+1,dd));
+                    날짜입력텍스트뷰.setText(String.format("%d-%d-%d", yy, mm + 1, dd));
                 }
             };
 
@@ -331,10 +344,9 @@ public class Notification extends AppCompatActivity {
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
-                    이벤트날짜텍스트뷰.setText(String.format("%d-%d-%d", yy,mm+1,dd));
+                    이벤트날짜텍스트뷰.setText(String.format("%d-%d-%d", yy, mm + 1, dd));
                 }
             };
-
 
 
     public void mOnClick_DatePick(View view) {

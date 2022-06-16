@@ -28,8 +28,9 @@ public class Loading extends AppCompatActivity {
         setContentView(R.layout.activity_loading);//레이아웃과 연결
 
         Intent intent = getIntent();
-        String ID = intent.getStringExtra("ID");//쉐어드에 저장된 내 ID
-        String 상대ID = intent.getStringExtra("상대ID");//연결된 상대의 ID
+        String 나의이메일 = intent.getStringExtra("나의이메일");//쉐어드에 저장된 내 ID
+        String 상대이메일 = intent.getStringExtra("상대이메일");//연결된 상대의 ID
+        String 처음만난날=intent.getStringExtra("처음만난날");
         TextView 설명텍스트, 갯수텍스트;
         설명텍스트 = (TextView) findViewById(R.id.안내텍스트뷰);
         갯수텍스트 = (TextView) findViewById(R.id.갯수텍스트뷰);
@@ -37,22 +38,22 @@ public class Loading extends AppCompatActivity {
         설명텍스트.setText("저장된 일정 수");
         SharedPreferences 이벤트쉐어드프리퍼런스 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);
         SharedPreferences.Editor 이벤트쉐어드에디터 = 이벤트쉐어드프리퍼런스.edit();
-        String eventjsnstr = 이벤트쉐어드프리퍼런스.getString(ID, "_");
+        String eventjsnstr = 이벤트쉐어드프리퍼런스.getString(나의이메일, "_");
 
 
         try {
-
-            if (eventjsnstr.equals("_")) {
+            if (eventjsnstr.equals("_")) {//저장된 이벤트가 하나도 없으면
                 이벤트제이슨 = new JSONObject();
                 이벤트제이슨.put("이벤트수", "0");
                 String 이벤트제이슨스트링 = 이벤트제이슨.toString();
-                이벤트쉐어드에디터.putString(ID, 이벤트제이슨스트링);
-                이벤트쉐어드에디터.putString(상대ID, 이벤트제이슨스트링);
+                이벤트쉐어드에디터.putString(나의이메일, 이벤트제이슨스트링);
+                이벤트쉐어드에디터.putString(상대이메일, 이벤트제이슨스트링);
                 이벤트쉐어드에디터.apply();
                 이벤트수 = 0;
-                Intent intent1 = new Intent(getApplicationContext(), Notification.class);
-                intent1.putExtra("ID", ID);
-                intent1.putExtra("상대ID", 상대ID);
+                Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
+                intent1.putExtra("나의이메일", 나의이메일);
+                intent1.putExtra("상대이메일", 상대이메일);
+                intent1.putExtra("처음만난날", 처음만난날);
                 startActivity(intent1);
                 finish();
             } else {
@@ -69,16 +70,18 @@ public class Loading extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 갯수텍스트.setText(Integer.toString(msg.what));
                 if (msg.what ==1) {
-                    Intent intent1 = new Intent(getApplicationContext(), Notification.class);
-                    intent1.putExtra("ID", ID);
-                    intent1.putExtra("상대ID", 상대ID);
+                    Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
+                    intent1.putExtra("나의이메일", 나의이메일);
+                    intent1.putExtra("상대이메일", 상대이메일);
+                    intent1.putExtra("처음만난날",처음만난날);
                     startActivity(intent1);
                     finish();
                     thread.interrupt();
                 } else {
-                    Intent intent1 = new Intent(getApplicationContext(), Notification.class);
-                    intent1.putExtra("ID", ID);
-                    intent1.putExtra("상대ID", 상대ID);
+                    Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
+                    intent1.putExtra("나의이메일", 나의이메일);
+                    intent1.putExtra("상대이메일", 상대이메일);
+                    intent1.putExtra("처음만난날",처음만난날);
                     startActivity(intent1);
                     finish();
                     thread.interrupt();

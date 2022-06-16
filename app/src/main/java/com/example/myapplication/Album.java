@@ -53,7 +53,7 @@ public class Album extends AppCompatActivity {
         ActionBar ac = getSupportActionBar();
         ac.setTitle("앨범");
         Intent intent = getIntent();
-        내이메일 = intent.getStringExtra("이메일");
+        내이메일 = intent.getStringExtra("나의이메일");
         상대이메일 = intent.getStringExtra("상대이메일");//인텐트에 담아보낸 이메일들을 먼저 받음
 
         앨범쉐어드 = getSharedPreferences("앨범쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
