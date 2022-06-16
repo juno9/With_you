@@ -64,7 +64,7 @@ public class Login extends AppCompatActivity {
 
         이메일입력 = (EditText) findViewById(R.id.이메일에딧텍스트);
         PW입력 = (EditText) findViewById(R.id.PW에딧텍스트);
-
+//
 //        앨범쉐어드에디터.clear();
 //        로그인쉐어드에디터.clear();
 //        앨범쉐어드에디터.apply();
@@ -93,8 +93,6 @@ public class Login extends AppCompatActivity {
                 String 이메일입력값 = 이메일입력.getText().toString();//입력받은 ID값 스트링으로 변환
                 String PW입력값 = PW입력.getText().toString();
                 String strJson = 로그인쉐어드프리퍼런스.getString(이메일입력값, null);
-                //스트링으로 변환하여 쉐어드에 저장한 제이슨 데이터를 다시 제이슨형태로 바꾸기 위해 스트링 형태로 재호출,
-                // 가입할 때의 ID가 키값으로 쓰이도록 설정해 뒀으니 스트링 데이터를 쉐어드에서 가져옴
                 if (strJson != null) {//회원정보 있으면
                     try {
                         JSONObject response = new JSONObject(strJson);//입력한 ID와 동일한 키를 가진 제이슨 객체를 받음
@@ -117,6 +115,7 @@ public class Login extends AppCompatActivity {
                                         Button 수락버튼, 거절버튼;
                                         TextView 안내텍스트뷰 = 연결확인다이얼로그.findViewById(R.id.안내텍스트뷰);
                                         안내텍스트뷰.setText(연결요청상대);
+                                        안내텍스트뷰.setText(연결요청상대+" 님께서 연결을 요청하셨습니다");
                                         수락버튼 = 연결확인다이얼로그.findViewById(R.id.수락버튼);
                                         수락버튼.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -129,6 +128,13 @@ public class Login extends AppCompatActivity {
                                             }
                                         });
                                         거절버튼 = 연결확인다이얼로그.findViewById(R.id.거절버튼);
+                                        거절버튼.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Toast.makeText(Login.this, "연결 요청을 거절하였습니다.", Toast.LENGTH_SHORT).show();
+                                                연결확인다이얼로그.dismiss();
+                                            }
+                                        });
                                     } else {
                                         Intent intent = new Intent(getApplicationContext(), Connect.class);//연결액티비티로 넘어감
                                         intent.putExtra("나의이메일", 저장된이메일);
@@ -153,7 +159,7 @@ public class Login extends AppCompatActivity {
                     }
                 }//회원정보 있으면
                 else {//회원정보 없으면
-                    Toast.makeText(getApplicationContext(), "정보없음", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "입력하신 이메일 또는 비밀번호가 틀립니다. ", Toast.LENGTH_SHORT).show();
                 }//회원정보 없으면
             }
 
@@ -178,22 +184,21 @@ public class Login extends AppCompatActivity {
                         로그인.callProfileApi(new NidProfileCallback<NidProfileResponse>() {
                             @Override
                             public void onSuccess(NidProfileResponse response) {
-                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 NidProfile 니드프로필 = response.getProfile();
                                 String 이름 = 니드프로필.getName();
                                 String 전화번호 = 니드프로필.getMobile();
                                 String 이메일=니드프로필.getEmail();
-                                String 쉐어드스트링=로그인쉐어드프리퍼런스.getString(이메일,"");
-
+                                String 쉐어드스트링=로그인쉐어드프리퍼런스.getString(이메일,null);
                                 try {
-                                    if(쉐어드스트링.equals("")){//가입이 안되어 있으면
+                                    if(쉐어드스트링 == null){//가입이 안되어 있으면
                                         Intent intent=new Intent(getApplicationContext(),Register.class);
                                         intent.putExtra("이름",이름);
                                         intent.putExtra("전화번호",전화번호);
                                         intent.putExtra("이메일",이메일);
                                         intent.putExtra("로그인방식","네이버로그인");
                                         startActivity(intent);
-                                    } else{//가입되어 있다면
+                                    }//가입이 안되어 있으면
+                                    else{//가입되어 있다면
                                         JSONObject 제이슨객체=new JSONObject(쉐어드스트링);
                                         String 연결여부=제이슨객체.get("연결여부").toString();
                                         String 저장된연결상대 = 제이슨객체.get("연결상대").toString();
@@ -210,7 +215,7 @@ public class Login extends AppCompatActivity {
                                                     연결확인다이얼로그.show();
                                                     Button 수락버튼, 거절버튼;
                                                     TextView 안내텍스트뷰 = 연결확인다이얼로그.findViewById(R.id.안내텍스트뷰);
-                                                    안내텍스트뷰.setText(연결요청상대);
+                                                    안내텍스트뷰.setText(연결요청상대+" 님께서 연결을 요청하셨습니다");
                                                     수락버튼 = 연결확인다이얼로그.findViewById(R.id.수락버튼);
                                                     수락버튼.setOnClickListener(new View.OnClickListener() {
                                                         @Override
@@ -223,6 +228,13 @@ public class Login extends AppCompatActivity {
                                                         }
                                                     });
                                                     거절버튼 = 연결확인다이얼로그.findViewById(R.id.거절버튼);
+                                                    거절버튼.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            Toast.makeText(Login.this, "연결 요청을 거절하였습니다.", Toast.LENGTH_SHORT).show();
+                                                            연결확인다이얼로그.dismiss();
+                                                        }
+                                                    });
                                                 } else {
                                                     Intent intent = new Intent(getApplicationContext(), Connect.class);//연결액티비티로 넘어감
                                                     intent.putExtra("나의이메일", 이메일);
@@ -230,40 +242,33 @@ public class Login extends AppCompatActivity {
                                                     finish();
                                                 }
                                             }
-                                        }//연결되어있다면
-                                        else if (연결여부.equals("true")) {//연결이 안되어있으면
+                                        }//연결이 되어있지 않다면
+                                        else if (연결여부.equals("true")) {//연결이 되어있으면
                                             Intent intent = new Intent(getApplicationContext(), Home.class);
                                             intent.putExtra("나의이메일", 이메일);
                                             intent.putExtra("연결상대", 저장된연결상대);
                                             startActivity(intent);
                                             finish();
                                         }//연결이 안되어있으면
-                                    }
+                                    }//가입되어 있다면
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
-
                             @Override
                             public void onFailure(int i, @NonNull String s) {
                                 Toast.makeText(getApplicationContext(), "콜백실패", Toast.LENGTH_SHORT).show();
-
                             }
-
                             @Override
                             public void onError(int i, @NonNull String s) {
                                 Toast.makeText(getApplicationContext(), "콜백오류", Toast.LENGTH_SHORT).show();
-
                             }
                         });
-
                     }
-
                     @Override
                     public void onFailure(int i, String s) {
                         Toast.makeText(getApplicationContext(), "네이버 로그인 실패", Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
                     public void onError(int i, String s) {
                         Toast.makeText(getApplicationContext(), "네이버 로그인 오류", Toast.LENGTH_SHORT).show();

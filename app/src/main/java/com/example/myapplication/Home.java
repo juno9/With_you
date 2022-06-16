@@ -84,7 +84,7 @@ public class Home extends AppCompatActivity {
         ac.setTitle("HOME");
 
         Intent intent = getIntent();
-        이메일 = intent.getStringExtra("나의이메일");//쉐어드에 저장된 내 ID
+        이메일 = intent.getStringExtra("이메일");//쉐어드에 저장된 내 ID
         상대이메일 = intent.getStringExtra("연결상대");//연결된 상대의 ID
         쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", MODE_PRIVATE);
         쉐어드에디터 = 쉐어드프리퍼런스.edit();
@@ -194,23 +194,23 @@ public class Home extends AppCompatActivity {
                 });
 
         상대프로필내사진 = (ImageButton) dialog01.findViewById(R.id.상대프로필이미지);
-        try {
-            if (partnerjsonObject.get("프로필이미지")!=null) {
-                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
-                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
-        try {
-            프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
-        } catch (
-                JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (partnerjsonObject.get("프로필이미지")=="") {
+//                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필);
+//                Glide.with(getApplicationContext()).load(Uri.parse(partnerjsonObject.get("프로필이미지").toString())).fitCenter().into(상대프로필내사진);
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        TextView 프로필텍스트뷰 = (TextView) dialog01.findViewById(R.id.textView);//다이얼로그 레이아웃의 텍스트뷰 연결
+//        try {
+//            프로필텍스트뷰.setText(partnerjsonObject.getString("이름") + "\n" + partnerjsonObject.getString("이메일"));//프로필 있는 텍스트박스1
+//        } catch (
+//                JSONException e) {
+//            e.printStackTrace();
+//        }
 
         //전화번호 있는 버튼
         전화버튼 = (Button) dialog01.findViewById(R.id.callbtn); //다이얼로그 1의 전화버튼 생성, 연결

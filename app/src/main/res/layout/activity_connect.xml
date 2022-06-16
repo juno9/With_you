@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/나의ID"
+        android:id="@+id/나의인증번호"
         android:layout_width="226dp"
         android:layout_height="74dp"
         android:gravity="center"
@@ -19,10 +19,10 @@
 
     <TextView
         android:id="@+id/안내텍스트뷰"
-        android:layout_width="265dp"
-        android:layout_height="64dp"
-        android:text="상대방의 ID를 입력하여 연결하세요"
+        android:layout_width="244dp"
+        android:layout_height="76dp"
         android:gravity="center"
+        android:text="상대방의 인증번호를 입력하거나,\n 상대방에게 나의 인증번호를 알려주세요 "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,13 +42,14 @@
         app:layout_constraintVertical_bias="0.654" />
 
     <EditText
-        android:id="@+id/상대방ID입력"
-        android:layout_width="220dp"
-        android:layout_height="59dp"
-        android:hint="상대방의 ID를 입력하세요"
+        android:id="@+id/상대방인증번호입력"
+        android:layout_width="266dp"
+        android:layout_height="76dp"
+        android:hint="상대방의 인증번호를 입력하세요"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
 </androidx.constraintlayout.widget.ConstraintLayout>
