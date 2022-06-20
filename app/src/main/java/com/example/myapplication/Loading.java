@@ -30,7 +30,7 @@ public class Loading extends AppCompatActivity {
         Intent intent = getIntent();
         String 나의이메일 = intent.getStringExtra("나의이메일");//쉐어드에 저장된 내 ID
         String 상대이메일 = intent.getStringExtra("상대이메일");//연결된 상대의 ID
-        String 처음만난날=intent.getStringExtra("처음만난날");
+        String 처음만난날 = intent.getStringExtra("처음만난날");
         TextView 설명텍스트, 갯수텍스트;
         설명텍스트 = (TextView) findViewById(R.id.안내텍스트뷰);
         갯수텍스트 = (TextView) findViewById(R.id.갯수텍스트뷰);
@@ -58,8 +58,8 @@ public class Loading extends AppCompatActivity {
                 finish();
             } else {
                 이벤트제이슨 = new JSONObject(eventjsnstr);
-                String 이벤트갯수스트링=이벤트제이슨.get("이벤트수").toString();
-                이벤트수=Integer.parseInt(이벤트갯수스트링);
+                String 이벤트갯수스트링 = 이벤트제이슨.get("이벤트수").toString();
+                이벤트수 = Integer.parseInt(이벤트갯수스트링);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -69,31 +69,22 @@ public class Loading extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 갯수텍스트.setText(Integer.toString(msg.what));
-                if (msg.what ==1) {
-                    Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
-                    intent1.putExtra("나의이메일", 나의이메일);
-                    intent1.putExtra("상대이메일", 상대이메일);
-                    intent1.putExtra("처음만난날",처음만난날);
-                    startActivity(intent1);
-                    finish();
-                    thread.interrupt();
-                } else {
-                    Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
-                    intent1.putExtra("나의이메일", 나의이메일);
-                    intent1.putExtra("상대이메일", 상대이메일);
-                    intent1.putExtra("처음만난날",처음만난날);
-                    startActivity(intent1);
-                    finish();
-                    thread.interrupt();
 
-                }
+                thread.interrupt();
+                Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
+                intent1.putExtra("나의이메일", 나의이메일);
+                intent1.putExtra("상대이메일", 상대이메일);
+                intent1.putExtra("처음만난날", 처음만난날);
+                startActivity(intent1);
+                finish();
+
             }
         };//핸들러는 스레드에서 받은 메시지에 따라 뷰를 바꿔줌
 
         thread = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
             public void run() {
                 try {
-                    for (int i = 0; i < 이벤트수+1; i++) {
+                    for (int i = 0; i < 이벤트수 + 1; i++) {
                         Message msg = handler.obtainMessage();//핸들러로 보낼 메시지 객체 생성
                         msg.what = i;//메시지의 what을 1로 설정
                         handler.sendMessage(msg);//핸들러에게 메시지를 보낸다

@@ -56,6 +56,8 @@
         <entry key="app/src/main/res/layout/activity_album.xml" value="0.2884963768115942" />
         <entry key="app/src/main/res/layout/activity_connect.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/activity_connectconfirm.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/activity_connectregister.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/activity_datepickerdialog.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_dialog.xml" value="0.2884963768115942" />
         <entry key="app/src/main/res/layout/activity_dialog2.xml" value="0.1956521739130435" />
         <entry key="app/src/main/res/layout/activity_eventadddialog.xml" value="0.28229166666666666" />

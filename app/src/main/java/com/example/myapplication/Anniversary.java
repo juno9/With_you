@@ -29,7 +29,9 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,20 +72,10 @@ public class Anniversary extends AppCompatActivity {
         Intent intent = getIntent();
         나의이메일 = intent.getStringExtra("나의이메일");
         상대이메일 = intent.getStringExtra("상대이메일");
-        처음만난날 = intent.getStringExtra("처음만난날");
         넣어줄이벤트묶음 = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         DatePickerDialog 날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
         DatePickerDialog 날짜선택다이얼로그2 = new DatePickerDialog(this, mDateSetListener2, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
-
-       try {
-           String from = 처음만난날;
-           SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-           Date to = transFormat.parse(from);
-       }catch (Exception e){
-               e.printStackTrace();
-       }
-
 
         recyclerView = findViewById(R.id.알림리사이클러뷰);//리사이클러뷰 객체와 뷰를 연결
         myLayoutManager = new LinearLayoutManager(this); // 레이아웃 매니져를 LinearLayoutManager로 생성
@@ -92,11 +84,8 @@ public class Anniversary extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);//리사이클러뷰의 어댑터 설정
         이벤트쉐어드 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         이벤트쉐어드에디터 = 이벤트쉐어드.edit();
-        이벤트제이슨스트링 = 이벤트쉐어드.getString(나의이메일, "_");
-        상대이벤트제이슨스트링 = 이벤트쉐어드.getString(상대이메일, "_");
 
-
-
+        
         try {
 
             JSONObject 이벤트제이슨 = new JSONObject(이벤트제이슨스트링);
@@ -317,7 +306,8 @@ public class Anniversary extends AppCompatActivity {
 
         //Button 정렬버튼=(Button) findViewById(R.id.정렬버튼);
 
-    }
+
+    }//온크리에이트
 
     @Override
     protected void onResume() {
@@ -357,6 +347,23 @@ public class Anniversary extends AppCompatActivity {
 
         new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
 
+    }
+
+    public static String AddDate(String strDate, int year, int month, int day) throws Exception {
+
+        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar cal = Calendar.getInstance();
+
+        Date dt = dtFormat.parse(strDate);
+
+        cal.setTime(dt);
+
+        cal.add(Calendar.YEAR, year);
+        cal.add(Calendar.MONTH, month);
+        cal.add(Calendar.DATE, day);
+
+        return dtFormat.format(cal.getTime());
     }
 
 

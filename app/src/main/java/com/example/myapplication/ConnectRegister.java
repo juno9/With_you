@@ -73,11 +73,12 @@ public class ConnectRegister extends AppCompatActivity {
                         String 제이슨바꿀상대스트링 = 쉐어드.getString(상대이메일, "");
                         JSONObject 상대제이슨 = new JSONObject(제이슨바꿀상대스트링);
                         내제이슨.put("처음만난날", 처음만난날);
-
                         내제이슨.remove("연결대기");
                         상대제이슨.remove("연결대기");
                         내제이슨.remove("받은연결요청");
                         상대제이슨.remove("받은연결요청");
+                        내제이슨.remove("인증번호");
+                        상대제이슨.remove("인증번호");
                         내제이슨.put("연결상대", 상대이메일);
                         상대제이슨.put("연결상대", 나의이메일);
                         상대제이슨.put("처음만난날", 처음만난날);
@@ -90,8 +91,8 @@ public class ConnectRegister extends AppCompatActivity {
                         쉐어드에디터.putString(상대이메일, 상대제이슨스트링);
                         쉐어드에디터.apply();
                         Intent intent1 = new Intent(getApplicationContext(), Home.class);
-                        intent1.putExtra("이메일", 나의이메일);
-                        intent1.putExtra("연결상대", 상대이메일);
+                        intent1.putExtra("나의이메일", 나의이메일);
+                        intent1.putExtra("상대이메일", 상대이메일);
                         startActivity(intent1);
                         finish();
                     } catch (JSONException e) {

@@ -40,7 +40,7 @@ public class Album extends AppCompatActivity {
     SharedPreferences.Editor 앨범쉐어드에디터;
     SharedPreferences 광고쉐어드;
     SharedPreferences.Editor 광고쉐어드에디터;
-    String 내이메일;
+    String 나의이메일;
     String 상대이메일;
     JSONObject 나의제이슨객체;
     JSONObject 내꺼제이슨;
@@ -53,7 +53,7 @@ public class Album extends AppCompatActivity {
         ActionBar ac = getSupportActionBar();
         ac.setTitle("앨범");
         Intent intent = getIntent();
-        내이메일 = intent.getStringExtra("나의이메일");
+        나의이메일 = intent.getStringExtra("나의이메일");
         상대이메일 = intent.getStringExtra("상대이메일");//인텐트에 담아보낸 이메일들을 먼저 받음
 
         앨범쉐어드 = getSharedPreferences("앨범쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
@@ -61,7 +61,7 @@ public class Album extends AppCompatActivity {
 //        앨범쉐어드에디터.clear();
 //        앨범쉐어드에디터.apply();
 
-        String 유저제이슨스트링 = 앨범쉐어드.getString(내이메일, "_");//앨범쉐어드 내에 내이메일를 키값으로 가지는 데이터를 스트링으로 불러옴
+        String 유저제이슨스트링 = 앨범쉐어드.getString(나의이메일, "_");//앨범쉐어드 내에 나의이메일를 키값으로 가지는 데이터를 스트링으로 불러옴
 
         if (유저제이슨스트링.equals("_")) {
             Toast.makeText(getApplicationContext(), "저장된 사진이 없습니다.", Toast.LENGTH_SHORT).show();
@@ -76,7 +76,7 @@ public class Album extends AppCompatActivity {
             String 생성할제이슨스트링 = 내꺼제이슨.toString();
             String 생성할상대제이슨스트링 = 내꺼제이슨.toString();
 
-            앨범쉐어드에디터.putString(내이메일, 생성할제이슨스트링);
+            앨범쉐어드에디터.putString(나의이메일, 생성할제이슨스트링);
             앨범쉐어드에디터.putString(상대이메일, 생성할상대제이슨스트링);
             앨범쉐어드에디터.apply();
 
@@ -111,7 +111,7 @@ public class Album extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("내이메일", 내이메일);
+                intent.putExtra("나의이메일", 나의이메일);
                 intent.putExtra("상대이메일", 상대이메일);
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -147,7 +147,7 @@ public class Album extends AppCompatActivity {
                             }
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                            앨범쉐어드에디터.putString(내이메일, 나의제이슨객체스트링값);
+                            앨범쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
                             앨범쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
                             앨범쉐어드에디터.apply();
                         } catch (JSONException e) {
@@ -196,7 +196,7 @@ public class Album extends AppCompatActivity {
         if (requestCode == 2222) {
             Uri uri = data.getData();//인텐트에 실려온 uri값을 꺼내줌
             String uritostring = uri.toString();
-            String 제이슨스트링값 = 앨범쉐어드.getString(내이메일, "");
+            String 제이슨스트링값 = 앨범쉐어드.getString(나의이메일, "");
             String 상대제이슨스트링값 = 앨범쉐어드.getString(상대이메일, "");
             MyData mydata = new MyData(uri.toString(), " ");
             mData.add(mydata);
@@ -210,7 +210,7 @@ public class Album extends AppCompatActivity {
                 상대꺼제이슨.put("사진갯수", mData.size());
                 String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                 String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                앨범쉐어드에디터.putString(내이메일, 나의제이슨객체스트링값);
+                앨범쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
                 앨범쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
                 앨범쉐어드에디터.apply();
             } catch (JSONException e) {
@@ -226,7 +226,7 @@ public class Album extends AppCompatActivity {
             String uritostring = uri.toString();
             MyData mydata = new MyData(uri.toString(), null);
             mData.set(포지션값, mydata);
-            String 내꺼이메일 = 앨범쉐어드.getString(내이메일, "_");
+            String 내꺼이메일 = 앨범쉐어드.getString(나의이메일, "_");
             String 상대꺼이메일 = 앨범쉐어드.getString(상대이메일, "_");
             try {
                 JSONObject 내꺼 = new JSONObject(내꺼이메일);
@@ -235,7 +235,7 @@ public class Album extends AppCompatActivity {
                 상대꺼.put(포지션값 + 1 + "번째사진", uritostring);
                 String 나의제이슨객체스트링값 = 내꺼.toString();//내 제이슨을 스트링으로 변환
                 String 상대방제이슨객체스트링값 = 상대꺼.toString();
-                앨범쉐어드에디터.putString(내이메일, 나의제이슨객체스트링값);
+                앨범쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
                 앨범쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
             } catch (JSONException e) {
                 e.printStackTrace();

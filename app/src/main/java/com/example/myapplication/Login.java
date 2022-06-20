@@ -64,8 +64,9 @@ public class Login extends AppCompatActivity {
 
         이메일입력 = (EditText) findViewById(R.id.이메일에딧텍스트);
         PW입력 = (EditText) findViewById(R.id.PW에딧텍스트);
-//2
 
+//        로그인쉐어드에디터.clear();
+//        로그인쉐어드에디터.apply();
 
         연결확인다이얼로그 = new Dialog(this);
         연결확인다이얼로그.setContentView(R.layout.activity_connectconfirm);
@@ -111,7 +112,7 @@ public class Login extends AppCompatActivity {
                                         Button 수락버튼, 거절버튼;
                                         TextView 안내텍스트뷰 = 연결확인다이얼로그.findViewById(R.id.안내텍스트뷰);
                                         안내텍스트뷰.setText(연결요청상대);
-                                        안내텍스트뷰.setText(연결요청상대+" 님께서 연결을 요청하셨습니다");
+                                        안내텍스트뷰.setText(연결요청상대 + " 님께서 연결을 요청하셨습니다");
                                         수락버튼 = 연결확인다이얼로그.findViewById(R.id.수락버튼);
                                         수락버튼.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -183,20 +184,20 @@ public class Login extends AppCompatActivity {
                                 NidProfile 니드프로필 = response.getProfile();
                                 String 이름 = 니드프로필.getName();
                                 String 전화번호 = 니드프로필.getMobile();
-                                String 이메일=니드프로필.getEmail();
-                                String 쉐어드스트링=로그인쉐어드프리퍼런스.getString(이메일,null);
+                                String 이메일 = 니드프로필.getEmail();
+                                String 쉐어드스트링 = 로그인쉐어드프리퍼런스.getString(이메일, null);
                                 try {
-                                    if(쉐어드스트링 == null){//가입이 안되어 있으면
-                                        Intent intent=new Intent(getApplicationContext(),Register.class);
-                                        intent.putExtra("이름",이름);
-                                        intent.putExtra("전화번호",전화번호);
-                                        intent.putExtra("이메일",이메일);
-                                        intent.putExtra("로그인방식","네이버로그인");
+                                    if (쉐어드스트링 == null) {//가입이 안되어 있으면
+                                        Intent intent = new Intent(getApplicationContext(), Register.class);
+                                        intent.putExtra("이름", 이름);
+                                        intent.putExtra("전화번호", 전화번호);
+                                        intent.putExtra("이메일", 이메일);
+                                        intent.putExtra("로그인방식", "네이버로그인");
                                         startActivity(intent);
                                     }//가입이 안되어 있으면
-                                    else{//가입되어 있다면
-                                        JSONObject 제이슨객체=new JSONObject(쉐어드스트링);
-                                        String 연결여부=제이슨객체.get("연결여부").toString();
+                                    else {//가입되어 있다면
+                                        JSONObject 제이슨객체 = new JSONObject(쉐어드스트링);
+                                        String 연결여부 = 제이슨객체.get("연결여부").toString();
                                         String 저장된연결상대 = 제이슨객체.get("연결상대").toString();
                                         if (연결여부.equals("false")) {//연결되어있지 않다면
                                             String 연결대기 = 제이슨객체.get("연결대기").toString();
@@ -211,7 +212,7 @@ public class Login extends AppCompatActivity {
                                                     연결확인다이얼로그.show();
                                                     Button 수락버튼, 거절버튼;
                                                     TextView 안내텍스트뷰 = 연결확인다이얼로그.findViewById(R.id.안내텍스트뷰);
-                                                    안내텍스트뷰.setText(연결요청상대+" 님께서 연결을 요청하셨습니다");
+                                                    안내텍스트뷰.setText(연결요청상대 + " 님께서 연결을 요청하셨습니다");
                                                     수락버튼 = 연결확인다이얼로그.findViewById(R.id.수락버튼);
                                                     수락버튼.setOnClickListener(new View.OnClickListener() {
                                                         @Override
@@ -251,20 +252,24 @@ public class Login extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
+
                             @Override
                             public void onFailure(int i, @NonNull String s) {
                                 Toast.makeText(getApplicationContext(), "콜백실패", Toast.LENGTH_SHORT).show();
                             }
+
                             @Override
                             public void onError(int i, @NonNull String s) {
                                 Toast.makeText(getApplicationContext(), "콜백오류", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
+
                     @Override
                     public void onFailure(int i, String s) {
                         Toast.makeText(getApplicationContext(), "네이버 로그인 실패", Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onError(int i, String s) {
                         Toast.makeText(getApplicationContext(), "네이버 로그인 오류", Toast.LENGTH_SHORT).show();
@@ -276,7 +281,7 @@ public class Login extends AppCompatActivity {
         회원가입버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Register.class);
+                Intent intent = new Intent(getApplicationContext(), Register.class);
                 startActivity(intent);
             }
         });
