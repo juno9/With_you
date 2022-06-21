@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
+
         >
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="w7qhky1q5i" />
 
         <activity
             android:name=".Login"
@@ -35,7 +41,7 @@
         <activity android:name=".Home"/>
         <activity android:name=".Connect"/>
         <activity android:name=".Register"/>
-
+        <activity android:name=".Photomap"/>
 
     </application>
 

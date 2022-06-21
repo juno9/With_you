@@ -43,7 +43,7 @@ public class Home extends AppCompatActivity {
     private Button 전화버튼;
     private Button 프로필편집버튼;
     private ImageButton 앨범버튼;
-    private ImageButton 알림버튼;
+    private ImageButton 기념일버튼;
     private ImageButton 옵션버튼;
     private ImageButton 상대프로필;
     private ImageButton 나의프로필;
@@ -101,6 +101,11 @@ public class Home extends AppCompatActivity {
             String partnerjsnstr=쉐어드프리퍼런스.getString(상대이메일,"_");
             partnerjsonObject=new JSONObject(partnerjsnstr);
             처음만난날=jsonObject.get("처음만난날").toString();
+           String 이벤트제이슨스트링= 이벤트쉐어드프리퍼런스.getString(나의이메일,"");
+            JSONObject 이벤트제이슨객체=new JSONObject(이벤트제이슨스트링);
+            String 날짜=이벤트제이슨객체.get("날짜1").toString();
+            String 내용=이벤트제이슨객체.get("내용1").toString();
+            이벤트=new Event(날짜,내용);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -155,11 +160,14 @@ public class Home extends AppCompatActivity {
         thread2 = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
             public void run() {
                 try {
-                    Date nowDate = new Date();
-                    String from = 이벤트.날짜;
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date to = transFormat.parse(from);
-                    if (nowDate.before(to)) {//오늘 날짜보다 이전이면
+                    Date 현재시간 = new Date();//현재시간 객체화
+                    String 현재시간스트링 = transFormat.format(현재시간);
+                    String 이벤트날짜 = 이벤트.날짜;//이벤트 시간 객체화
+                    Date from = transFormat.parse(이벤트날짜);//이벤트 시간 단순화,데이트화
+                    Date to = transFormat.parse(현재시간스트링);//현재시간 단순화,데이트화
+                    assert from != null;
+                    if (from.after(to)) {//이벤트 날짜가 오늘 이후면
                         sleep(4000);
                         Message msg2 = handler.obtainMessage();
                         msg2.what = 1;
@@ -284,9 +292,9 @@ public class Home extends AppCompatActivity {
             }
         });//앨범 액티비티 실행하기
 
-        알림버튼 = (ImageButton) findViewById(R.id.기념일버튼);
-        Glide.with(getApplicationContext()).load(R.drawable.calender5).fitCenter().into(알림버튼);
-        알림버튼.setOnClickListener(new View.OnClickListener() {
+        기념일버튼 = (ImageButton) findViewById(R.id.기념일버튼);
+        Glide.with(getApplicationContext()).load(R.drawable.calender5).fitCenter().into(기념일버튼);
+        기념일버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Loading.class);

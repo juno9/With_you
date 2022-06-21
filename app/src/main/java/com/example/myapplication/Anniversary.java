@@ -84,9 +84,11 @@ public class Anniversary extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);//리사이클러뷰의 어댑터 설정
         이벤트쉐어드 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         이벤트쉐어드에디터 = 이벤트쉐어드.edit();
+        이벤트제이슨스트링 = 이벤트쉐어드.getString(나의이메일, "");
 
-        
+
         try {
+
 
             JSONObject 이벤트제이슨 = new JSONObject(이벤트제이슨스트링);
             int 이벤트수 = 이벤트제이슨.getInt("이벤트수");

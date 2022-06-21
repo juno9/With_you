@@ -45,6 +45,7 @@ public class Album extends AppCompatActivity {
     JSONObject 나의제이슨객체;
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
+    Button 지도로보기버튼;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class Album extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "저장된 사진이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i < 사진갯수; i++) {
-                        String uristring = (String) 나의제이슨객체.getString(i+1 + "번째사진");
+                        String uristring = (String) 나의제이슨객체.getString(i + 1 + "번째사진");
                         MyData mydata = new MyData(uristring, null);
                         mData.add(mydata);
                     }
@@ -100,14 +101,12 @@ public class Album extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
         //저장되어 있는 사진 뿌려줘야한다./사진을 어떻게 저장할지 정하고 저장되는지까지 보자
 
 
         recyclerView = findViewById(R.id.앨범리사이클러뷰);//리사이클러뷰 레이아웃과 클래스의 리사이클러뷰를 연결
         FloatingActionButton btn_getImage = findViewById(R.id.floatAingActionButton);//앨범에 사진을 추가하는 버튼을 만들고 연결
         btn_getImage.setOnClickListener(new View.OnClickListener() {//이 버튼을 누르면 어떤 행동을 하게 될지 정의
-
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -116,7 +115,17 @@ public class Album extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 2222);
-
+            }
+        });
+        지도로보기버튼 =(Button) findViewById(R.id.지도로보기버튼);
+        지도로보기버튼.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Photomap.class);
+                intent.putExtra("나의이메일", 나의이메일);
+                intent.putExtra("상대이메일", 상대이메일);
+                startActivity(intent);
+                finish();
             }
         });
         adapter = new MultiImageAdapter(mData, getApplicationContext());//어댑터 생성
@@ -189,7 +198,7 @@ public class Album extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
-    // 앨범에서 액티비티로 돌아온 후 실행되는 메서드
+    // 갤러리앱에서 사진 선택하면 돌아오는 메소드
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);//
