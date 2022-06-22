@@ -68,15 +68,16 @@ public class Loading extends AppCompatActivity {
         Handler handler = new Handler() {//이벤트 갯수만큼 숫자 하나씩 올리고 다 올라가면 넘어가는 식으로 구현해야
             @Override
             public void handleMessage(Message msg) {
-                if(이벤트수==0) {
+                if(msg.what==1) {
                     갯수텍스트.setText(Integer.toString(msg.what));
-                    thread.interrupt();
+
                     Intent intent1 = new Intent(getApplicationContext(), Anniversary.class);
                     intent1.putExtra("나의이메일", 나의이메일);
                     intent1.putExtra("상대이메일", 상대이메일);
                     intent1.putExtra("처음만난날", 처음만난날);
                     startActivity(intent1);
                     finish();
+                    thread.interrupt();
                 }
             }
         };//핸들러는 스레드에서 받은 메시지에 따라 뷰를 바꿔줌

@@ -85,6 +85,7 @@ public class Anniversary extends AppCompatActivity {
         이벤트쉐어드 = getSharedPreferences("이벤트쉐어드프리퍼런스", MODE_PRIVATE);//데이터 가져올 쉐어드 선언
         이벤트쉐어드에디터 = 이벤트쉐어드.edit();
         이벤트제이슨스트링 = 이벤트쉐어드.getString(나의이메일, "");
+        상대이벤트제이슨스트링=이벤트쉐어드.getString(상대이메일,"");
 
 
         try {
@@ -341,15 +342,6 @@ public class Anniversary extends AppCompatActivity {
             };
 
 
-    public void mOnClick_DatePick(View view) {
-
-        // DATE Picker가 처음 떴을 때, 오늘 날짜가 보이도록 설정.
-
-        Calendar cal = Calendar.getInstance();
-
-        new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
-
-    }
 
     public static String AddDate(String strDate, int year, int month, int day) throws Exception {
 

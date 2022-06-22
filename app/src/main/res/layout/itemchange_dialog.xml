@@ -7,19 +7,20 @@
 
 
     <EditText
-        android:id="@+id/날짜입력에딧텍스트"
+        android:id="@+id/장소입력에딧텍스트"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="날짜"
+        android:hint="터치하여 장소 입력"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
 
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.259" />
+        app:layout_constraintVertical_bias="0.168" />
 
     <Button
         android:id="@+id/사진수정버튼"
@@ -28,31 +29,21 @@
         android:text="사진수정"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829" />
+        app:layout_constraintVertical_bias="0.571" />
 
     <Button
         android:id="@+id/삭제버튼"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="삭제"
+        android:text="사진삭제"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829" />
+        app:layout_constraintVertical_bias="0.865" />
 
-    <Button
-        android:id="@+id/날짜수정버튼"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="날짜수정"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.591" />
 </androidx.constraintlayout.widget.ConstraintLayout>

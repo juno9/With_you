@@ -5,27 +5,31 @@ import android.net.Uri;
 public class MyData {
 
     String imageString;
-    String message;
+
+    String location;
 
 
-    MyData(String imageString,String message){
+    MyData(String imageString,String location){
         this.imageString=imageString;
-        this.message=message;
+
+        this.location=location;
     }
 
-    public String getMessage() {
-        return message;
-    }
+
 
     public String getImageString() {
         return imageString;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     public void setImageString(String imageString) {
         this.imageString = imageString;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

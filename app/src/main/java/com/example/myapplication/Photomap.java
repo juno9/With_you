@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class Photomap extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mapView;
     private NaverMap naverMap;
     private Button 스크롤로보기버튼;
+    private Dialog 사진날짜다이얼로그;
 
 
     @Override
@@ -65,8 +67,10 @@ public class Photomap extends AppCompatActivity implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         mLocationSource =
                 new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-    }
 
+        사진날짜다이얼로그=new Dialog(this);
+        사진날짜다이얼로그.setContentView(R.layout.activity_photodatedialog);//보여줄다이얼로그 만들고 연결까지
+    }
     @Override
     protected void onStart() {
         super.onStart();

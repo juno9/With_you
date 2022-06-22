@@ -42,6 +42,7 @@
         <activity android:name=".Connect"/>
         <activity android:name=".Register"/>
         <activity android:name=".Photomap"/>
+        <activity android:name=".Locationpick"/>
 
     </application>
 
