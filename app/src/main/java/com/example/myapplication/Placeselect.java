@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +53,10 @@ public class Placeselect extends AppCompatActivity {
                                 public void onItemClick(int pos) {//각 아이템 누르면 그 아이템의 포지션값을 받아온다
                                     Intent intent = new Intent(getApplicationContext(), Photoinput.class);
                                     String 장소명 = 장소목록.get(pos).get이름();
+                                    String 주소 = 장소목록.get(pos).get주소();
                                     intent.putExtra("장소명", 장소명);
+                                    intent.putExtra("주소", 주소);
+                                    intent.putExtra("장소데이터", (Parcelable) 장소목록.get(pos));
                                     setResult(1,intent);
                                     finish();
                                 }
@@ -79,7 +83,8 @@ public class Placeselect extends AppCompatActivity {
                     Log.d("주소로찾기", "POI Name: " + item.getPOIName().toString() + ", " +
                             "Address: " + item.getPOIAddress().replace("null", "") + ", " +
                             "Point: " + item.getPOIPoint().toString());
-                    Place place = new Place(item.getPOIName(), item.getPOIAddress().replace("null", ""), item.getPOIPoint().toString());
+
+                    Place place = new Place(item.getPOIName(), item.getPOIAddress().replace("null", ""), item.frontLat,item.frontLon);
                     장소목록.add(place);
 
                 }

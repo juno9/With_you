@@ -65,6 +65,7 @@ public class Photoinput extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         String 장소명=data.getExtras().getString("장소명");
-        장소텍스트뷰.setText(장소명);
+        String 주소=data.getExtras().getString("주소");
+        장소텍스트뷰.setText(장소명+"\n"+주소);
     }
 }
