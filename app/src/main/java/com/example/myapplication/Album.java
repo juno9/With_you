@@ -212,61 +212,25 @@ public class Album extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "사진을 선택하지 않았습니다", Toast.LENGTH_SHORT).show();
             } else {
                 Uri uri = data.getData();//인텐트에 실려온 uri값을 꺼내줌
-                String uritostring = uri.toString();
-                String 제이슨스트링값 = 앨범쉐어드.getString(나의이메일, "");
-                String 상대제이슨스트링값 = 앨범쉐어드.getString(상대이메일, "");
-                MyData mydata = new MyData(uri.toString(), null);
-                mData.add(mydata);
+                String uritostr=uri.toString();
+                Intent intent=new Intent(getApplicationContext(),Photoinput.class);
+                intent.putExtra("uri",uritostr);
+                intent.putExtra("나의이메일",나의이메일);
+                intent.putExtra("상대이메일",상대이메일);
+                startActivity(intent);
 
-                try {
-                    내꺼제이슨 = new JSONObject(제이슨스트링값);
-                    상대꺼제이슨 = new JSONObject(상대제이슨스트링값);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
-                    내꺼제이슨.put(mData.size() + "번째사진", uritostring);
-                    내꺼제이슨.put("사진갯수", mData.size());
-                    상대꺼제이슨.put(mData.size() + "번째사진", uritostring);
-                    상대꺼제이슨.put("사진갯수", mData.size());
-                    String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
-                    String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                    앨범쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
-                    앨범쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
-                    앨범쉐어드에디터.apply();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                //상대방 제이슨을 스트링으로 변환
-
-
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             }
         } else if (requestCode == 3333) {
             if (data == null) {
                 Toast.makeText(getApplicationContext(), "사진을 선택하지 않았습니다", Toast.LENGTH_SHORT).show();
             } else {
-                Uri uri = data.getData();
-                String uritostring = uri.toString();
-                MyData mydata = new MyData(uri.toString(), null);
-                mData.set(포지션값, mydata);
-                String 내꺼제이슨 = 앨범쉐어드.getString(나의이메일, "_");
-                String 상대꺼제이슨 = 앨범쉐어드.getString(상대이메일, "_");
-                try {
-                    JSONObject 내꺼 = new JSONObject(내꺼제이슨);
-                    JSONObject 상대꺼 = new JSONObject(상대꺼제이슨);//불러온 스트링형태의 제이슨 데이터를 제이슨으로 다시 변환
-                    내꺼.put(포지션값 + 1 + "번째사진", uritostring);
-                    상대꺼.put(포지션값 + 1 + "번째사진", uritostring);
-                    String 나의제이슨객체스트링값 = 내꺼.toString();//내 제이슨을 스트링으로 변환
-                    String 상대방제이슨객체스트링값 = 상대꺼.toString();
-                    앨범쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
-                    앨범쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                adapter.notifyItemRemoved(포지션값);
-                adapter.notifyItemRangeChanged(포지션값, mData.size());
-                앨범쉐어드에디터.apply();
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+                Uri uri = data.getData();//인텐트에 실려온 uri값을 꺼내줌
+                String uritostr=uri.toString();
+                Intent intent=new Intent(getApplicationContext(),Photoinput.class);
+                intent.putExtra("uri",uritostr);
+                intent.putExtra("나의이메일",나의이메일);
+                intent.putExtra("상대이메일",상대이메일);
+                startActivity(intent);
             }
         }
     }

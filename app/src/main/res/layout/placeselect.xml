@@ -6,42 +6,41 @@
     android:layout_height="match_parent">
 
 
-    <com.naver.maps.map.MapView
-        android:id="@+id/map_view"
-        android:layout_width="410dp"
-        android:layout_height="600dp"
+    <EditText
+        android:id="@+id/장소입력에딧텍스트"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="장소 검색"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.877" />
+        app:layout_constraintVertical_bias="0.023" />
 
 
 
     <Button
-        android:id="@+id/스크롤로보기버튼"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="스크롤 형식으로 보기"
+        android:id="@+id/검색버튼"
+        android:layout_width="74dp"
+        android:layout_height="41dp"
+        android:text="찾기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.039" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatAingActionButton2"
-        android:layout_width="214dp"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@android:drawable/ic_menu_upload"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/장소목록리사이클러뷰"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.931" />
+        app:layout_constraintTop_toBottomOf="@+id/장소입력에딧텍스트"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

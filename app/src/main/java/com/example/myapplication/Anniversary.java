@@ -315,11 +315,13 @@ public class Anniversary extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Toast.makeText(this, "온리줌", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        Toast.makeText(this, "온리스타드", Toast.LENGTH_SHORT).show();
     }
 
 

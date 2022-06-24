@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.ViewHolder> {
     private ArrayList<MyData> mData = null;//Uri를 넣은 어레이 리스트를 만듦
     private Context mContext;//컨텍스트를 생성하고
-    private OnLongItemClickListener onLongItemClickListener = null;
     private OnItemClickListener onItemClickListener = null;
 
    public interface OnItemClickListener {
@@ -30,14 +29,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
-    }
-
-    public interface OnLongItemClickListener {
-        void onLongItemClick(int pos);
-    }
-
-    public void setOnLongItemClickListener(OnLongItemClickListener listener) {
-        this.onLongItemClickListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
