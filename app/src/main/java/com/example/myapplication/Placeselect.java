@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -34,6 +35,10 @@ public class Placeselect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.placeselect);
 
+        Intent intent = getIntent();
+        String 나의이메일 = intent.getStringExtra("나의이메일");
+        String 상대이메일 = intent.getStringExtra("상대이메일");
+        String uri=intent.getStringExtra("uri").toString();
         리사이클러뷰 = findViewById(R.id.장소목록리사이클러뷰);//리사이클러뷰 연결
 
         장소입력에딧텍스트 = (EditText) findViewById(R.id.장소입력에딧텍스트);
@@ -54,10 +59,15 @@ public class Placeselect extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), Photoinput.class);
                                     String 장소명 = 장소목록.get(pos).get이름();
                                     String 주소 = 장소목록.get(pos).get주소();
+                                    String 위도 = 장소목록.get(pos).get위도();
+                                    String 경도 = 장소목록.get(pos).get경도();
                                     intent.putExtra("장소명", 장소명);
                                     intent.putExtra("주소", 주소);
-                                    intent.putExtra("장소데이터", (Parcelable) 장소목록.get(pos));
-                                    setResult(1,intent);
+                                    intent.putExtra("위도", 위도);
+                                    intent.putExtra("경도", 경도);
+                                    intent.putExtra("나의이메일", 나의이메일);
+                                    intent.putExtra("상대이메일", 상대이메일);
+                                    setResult(1, intent);
                                     finish();
                                 }
                             });
@@ -84,7 +94,7 @@ public class Placeselect extends AppCompatActivity {
                             "Address: " + item.getPOIAddress().replace("null", "") + ", " +
                             "Point: " + item.getPOIPoint().toString());
 
-                    Place place = new Place(item.getPOIName(), item.getPOIAddress().replace("null", ""), item.frontLat,item.frontLon);
+                    Place place = new Place(item.getPOIName(), item.getPOIAddress().replace("null", ""), item.frontLat, item.frontLon);
                     장소목록.add(place);
 
                 }

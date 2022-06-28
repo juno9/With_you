@@ -28,4 +28,27 @@
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintVertical_bias="0.552" />
 
+   <Button
+       android:id="@+id/사진저장버튼"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="저장"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toStartOf="@+id/사진저장취소버튼"
+       app:layout_constraintHorizontal_bias="0.508"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.865" />
+
+   <Button
+       android:id="@+id/사진저장취소버튼"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginEnd="64dp"
+       android:text="취소"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.865" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

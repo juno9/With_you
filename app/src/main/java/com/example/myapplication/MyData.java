@@ -5,7 +5,6 @@ import android.net.Uri;
 public class MyData {
 
     String imageString;
-
     String location;
 
 

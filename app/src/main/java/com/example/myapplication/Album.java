@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,6 +28,7 @@ import com.naver.maps.map.NaverMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -42,8 +44,6 @@ public class Album extends AppCompatActivity {
     Dialog 다이얼로그;
     SharedPreferences 앨범쉐어드;
     SharedPreferences.Editor 앨범쉐어드에디터;
-    SharedPreferences 광고쉐어드;
-    SharedPreferences.Editor 광고쉐어드에디터;
     String 나의이메일;
     String 상대이메일;
     JSONObject 나의제이슨객체;
@@ -51,6 +51,7 @@ public class Album extends AppCompatActivity {
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
     Button 지도로보기버튼;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +219,7 @@ public class Album extends AppCompatActivity {
                 intent.putExtra("나의이메일",나의이메일);
                 intent.putExtra("상대이메일",상대이메일);
                 startActivity(intent);
+                finish();
 
             }
         } else if (requestCode == 3333) {
@@ -225,12 +227,20 @@ public class Album extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "사진을 선택하지 않았습니다", Toast.LENGTH_SHORT).show();
             } else {
                 Uri uri = data.getData();//인텐트에 실려온 uri값을 꺼내줌
+String uristr= String.valueOf(uri);
+
                 String uritostr=uri.toString();
                 Intent intent=new Intent(getApplicationContext(),Photoinput.class);
-                intent.putExtra("uri",uritostr);
+
+                String uristr2 = "file://"+uristr;
+                Uri uri2=Uri.parse(uristr2);
+                String uriset3=String.valueOf(uri2);
+
+                intent.putExtra("uri",uriset3);
                 intent.putExtra("나의이메일",나의이메일);
                 intent.putExtra("상대이메일",상대이메일);
                 startActivity(intent);
+                finish();
             }
         }
     }

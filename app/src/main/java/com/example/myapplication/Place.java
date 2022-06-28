@@ -41,7 +41,7 @@ public class Place implements Parcelable {
         return 주소;
     }
 
-    public String get위경도() {
+    public String get위도() {
         return 위도;
     }
 
