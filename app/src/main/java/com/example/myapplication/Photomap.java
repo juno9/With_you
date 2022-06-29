@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
@@ -162,15 +163,15 @@ public class Photomap extends AppCompatActivity implements OnMapReadyCallback, T
         mapView.onLowMemory();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+//            }
+//        }
+//    }
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
@@ -187,12 +188,22 @@ public class Photomap extends AppCompatActivity implements OnMapReadyCallback, T
                 double 위도 = Double.parseDouble(나의제이슨.get(i + "번째사진위도").toString());
                 double 경도 = Double.parseDouble(나의제이슨.get(i + "번째사진경도").toString());
                 this.naverMap = naverMap;
+
+                CameraPosition cameraPosition = new CameraPosition(
+                        new LatLng(36.9910113, 127.9259497), // 대상 지점
+                        6, // 줌 레벨
+                        20, // 기울임 각도
+                        0 // 베어링 각도
+                );
+                naverMap.setCameraPosition(cameraPosition);
                 Marker marker = new Marker();//마커 만들기//
                 marker.setPosition(new LatLng(위도, 경도));//위치 생성//위치에 맞게 들어가는거 확인
                 marker.setWidth(100);//마커 넓이 설정
                 marker.setHeight(100);//높이 설정
                 marker.setIcon(OverlayImage.fromPath(path));
                 marker.setMap(naverMap);
+
+
                 ActivityCompat.requestPermissions(this, PERMISSIONS, LOCATION_PERMISSION_REQUEST_CODE);
             }
         } catch (JSONException e) {

@@ -13,7 +13,7 @@
         android:layout_height="48dp"
         android:ems="10"
         android:hint="PW"
-        android:inputType="text"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.736"
@@ -28,6 +28,7 @@
         android:gravity="center"
         android:text="PW확인:"
         android:textSize="20dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.098"
@@ -43,6 +44,7 @@
         android:ems="10"
         android:hint="전화번호"
         android:inputType="text"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.626"
@@ -98,7 +100,7 @@
         android:layout_height="48dp"
         android:ems="10"
         android:hint="PW확인"
-        android:inputType="text"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.736"

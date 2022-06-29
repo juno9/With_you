@@ -6,29 +6,24 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.NidOAuthBehavior;
 import com.navercorp.nid.oauth.NidOAuthLogin;
-import com.navercorp.nid.oauth.NidOAuthLoginState;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
 import com.navercorp.nid.oauth.view.NidOAuthLoginButton;
 import com.navercorp.nid.profile.NidProfileCallback;
 import com.navercorp.nid.profile.data.NidProfile;
 import com.navercorp.nid.profile.data.NidProfileResponse;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,9 +39,6 @@ public class Login extends AppCompatActivity {
     SharedPreferences.Editor 로그인쉐어드에디터;
     Dialog 연결확인다이얼로그;
     Dialog 연결대기다이얼로그;
-
-    Button 일반회원가입버튼;
-    Button 네이버회원가입버튼;
     TextView 안내텍스트뷰;
 
     @Override
@@ -60,13 +52,34 @@ public class Login extends AppCompatActivity {
         로그인쉐어드에디터 = 로그인쉐어드프리퍼런스.edit();
         SharedPreferences 앨범쉐어드프리퍼런스 = getSharedPreferences("앨범쉐어드프리퍼런스", Activity.MODE_PRIVATE);
         SharedPreferences.Editor 앨범쉐어드에디터 = 앨범쉐어드프리퍼런스.edit();
+        SharedPreferences 이벤트쉐어드프리퍼런스 = getSharedPreferences("이벤트쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor 이벤트쉐어드에디터 = 이벤트쉐어드프리퍼런스.edit();
+
+
+        SharedPreferences  네이버쉐어드프리퍼런스 = getSharedPreferences("NaverOAuthLoginEncryptedPreferenceData", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor 네이버쉐어드에디터 = 네이버쉐어드프리퍼런스.edit();
 
 
         이메일입력 = (EditText) findViewById(R.id.이메일에딧텍스트);
         PW입력 = (EditText) findViewById(R.id.PW에딧텍스트);
+        PW입력.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+        PW입력.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
 //        로그인쉐어드에디터.clear();
 //        로그인쉐어드에디터.apply();
+//
+//        네이버쉐어드에디터.clear();
+//        네이버쉐어드에디터.apply();
+//
+//        앨범쉐어드에디터.clear();
+//        앨범쉐어드에디터.apply();
+//
+//        이벤트쉐어드에디터.clear();
+//        이벤트쉐어드에디터.apply();
+
+
+
+
 
         연결확인다이얼로그 = new Dialog(this);
         연결확인다이얼로그.setContentView(R.layout.activity_connectconfirm);
@@ -152,7 +165,6 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "로그인 정보가 다릅니다.", Toast.LENGTH_SHORT).show();
                         }//받은 유저데이터를 기반으로 id,비밀번호 잘못 넣으면
                     } catch (JSONException e) {
-
                     }
                 }//회원정보 있으면
                 else {//회원정보 없으면
@@ -173,6 +185,8 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(getApplicationContext(), "네이버 로그인 성공", Toast.LENGTH_SHORT).show();
+
+
                         로그인.callProfileApi(new NidProfileCallback<NidProfileResponse>() {
                             @Override
                             public void onSuccess(NidProfileResponse response) {

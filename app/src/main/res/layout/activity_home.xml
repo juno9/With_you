@@ -54,7 +54,7 @@
 
     <TextView
         android:id="@+id/날짜텍스트뷰"
-        android:layout_width="71dp"
+        android:layout_width="93dp"
         android:layout_height="64dp"
         android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -103,12 +103,25 @@ public class Home extends AppCompatActivity {
             처음만난날 = jsonObject.get("처음만난날").toString();
             String 이벤트제이슨스트링 = 이벤트쉐어드프리퍼런스.getString(나의이메일, "");
             JSONObject 이벤트제이슨객체 = new JSONObject(이벤트제이슨스트링);
-            String 날짜 = 이벤트제이슨객체.get("날짜1").toString();
-            String 내용 = 이벤트제이슨객체.get("내용1").toString();
-            이벤트 = new Event(날짜, 내용);
-        } catch (JSONException e) {
+            int 이벤트갯수 = (int) 이벤트제이슨객체.get("이벤트수");
+
+            for (int i = 1; i < 이벤트갯수+1; i++) {
+                String 이벤트날짜 = 이벤트제이슨객체.get("날짜"+ i).toString();//날짜 꺼내옴
+                String 내용 = 이벤트제이슨객체.get("내용"+ i).toString();//내용 꺼내옴
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");//날짜형식
+                Date 현재시간 = new Date();//현재시간 생성
+                String 현재시간스트링 = transFormat.format(현재시간);//현재시간 스트링으로
+                Date from = transFormat.parse(이벤트날짜);//이벤트 시간 단순화,데이트화
+                Date to = transFormat.parse(현재시간스트링);//현재시간 단순화,데이트화
+                if (from.after(to)) {
+                    이벤트 = new Event(이벤트날짜, 내용);
+                }//만약 이벤트 날짜가 오늘 이전이면
+            }
+
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
+
 
         Handler handler = new Handler() {
             @Override
@@ -180,7 +193,18 @@ public class Home extends AppCompatActivity {
         };
         thread2.start();//스레드스타트
         만난날짜텍스트뷰 = findViewById(R.id.날짜텍스트뷰);
-        만난날짜텍스트뷰.setText("처음만난날\n" + "  " + 처음만난날);
+
+
+
+
+
+        만난날짜텍스트뷰.setText("처음 만난 날\n" + "  " + 처음만난날);
+
+
+
+
+
+
         광고이미지뷰 = (ImageView) findViewById(R.id.배너이미지뷰);
         상대프로필 = (ImageButton) findViewById(R.id.imageButton);
         Glide.with(getApplicationContext()).load(R.drawable.smileicon).fitCenter().into(상대프로필);
@@ -296,7 +320,7 @@ public class Home extends AppCompatActivity {
         기념일버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Loading.class);
+                Intent intent = new Intent(getApplicationContext(), Anniversary.class);
                 intent.putExtra("나의이메일", 나의이메일);
                 intent.putExtra("상대이메일", 상대이메일);
                 intent.putExtra("처음만난날", 처음만난날);
@@ -421,8 +445,8 @@ public class Home extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        Toast.makeText(getApplicationContext(), "홈 온리줌", Toast.LENGTH_SHORT).show();
-//
-//
+
+
 //        Handler handler3 = new Handler() {
 //            @Override
 //            public void handleMessage(Message msg) {
