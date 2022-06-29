@@ -3,11 +3,18 @@ package com.example.myapplication;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +36,9 @@ import com.naver.maps.map.NaverMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -36,7 +46,7 @@ import java.util.Calendar;
 public class Album extends AppCompatActivity {
 
 
-    private static final String TAG = "MultiImageActivity";
+
     ArrayList<MyData> mData = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
@@ -51,7 +61,7 @@ public class Album extends AppCompatActivity {
     JSONObject 내꺼제이슨;
     JSONObject 상대꺼제이슨;
     Button 지도로보기버튼;
-    Bitmap bitmap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +127,10 @@ public class Album extends AppCompatActivity {
         btn_getImage.setOnClickListener(new View.OnClickListener() {//이 버튼을 누르면 어떤 행동을 하게 될지 정의
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.putExtra("나의이메일", 나의이메일);
                 intent.putExtra("상대이메일", 상대이메일);
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 2222);
             }
         });
@@ -180,24 +189,16 @@ public class Album extends AppCompatActivity {
                     public void onClick(View view) {
                         포지션값 = pos;
                         Toast.makeText(getApplicationContext(), (pos + 1) + "번째 아이템 선택", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Intent.ACTION_PICK);//인텐트를 생성-행동을 정의
-                        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);//인텐트의 타입을 정의
-                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);//인텐트에 값을 집어넣음
-                        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//인텐트의 데이터를 설정
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.putExtra("나의이메일", 나의이메일);
+                        intent.putExtra("상대이메일", 상대이메일);
+                        intent.setType("image/*");
                         startActivityForResult(intent, 3333);
                         다이얼로그.dismiss();
                     }
                 });
 
-                EditText 장소입력에딧텍스트 = (EditText) 다이얼로그.findViewById(R.id.장소입력에딧텍스트);
-                장소입력에딧텍스트.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), Locationpick.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
+
             }
         });
         recyclerView.setAdapter(adapter);
@@ -207,17 +208,18 @@ public class Album extends AppCompatActivity {
     // 갤러리앱에서 사진 선택하면 돌아오는 메소드
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);//
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2222) {
             if (data == null) {
                 Toast.makeText(getApplicationContext(), "사진을 선택하지 않았습니다", Toast.LENGTH_SHORT).show();
             } else {
                 Uri uri = data.getData();//인텐트에 실려온 uri값을 꺼내줌
-                String uritostr=uri.toString();
-                Intent intent=new Intent(getApplicationContext(),Photoinput.class);
-                intent.putExtra("uri",uritostr);
-                intent.putExtra("나의이메일",나의이메일);
-                intent.putExtra("상대이메일",상대이메일);
+                String uristr=uri.toString();
+                Intent intent = new Intent(getApplicationContext(), Photoinput.class);
+                intent.putExtra("uri", uristr);
+                intent.putExtra("나의이메일", 나의이메일);
+                intent.putExtra("상대이메일", 상대이메일);
+                intent.putExtra("띄울화면","앨범");
                 startActivity(intent);
                 finish();
 
@@ -227,23 +229,26 @@ public class Album extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "사진을 선택하지 않았습니다", Toast.LENGTH_SHORT).show();
             } else {
                 Uri uri = data.getData();//인텐트에 실려온 uri값을 꺼내줌
-String uristr= String.valueOf(uri);
+                String uristr=uri.toString();
+                Intent intent = new Intent(getApplicationContext(), Photoinput.class);
+                intent.putExtra("uri",uristr);
+                intent.putExtra("나의이메일", 나의이메일);
+                intent.putExtra("상대이메일", 상대이메일);
+                intent.putExtra("띄울화면","앨범");
 
-                String uritostr=uri.toString();
-                Intent intent=new Intent(getApplicationContext(),Photoinput.class);
-
-                String uristr2 = "file://"+uristr;
-                Uri uri2=Uri.parse(uristr2);
-                String uriset3=String.valueOf(uri2);
-
-                intent.putExtra("uri",uriset3);
-                intent.putExtra("나의이메일",나의이메일);
-                intent.putExtra("상대이메일",상대이메일);
                 startActivity(intent);
                 finish();
             }
         }
     }
+
+
+
+
+
+
+
+
 
 
 }

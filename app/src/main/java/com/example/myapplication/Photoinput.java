@@ -47,6 +47,7 @@ public class Photoinput extends AppCompatActivity {
     SharedPreferences 앨범쉐어드;
     SharedPreferences.Editor 앨범쉐어드에디터;
     String 장소명, 주소, 위도, 경도;
+    String 띄울화면;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,7 @@ public class Photoinput extends AppCompatActivity {
         String 나의이메일 = intent.getStringExtra("나의이메일");
         String 상대이메일 = intent.getStringExtra("상대이메일");
         String uristr = intent.getStringExtra("uri");
+        띄울화면=intent.getStringExtra("띄울화면");
 
         TMapTapi tmaptapi = new TMapTapi(this);
         tmaptapi.setSKTMapAuthentication("l7xxad1064632fe7465c9e0f080c695df971");
@@ -67,7 +69,6 @@ public class Photoinput extends AppCompatActivity {
         Glide.with(getApplicationContext()).load(uristr).fitCenter().into(사진이미지뷰);
 
         장소텍스트뷰 = findViewById(R.id.장소텍스트뷰);
-
         장소텍스트뷰.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//터치하여 위치 검색 클릭하면
@@ -114,11 +115,19 @@ public class Photoinput extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Intent intent=new Intent(getApplicationContext(),Album.class);
-                    intent.putExtra("나의이메일", 나의이메일);
-                    intent.putExtra("상대이메일", 상대이메일);
-                    startActivity(intent);
-                    finish();
+                    if(띄울화면.equals("앨범")) {
+                        Intent intent = new Intent(getApplicationContext(), Album.class);
+                        intent.putExtra("나의이메일", 나의이메일);
+                        intent.putExtra("상대이메일", 상대이메일);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), Photomap.class);
+                        intent.putExtra("나의이메일", 나의이메일);
+                        intent.putExtra("상대이메일", 상대이메일);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         });
@@ -140,12 +149,10 @@ public class Photoinput extends AppCompatActivity {
         if (data == null) {
             Toast.makeText(this, "장소를 선택하지 않았습니다.", Toast.LENGTH_SHORT).show();
         } else {
-
             장소명 = data.getStringExtra("장소명");
             주소 = data.getStringExtra("주소");
             위도 = data.getStringExtra("위도");
             경도 = data.getStringExtra("경도");
-
             장소텍스트뷰.setText(장소명 + "\n" + 주소);
         }
     }

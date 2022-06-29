@@ -97,15 +97,15 @@ public class Home extends AppCompatActivity {
 
         try {
             jsonObject = new JSONObject(userjsnstr);//스트링으로 저장되어 있는 제이슨 데이터를 참조하여 제이슨객체 생성
-            상대이메일=jsonObject.get("연결상대").toString();
-            String partnerjsnstr=쉐어드프리퍼런스.getString(상대이메일,"_");
-            partnerjsonObject=new JSONObject(partnerjsnstr);
-            처음만난날=jsonObject.get("처음만난날").toString();
-           String 이벤트제이슨스트링= 이벤트쉐어드프리퍼런스.getString(나의이메일,"");
-            JSONObject 이벤트제이슨객체=new JSONObject(이벤트제이슨스트링);
-            String 날짜=이벤트제이슨객체.get("날짜1").toString();
-            String 내용=이벤트제이슨객체.get("내용1").toString();
-            이벤트=new Event(날짜,내용);
+            상대이메일 = jsonObject.get("연결상대").toString();
+            String partnerjsnstr = 쉐어드프리퍼런스.getString(상대이메일, "_");
+            partnerjsonObject = new JSONObject(partnerjsnstr);
+            처음만난날 = jsonObject.get("처음만난날").toString();
+            String 이벤트제이슨스트링 = 이벤트쉐어드프리퍼런스.getString(나의이메일, "");
+            JSONObject 이벤트제이슨객체 = new JSONObject(이벤트제이슨스트링);
+            String 날짜 = 이벤트제이슨객체.get("날짜1").toString();
+            String 내용 = 이벤트제이슨객체.get("내용1").toString();
+            이벤트 = new Event(날짜, 내용);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -168,8 +168,7 @@ public class Home extends AppCompatActivity {
                     Date to = transFormat.parse(현재시간스트링);//현재시간 단순화,데이트화
                     assert from != null;
                     if (from.after(to)) {//이벤트 날짜가 오늘 이후면
-                        sleep(4000);
-                        Message msg2 = handler.obtainMessage();
+                        Message msg2 = handler2.obtainMessage();
                         msg2.what = 1;
                         handler2.sendMessage(msg2);
                     }
@@ -417,6 +416,48 @@ public class Home extends AppCompatActivity {
         super.onDestroy();
         thread2.interrupt();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Toast.makeText(getApplicationContext(), "홈 온리줌", Toast.LENGTH_SHORT).show();
+//
+//
+//        Handler handler3 = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                if (msg.what == 1) {
+//                    sendNotification();
+//                }
+//            }
+//        };//핸들러는 스레드에서 받은 메시지에 따라 뷰에 이미지를 그려줌
+//
+//       Thread thread3 = new Thread() {//여기서는 백그라운드에서 돌아갈 작업을 정의한다.
+//            public void run() {
+//                try {
+//                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+//                    Date 현재시간 = new Date();//현재시간 객체화
+//                    String 현재시간스트링 = transFormat.format(현재시간);
+//                    String 이벤트날짜 = 이벤트.날짜;//이벤트 시간 객체화
+//                    Date from = transFormat.parse(이벤트날짜);//이벤트 시간 단순화,데이트화
+//                    Date to = transFormat.parse(현재시간스트링);//현재시간 단순화,데이트화
+//                    assert from != null;
+//                    if (from.after(to)) {//이벤트 날짜가 오늘 이후면
+//                        Message msg2 = handler3.obtainMessage();
+//                        msg2.what = 1;
+//                        handler3.sendMessage(msg2);
+//                    }
+//                }//백그라운드 스레드(앱과 별개로 따로 돌아가고 있다.)
+//                catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//
+//       thread3.start();
+    }
+
+
 }
 
 

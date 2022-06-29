@@ -80,7 +80,7 @@ public class Register extends AppCompatActivity {
                 String 인증번호=numberGen(6,2);
                 String email = 이메일;
                 Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
-//                if(pattern.matcher(email).matches()){//입력한 이메일이 형식에 맞는지 확인
+                if(pattern.matcher(email).matches()){//입력한 이메일이 형식에 맞는지 확인
                     if(PW.equals(PW확인)) {
                         JSONObject jsonObject = new JSONObject();
                         JSONObject 연결용제이슨객체=new JSONObject();
@@ -116,9 +116,9 @@ public class Register extends AppCompatActivity {
                     }
 
 
-//                } else {
-//                    Toast.makeText(Register.this, "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
-//                }
+                } else {
+                    Toast.makeText(Register.this, "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                }
 
 
 

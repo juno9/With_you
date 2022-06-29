@@ -172,11 +172,6 @@ public class Login extends AppCompatActivity {
                 naverIdLoginSDK.authenticate(Login.this, new OAuthLoginCallback() {
                     @Override
                     public void onSuccess() {
-                        String accessToken = naverIdLoginSDK.getAccessToken();
-                        String refreshToken = naverIdLoginSDK.getRefreshToken();
-                        long expires = naverIdLoginSDK.getExpiresAt();
-                        String tyoe = naverIdLoginSDK.getTokenType();
-                        NidOAuthLoginState state = naverIdLoginSDK.getState();
                         Toast.makeText(getApplicationContext(), "네이버 로그인 성공", Toast.LENGTH_SHORT).show();
                         로그인.callProfileApi(new NidProfileCallback<NidProfileResponse>() {
                             @Override
