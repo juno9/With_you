@@ -336,6 +336,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Options.class);
+                intent.putExtra("나의이메일",나의이메일);
                 startActivity(intent);
             }
         });//옵션 액티비티 실행하기
