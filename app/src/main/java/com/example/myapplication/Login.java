@@ -8,14 +8,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.NidOAuthBehavior;
 import com.navercorp.nid.oauth.NidOAuthLogin;
@@ -24,6 +27,7 @@ import com.navercorp.nid.oauth.view.NidOAuthLoginButton;
 import com.navercorp.nid.profile.NidProfileCallback;
 import com.navercorp.nid.profile.data.NidProfile;
 import com.navercorp.nid.profile.data.NidProfileResponse;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,35 +54,36 @@ public class Login extends AppCompatActivity {
         ac.setTitle("With you");
         로그인쉐어드프리퍼런스 = getSharedPreferences("회원정보쉐어드프리퍼런스", Activity.MODE_PRIVATE);
         로그인쉐어드에디터 = 로그인쉐어드프리퍼런스.edit();
-        SharedPreferences 앨범쉐어드프리퍼런스 = getSharedPreferences("앨범쉐어드프리퍼런스", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor 앨범쉐어드에디터 = 앨범쉐어드프리퍼런스.edit();
-        SharedPreferences 이벤트쉐어드프리퍼런스 = getSharedPreferences("이벤트쉐어드프리퍼런스", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor 이벤트쉐어드에디터 = 이벤트쉐어드프리퍼런스.edit();
+//        SharedPreferences 앨범쉐어드프리퍼런스 = getSharedPreferences("앨범쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+//        SharedPreferences.Editor 앨범쉐어드에디터 = 앨범쉐어드프리퍼런스.edit();
+//        SharedPreferences 이벤트쉐어드프리퍼런스 = getSharedPreferences("이벤트쉐어드프리퍼런스", Activity.MODE_PRIVATE);
+//        SharedPreferences.Editor 이벤트쉐어드에디터 = 이벤트쉐어드프리퍼런스.edit();
+//        SharedPreferences 앱키쉐어드프리퍼런스 = getSharedPreferences("APP_KEY", Activity.MODE_PRIVATE);
+//        SharedPreferences.Editor 앱키쉐어드프리퍼런스에디터 = 앱키쉐어드프리퍼런스.edit();
+//        SharedPreferences 암호화 = getSharedPreferences("NaverOAuthLoginEncryptedPreferenceData", Activity.MODE_PRIVATE);
+//        SharedPreferences.Editor 암호화에디터 = 암호화.edit();
+
+//        로그인쉐어드에디터.clear();
+//        앨범쉐어드에디터.clear();
+//        이벤트쉐어드에디터.clear();
+//        앱키쉐어드프리퍼런스에디터.clear();
+//        암호화에디터.clear();
+//
+//        로그인쉐어드에디터.apply();
+//        앨범쉐어드에디터.apply();
+//        이벤트쉐어드에디터.apply();
+//        앱키쉐어드프리퍼런스에디터.apply();
+//        암호화에디터.apply();
 
 
-        SharedPreferences  네이버쉐어드프리퍼런스 = getSharedPreferences("NaverOAuthLoginEncryptedPreferenceData", Activity.MODE_PRIVATE);
+        SharedPreferences 네이버쉐어드프리퍼런스 = getSharedPreferences("NaverOAuthLoginEncryptedPreferenceData", Activity.MODE_PRIVATE);
         SharedPreferences.Editor 네이버쉐어드에디터 = 네이버쉐어드프리퍼런스.edit();
 
 
         이메일입력 = (EditText) findViewById(R.id.이메일에딧텍스트);
         PW입력 = (EditText) findViewById(R.id.PW에딧텍스트);
-        PW입력.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+        PW입력.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         PW입력.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-//        로그인쉐어드에디터.clear();
-//        로그인쉐어드에디터.apply();
-//
-//        네이버쉐어드에디터.clear();
-//        네이버쉐어드에디터.apply();
-//
-//        앨범쉐어드에디터.clear();
-//        앨범쉐어드에디터.apply();
-//
-//        이벤트쉐어드에디터.clear();
-//        이벤트쉐어드에디터.apply();
-
-
-
 
 
         연결확인다이얼로그 = new Dialog(this);
@@ -185,18 +190,21 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(getApplicationContext(), "네이버 로그인 성공", Toast.LENGTH_SHORT).show();
-
-
                         로그인.callProfileApi(new NidProfileCallback<NidProfileResponse>() {
                             @Override
                             public void onSuccess(NidProfileResponse response) {
                                 NidProfile 니드프로필 = response.getProfile();
+
                                 String 이름 = 니드프로필.getName();
+                                Log.i("이름", 이름);
                                 String 전화번호 = 니드프로필.getMobile();
+                                Log.i("전화번호", 전화번호);
                                 String 이메일 = 니드프로필.getEmail();
+                                Log.i("이메일", 이메일);
                                 String 쉐어드스트링 = 로그인쉐어드프리퍼런스.getString(이메일, null);
                                 try {
                                     if (쉐어드스트링 == null) {//가입이 안되어 있으면
+                                        Log.i("기존에 가입되어 있지 않음","");
                                         Intent intent = new Intent(getApplicationContext(), Register.class);
                                         intent.putExtra("이름", 이름);
                                         intent.putExtra("전화번호", 전화번호);
@@ -205,6 +213,7 @@ public class Login extends AppCompatActivity {
                                         startActivity(intent);
                                     }//가입이 안되어 있으면
                                     else {//가입되어 있다면
+                                        Log.i("기존에 가입되어 있음","");
                                         JSONObject 제이슨객체 = new JSONObject(쉐어드스트링);
                                         String 연결여부 = 제이슨객체.get("연결여부").toString();
                                         String 저장된연결상대 = 제이슨객체.get("연결상대").toString();
@@ -286,6 +295,7 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
+
         회원가입버튼 = (Button) findViewById(R.id.회원가입버튼);//누르면 회원가입 액티비티를 띄워야 한다.
         회원가입버튼.setOnClickListener(new View.OnClickListener() {
             @Override
