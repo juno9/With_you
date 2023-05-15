@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.with_you;
 
 
 import androidx.appcompat.app.ActionBar;
@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -377,7 +376,7 @@ public class Home extends AppCompatActivity {
         Intent notificationIntent = new Intent(this, Anniversary.class);
         notificationIntent.putExtra("나의이메일", 나의이메일);
         notificationIntent.putExtra("상대이메일", 상대이메일);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("일정 알림")
                 .setContentText(이벤트.날짜 + "에 예정된 " + 이벤트.내용 + "일정이 있습니다.")

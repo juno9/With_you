@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.with_you;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class ConnectWaiting extends AppCompatActivity {
 

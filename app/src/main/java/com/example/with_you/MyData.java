@@ -1,6 +1,4 @@
-package com.example.myapplication;
-
-import android.net.Uri;
+package com.example.with_you;
 
 public class MyData {
 

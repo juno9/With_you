@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.with_you;
 
 import android.annotation.SuppressLint;
 
@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.ViewHolder> {
-    private ArrayList<MyData> mData = null;//Uri를 넣은 어레이 리스트를 만듦
+    private ArrayList<MyData> mData = null;//이미지 Uri를 넣은 어레이 리스트를 만듦
     private Context mContext;//컨텍스트를 생성하고
     private OnItemClickListener onItemClickListener = null;
 
@@ -53,6 +53,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
                 }
             });
         }
+
     }//내부클래스로 커스텀뷰홀더 만듦
 
     MultiImageAdapter(ArrayList<MyData> list, Context context) {
@@ -81,5 +82,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
     public void onBindViewHolder(@NonNull MultiImageAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Uri 이미지uri = Uri.parse(mData.get(position).getImageString());
         Glide.with(mContext).load(이미지uri).into(holder.아이템이미지);//아이템이미지 뷰에 이미지를 넣는 역할
+        onItemClickListener.onItemClick(position);
     }
 }// onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.

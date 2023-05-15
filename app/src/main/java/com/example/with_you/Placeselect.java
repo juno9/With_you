@@ -1,12 +1,10 @@
-package com.example.myapplication;
+package com.example.with_you;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.poi_item.TMapPOIItem;
 
