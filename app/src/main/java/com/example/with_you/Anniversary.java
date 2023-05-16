@@ -59,6 +59,7 @@ public class Anniversary extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        Log.i("[Anniversary]","온크리에이트 진입");
 
 
         ActionBar ac = getSupportActionBar();
@@ -69,7 +70,8 @@ public class Anniversary extends AppCompatActivity {
         넣어줄이벤트묶음 = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         DatePickerDialog 날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
-        DatePickerDialog 날짜선택다이얼로그2 = new DatePickerDialog(this, mDateSetListener2, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+        DatePickerDialog 이벤트날짜선택다이얼로그 = new DatePickerDialog(this, mDateSetListener2, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+
 
         recyclerView = findViewById(R.id.알림리사이클러뷰);//리사이클러뷰 객체와 뷰를 연결
         myLayoutManager = new LinearLayoutManager(this); // 레이아웃 매니져를 LinearLayoutManager로 생성
@@ -83,68 +85,46 @@ public class Anniversary extends AppCompatActivity {
 
 
         try {
-
-
             JSONObject 이벤트제이슨 = new JSONObject(이벤트제이슨스트링);
             int 이벤트수 = 이벤트제이슨.getInt("이벤트수");
+            Log.i("[Anniversary]","이벤트 갯수: "+이벤트수);
             for (int i = 1; i < 이벤트수 + 1; i++) {
                 String 내용 = 이벤트제이슨.get("내용" + i).toString();
                 String 날짜 = 이벤트제이슨.get("날짜" + i).toString();
+                Log.i("[Anniversary]","이벤트 내용"+i+": "+내용);
+                Log.i("[Anniversary]","이벤트 날짜"+i+": "+날짜);
                 Event 이벤트 = new Event(날짜, 내용);
                 넣어줄이벤트묶음.add(이벤트);
             }
             myAdapter.notifyDataSetChanged();
+            Log.i("[Anniversary]","어댑터에 데이터셋 변경 알림");
         } catch (JSONException e) {
             e.printStackTrace();
         }//이벤트 내용들 뿌려주는 코드들
 
         수정다이얼로그 = new Dialog(this);
         수정다이얼로그.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        수정다이얼로그.setContentView(R.layout.eventitemchange_dialog);
+        수정다이얼로그.setContentView(R.layout.eventitemchange_dialog);//아이템 선택하면 수정 다이얼로그 뜸
         myAdapter.setOnItemClickListener(new Anniversaryadapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
                 Log.i("[Anniversary]","마이어댑터 온 아이템클릭");
                 수정다이얼로그.show();
                 Button 이벤트삭제버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트삭제버튼);
-                Button 내용수정버튼 = (Button) 수정다이얼로그.findViewById(R.id.내용수정버튼);
+
                 EditText 내용표시에딧텍스트 = (EditText) 수정다이얼로그.findViewById(R.id.내용표시에딧텍스트);
-                내용수정버튼.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String 수정할내용 = String.valueOf(내용표시에딧텍스트.getText());//이걸 누른 포지션에 넣어야 한다.
-                        try {
-                            내꺼제이슨 = new JSONObject(이벤트제이슨스트링);
-                            상대꺼제이슨 = new JSONObject(상대이벤트제이슨스트링);
-                            내꺼제이슨.put("내용" + (pos + 1), 수정할내용);
-                            상대꺼제이슨.put("내용" + (pos + 1), 수정할내용);
-                            String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
-                            String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
-                            이벤트쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
-                            이벤트쉐어드에디터.putString(상대이메일, 상대방제이슨객체스트링값);
-                            이벤트쉐어드에디터.apply();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        myAdapter.notifyItemChanged(pos);
-                        수정다이얼로그.dismiss();
-                        finish();//인텐트 종료
-                        overridePendingTransition(0, 0);//인텐트 효과 없애기
-                        Intent intent = getIntent(); //인텐트
-                        startActivity(intent); //액티비티 열기
-                        overridePendingTransition(0, 0);//인텐트 효과 없애기
-                    }
-                });
+
                 이벤트날짜텍스트뷰 = (TextView) 수정다이얼로그.findViewById(R.id.이벤트날짜텍스트뷰);
                 이벤트날짜텍스트뷰.setText(넣어줄이벤트묶음.get(pos).날짜);
-                내용표시에딧텍스트.setText(넣어줄이벤트묶음.get(pos).내용);
-                Button 날짜수정버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트날짜수정버튼);
-                날짜수정버튼.setOnClickListener(new View.OnClickListener() {
+                이벤트날짜텍스트뷰.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        날짜선택다이얼로그2.show();//캘린더 띄우는거 까지는 완료.
+                    public void onClick(View v) {
+                        이벤트날짜선택다이얼로그.show();
                     }
                 });
+                내용표시에딧텍스트.setText(넣어줄이벤트묶음.get(pos).내용);
+
+
                 이벤트삭제버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -176,17 +156,20 @@ public class Anniversary extends AppCompatActivity {
                         수정다이얼로그.dismiss();
                     }
                 });//이벤트삭제
-                Button 닫기버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트수정닫기);
-                닫기버튼.setOnClickListener(new View.OnClickListener() {
+                Button 저장버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트수정닫기);
+                저장버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String 수정할날짜 = String.valueOf(이벤트날짜텍스트뷰.getText());//이걸 누른 포지션에 넣어야 한다.
-
+                        String 수정할내용= String.valueOf(내용표시에딧텍스트.getText());
+                        Event 이벤트=new Event(수정할날짜,수정할내용);
                         try {
                             내꺼제이슨 = new JSONObject(이벤트제이슨스트링);
                             상대꺼제이슨 = new JSONObject(상대이벤트제이슨스트링);//제이슨 객체 만들기
                             내꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);//수정할 날짜 넣어주기
+                            내꺼제이슨.put("내용" + (pos + 1), 수정할내용);
                             상대꺼제이슨.put("날짜" + (pos + 1), 수정할날짜);//수정할 날짜 넣어주기기
+                            상대꺼제이슨.put("내용" + (pos + 1), 수정할내용);
                             String 나의제이슨객체스트링값 = 내꺼제이슨.toString();//내 제이슨을 스트링으로 변환
                             String 상대방제이슨객체스트링값 = 상대꺼제이슨.toString();
                             이벤트쉐어드에디터.putString(나의이메일, 나의제이슨객체스트링값);
@@ -195,13 +178,10 @@ public class Anniversary extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        넣어줄이벤트묶음.set(pos,이벤트);
                         myAdapter.notifyItemChanged(pos);
                         수정다이얼로그.dismiss();
-                        finish();//인텐트 종료
-                        overridePendingTransition(0, 0);//인텐트 효과 없애기
-                        Intent intent = getIntent(); //인텐트
-                        startActivity(intent); //액티비티 열기
-                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+//
                     }
                 });
             }//수정 다이얼로그 닫으면서 날짜 저장내용 바꿈
