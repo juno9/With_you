@@ -3,6 +3,7 @@ package com.example.with_you;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,7 +41,7 @@ public class Photoinput extends AppCompatActivity {
         String 나의이메일 = intent.getStringExtra("나의이메일");
         String 상대이메일 = intent.getStringExtra("상대이메일");
         String uristr = intent.getStringExtra("uri");
-        띄울화면=intent.getStringExtra("띄울화면");
+        띄울화면 = intent.getStringExtra("띄울화면");
 
         TMapTapi tmaptapi = new TMapTapi(this);
         tmaptapi.setSKTMapAuthentication("l7xxad1064632fe7465c9e0f080c695df971");
@@ -66,47 +67,77 @@ public class Photoinput extends AppCompatActivity {
         사진저장버튼.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (장소텍스트뷰.getText().toString().equals("")) {
+                if (장소텍스트뷰.getText().toString().equals("")) {//장소를 선택하지 않았다면
                     Toast.makeText(Photoinput.this, "장소를 선택하지 않았습니다.", Toast.LENGTH_SHORT).show();
-                } else {
+                } else {//장소를 선택 했다면
 
                     String 나의쉐어드스트링 = 앨범쉐어드.getString(나의이메일, "");
                     String 상대쉐어드스트링 = 앨범쉐어드.getString(상대이메일, "");
+                    if (띄울화면.equals("앨범")) {//앨범에서 사진을 새로 업로드 하거나 수정 했다면
+                        String 신규수정여부 = intent.getStringExtra("신규/수정여부");
+                        if (신규수정여부.equals("신규")) {
+                            try {
+                                JSONObject 나의제이슨객체 = new JSONObject(나의쉐어드스트링);
+                                JSONObject 상대제이슨객체 = new JSONObject(상대쉐어드스트링);
+                                int 사진갯수 = Integer.parseInt(나의제이슨객체.get("사진갯수").toString());
+                                나의제이슨객체.put(사진갯수 + 1 + "번째사진", uristr);
+                                나의제이슨객체.put(사진갯수 + 1 + "번째사진주소", 주소);
+                                나의제이슨객체.put(사진갯수 + 1 + "번째사진장소명", 장소명);
+                                나의제이슨객체.put(사진갯수 + 1 + "번째사진위도", 위도);
+                                나의제이슨객체.put(사진갯수 + 1 + "번째사진경도", 경도);
+                                나의제이슨객체.put("사진갯수", 사진갯수 + 1);
+                                상대제이슨객체.put(사진갯수 + 1 + "번째사진", uristr);
+                                상대제이슨객체.put(사진갯수 + 1 + "번째사진주소", 주소);
+                                상대제이슨객체.put(사진갯수 + 1 + "번째사진장소명", 장소명);
+                                상대제이슨객체.put(사진갯수 + 1 + "번째사진위도", 위도);
+                                상대제이슨객체.put(사진갯수 + 1 + "번째사진경도", 경도);
+                                상대제이슨객체.put("사진갯수", 사진갯수 + 1);//몇번째인지 정해야되네
+                                String 나의제이슨스트링 = 나의제이슨객체.toString();
+                                String 상대제이슨스트링 = 상대제이슨객체.toString();
+                                앨범쉐어드에디터.putString(나의이메일, 나의제이슨스트링);
+                                앨범쉐어드에디터.putString(상대이메일, 상대제이슨스트링);
+                                앨범쉐어드에디터.apply();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            int 포지션값 = intent.getIntExtra("포지션값", 0);
+                            Log.i("포지션값", String.valueOf(포지션값));
+                            try {
+                                JSONObject 나의제이슨객체 = new JSONObject(나의쉐어드스트링);
+                                JSONObject 상대제이슨객체 = new JSONObject(상대쉐어드스트링);
+
+                                나의제이슨객체.put(포지션값 + 1 + "번째사진", uristr);
+                                나의제이슨객체.put(포지션값 + 1 + "번째사진주소", 주소);
+                                나의제이슨객체.put(포지션값 + 1 + "번째사진장소명", 장소명);
+                                나의제이슨객체.put(포지션값 + 1 + "번째사진위도", 위도);
+                                나의제이슨객체.put(포지션값 + 1 + "번째사진경도", 경도);
+
+                                상대제이슨객체.put(포지션값 + 1 + "번째사진", uristr);
+                                상대제이슨객체.put(포지션값 + 1 + "번째사진주소", 주소);
+                                상대제이슨객체.put(포지션값 + 1 + "번째사진장소명", 장소명);
+                                상대제이슨객체.put(포지션값 + 1 + "번째사진위도", 위도);
+                                상대제이슨객체.put(포지션값 + 1 + "번째사진경도", 경도);
+
+                                String 나의제이슨스트링 = 나의제이슨객체.toString();
+                                String 상대제이슨스트링 = 상대제이슨객체.toString();
+                                앨범쉐어드에디터.putString(나의이메일, 나의제이슨스트링);
+                                앨범쉐어드에디터.putString(상대이메일, 상대제이슨스트링);
+                                앨범쉐어드에디터.apply();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
 
-                    try {
-                        JSONObject 나의제이슨객체 = new JSONObject(나의쉐어드스트링);
-                        JSONObject 상대제이슨객체 = new JSONObject(상대쉐어드스트링);
-                        int 사진갯수=Integer.parseInt(나의제이슨객체.get("사진갯수").toString());
-                        나의제이슨객체.put(사진갯수+1+"번째사진",uristr);
-                        나의제이슨객체.put(사진갯수+1+"번째사진주소",주소);
-                        나의제이슨객체.put(사진갯수+1+"번째사진장소명",장소명);
-                        나의제이슨객체.put(사진갯수+1+"번째사진위도",위도);
-                        나의제이슨객체.put(사진갯수+1+"번째사진경도",경도);
-                        나의제이슨객체.put("사진갯수",사진갯수+1);
-                        상대제이슨객체.put(사진갯수+1+"번째사진",uristr);
-                        상대제이슨객체.put(사진갯수+1+"번째사진주소",주소);
-                        상대제이슨객체.put(사진갯수+1+"번째사진장소명",장소명);
-                        상대제이슨객체.put(사진갯수+1+"번째사진위도",위도);
-                        상대제이슨객체.put(사진갯수+1+"번째사진경도",경도);
-                        상대제이슨객체.put("사진갯수",사진갯수+1);//몇번째인지 정해야되네
-                        String 나의제이슨스트링=나의제이슨객체.toString();
-                        String 상대제이슨스트링=상대제이슨객체.toString();
-                        앨범쉐어드에디터.putString(나의이메일,나의제이슨스트링);
-                        앨범쉐어드에디터.putString(상대이메일,상대제이슨스트링);
-                        앨범쉐어드에디터.apply();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    if(띄울화면.equals("앨범")) {
                         Intent intent = new Intent(getApplicationContext(), Album.class);
                         intent.putExtra("나의이메일", 나의이메일);
                         intent.putExtra("상대이메일", 상대이메일);
                         startActivity(intent);
                         finish();
-                    } else {
+                    } else {//앨범의 지도형식으로 보기에서 사진을 올렸다면
                         Intent intent = new Intent(getApplicationContext(), Photomap.class);
-                        intent.putExtra("나의이메일", 나의이메일);
+                        intent.putExtra("나의이면일", 나의이메일);
                         intent.putExtra("상대이메일", 상대이메일);
                         startActivity(intent);
                         finish();

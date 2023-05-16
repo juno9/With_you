@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -103,6 +104,7 @@ public class Anniversary extends AppCompatActivity {
         myAdapter.setOnItemClickListener(new Anniversaryadapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
+                Log.i("[Anniversary]","마이어댑터 온 아이템클릭");
                 수정다이얼로그.show();
                 Button 이벤트삭제버튼 = (Button) 수정다이얼로그.findViewById(R.id.이벤트삭제버튼);
                 Button 내용수정버튼 = (Button) 수정다이얼로그.findViewById(R.id.내용수정버튼);

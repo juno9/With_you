@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -50,6 +51,7 @@ public class Album extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
+        Log.i("[앨범 액티비티]","온크리에이트");
         ActionBar ac = getSupportActionBar();
         ac.setTitle("앨범");
         Intent intent = getIntent();
@@ -128,17 +130,28 @@ public class Album extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+
+
+
         adapter = new MultiImageAdapter(mData, getApplicationContext());//어댑터 생성
         다이얼로그 = new Dialog(this);
         다이얼로그.requestWindowFeature(Window.FEATURE_NO_TITLE);
         다이얼로그.setContentView(R.layout.itemchange_dialog);
+
+        recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new MultiImageAdapter.OnItemClickListener() {
-            @SuppressLint("IntentReset")
             @Override
             public void onItemClick(int pos) {
+                Log.i("[앨범 액티비티]","어댑터 온아이템클릭 실행");
                 다이얼로그.show();
+                Log.i("[앨범 액티비티]","다이얼로그 띄움");
                 Button 사진삭제버튼 = (Button) 다이얼로그.findViewById(R.id.삭제버튼);
+                Log.i("[앨범 액티비티]","삭제버튼 선언, 연결");
                 사진삭제버튼.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
                         mData.remove(pos);
@@ -166,25 +179,35 @@ public class Album extends AppCompatActivity {
                         다이얼로그.dismiss();
                     }
                 });
+                Log.i("[앨범 액티비티]","삭제버튼 온클릭리스너 등록");
                 Button 사진가져오기버튼 = (Button) 다이얼로그.findViewById(R.id.사진수정버튼);
+                Log.i("[앨범 액티비티]","가져오기버튼 선언, 연결");
                 사진가져오기버튼.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Log.i("[Album]","수정버튼 누름");
                         포지션값 = pos;
+                        Log.i("[Album]","포지션값 확인:"+pos);
                         Toast.makeText(getApplicationContext(), (pos + 1) + "번째 아이템 선택", Toast.LENGTH_SHORT).show();
+                        Log.i("[Album]","");
                         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        Log.i("[Album]","인텐트 생성");
                         intent.putExtra("나의이메일", 나의이메일);
+                        Log.i("[Album]","나의 이메일 인텐트에 담음:"+나의이메일);
                         intent.putExtra("상대이메일", 상대이메일);
+                        Log.i("[Album]","상대 이메일 인텐트에 담음:"+상대이메일);
+
                         intent.setType("image/*");
+
                         startActivityForResult(intent, 3333);
                         다이얼로그.dismiss();
+                        Log.i("[Album]","다이얼로그 닫음");
                     }
                 });
-
+                Log.i("[앨범 액티비티]","가져오기버튼 온클릭리스너 등록");
 
             }
         });
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
@@ -203,6 +226,7 @@ public class Album extends AppCompatActivity {
                 intent.putExtra("나의이메일", 나의이메일);
                 intent.putExtra("상대이메일", 상대이메일);
                 intent.putExtra("띄울화면","앨범");
+                intent.putExtra("신규/수정여부","신규");
                 startActivity(intent);
                 finish();
 
@@ -217,7 +241,11 @@ public class Album extends AppCompatActivity {
                 intent.putExtra("uri",uristr);
                 intent.putExtra("나의이메일", 나의이메일);
                 intent.putExtra("상대이메일", 상대이메일);
+                intent.putExtra("포지션값",포지션값);
                 intent.putExtra("띄울화면","앨범");
+                intent.putExtra("신규/수정여부","수정");
+                //여기서 pos번째 사진을 지우고 새로 가져온 사진을 넣어야 한다.
+
 
                 startActivity(intent);
                 finish();
